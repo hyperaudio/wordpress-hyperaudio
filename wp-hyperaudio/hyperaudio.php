@@ -14,7 +14,7 @@ $globalid = 0;
 add_action('init', 'hyperaudio_init');
 add_shortcode('hyperaudio', 'hyperaudio_shortcode_handler');
 
-function hyperaudio_shortcode_handler($atts, $content, $tag)
+function hyperaudio_shortcode_handler($atts, $transcript, $tag)
 {
   $o = '';
 
@@ -22,30 +22,126 @@ function hyperaudio_shortcode_handler($atts, $content, $tag)
   $src = '';
 
   if (isset($atts['src'])) $src = esc_html__($atts['src']);
-  $transcript = esc_html__($content);
+  //$transcript = esc_html__($transcript);
+
+  $transcript = preg_replace( "/\r|\n/", "", $transcript);
+  //$transcript = preg_replace( "<br />", "", $transcript);
+
+  $transcript = str_replace("<br />", "", $transcript);
 
   global $globalid;
   $globalid++;
   $id = $globalid;
 
-  $o .='<p>
+  $o .='<style>
+
+  #hypertranscript .strikethrough {
+    text-decoration: line-through;
+  }
+  
+  #hypertranscript .annotation, #hypertranscript .parannotation{
+    opacity: 0.7;
+  }
+  
+  #hypertranscript .highlight {
+    background-color: yellow !important;
+  }
+  
+  #hypertranscript .highlight.active {
+    background-color: lightGreen !important;
+  }
+  
+  #hypertranscript  header {
+    font-size: 200%;
+  }
+  
+  /*#hypertranscript a {
+    cursor: pointer;
+    color: #000;
+  }*/
+  /*
+  #hypertranscript .active ~ span {
+    color: #999;
+  }
+  
+  #hypertranscript p.active ~ p span {
+    color: #999;
+  }
+  */
+  
+  #hypertranscript a, a.link {
+    border: 0px;
+  }
+  
+  #hypertranscript .read {
+    color: #000 !important;
+  }
+  
+  #hypertranscript .unread {
+    color: #999 !important;
+  }
+  
+  #hypertranscript .search-match {
+    background-color: pink !important;
+  }
+  
+  #hypertranscript .share-match {
+    background-color: #66ffad !important;
+  }
+  
+  #hypertranscript sub:before {
+    content: "\231C";
+  }
+  
+  #hypertranscript sub.highlight-duration:before {
+    content: "\231D";
+  }
+  
+  #hypertranscript h5 {
+    font-size: 130%;
+  }
+  
+  [data-m] {
+    cursor: pointer;
+  }
+  
+  
+  body {
+    font-family: "Palatino Linotype", "Book Antiqua", Palatino, serif;
+    line-height: 1.5;
+  }
+  
+  .speaker {
+    font-weight: bold;
+  }
+
+  </style>';
+
+  $o .='<style>.share-this-popover{max-width:8em;pointer-events:none;-webkit-filter:drop-shadow(0 1px 3px rgba(0,0,0,.35));filter:drop-shadow(0 1px 3px rgba(0,0,0,.35));-webkit-animation:a .3s;animation:a .3s}.share-this-popover:before{content:"";position:absolute;bottom:100%;left:50%;width:0;height:0;margin:.25em -.5em;border-width:.5em .5em 0;border-style:solid;border-color:#333 transparent}.share-this-popover>ul{pointer-events:auto;list-style:none;padding:0;margin:-.75em 0 0;white-space:nowrap;background:#333;color:#fff;border-radius:.25em;position:absolute;left:50%;-webkit-transform:translate(-50%,-100%);-ms-transform:translate(-50%,-100%);transform:translate(-50%,-100%)}.share-this-popover>ul>li{display:inline-block;width:2em;height:2em;line-height:2em;text-align:center}.share-this-popover>ul>li>a{display:inline-block;width:100%;height:100%;color:inherit;box-sizing:border-box;padding:.35em}.share-this-popover>ul>li>a:focus,.share-this-popover>ul>li>a:hover{background:hsla(0,0%,100%,.25)}@media (pointer:coarse){.share-this-popover{font-size:150%}.share-this-popover:before{bottom:auto;top:100%;border-width:0 .5em .5em;margin-top:0}.share-this-popover>ul{top:100%;transform:translateX(-50%);margin:.5em 0 0}}@media (max-width:575px){.share-this-popover{left:0!important;right:0!important;width:auto!important;max-width:none}.share-this-popover:before{bottom:auto;top:100%;border-width:0 .5em .5em;margin-top:0}.share-this-popover>ul{top:100%;transform:translateX(-50%);margin:.5em 0 0;left:0;width:100%;transform:none;border-radius:0;text-align:center}}@-webkit-keyframes a{0%{-webkit-transform:translateY(-3em);opacity:0}80%{-webkit-transform:translateY(.5em);opacity:1}to{-webkit-transform:translateY(0)}}@keyframes a{0%{transform:translateY(-3em);opacity:0}80%{transform:translateY(.5em);opacity:1}to{transform:translateY(0)}}</style>';
+
+  $o .='<!--<p>
     <form id="searchForm" style="float:right">
       Playback Rate <span id="currentPbr">1</span><input id="pbr" type="range" value="1" min="0.5" max="3" step="0.1" style="width:10%">
       <input id="search" type="text" ><input type="submit" value="search">
     </form>
-  </p>
+  </p>-->
   
-  <video id="hyperplayer" style="z-index: 5000000; position:relative; width:400px" src="'.src.'" type="audio/mp4" controls></video>
+  <video id="hyperplayer" style="z-index: 5000000; position:relative; width:100%" src="'.$src.'" type="audio/mp4" controls></video>
 
   
-  <div id="hypertranscript" style="overflow-y:scroll; height:600px; position:relative; border-style:dashed; border-width: 1px; border-color:#999; padding: 8px">
-    <article>'.$content.'</article>
-  </div>
+  <div id="hypertranscript" style="overflow-y:scroll; height:600px; position:relative; border-style:dashed; border-width: 1px; border-color:#999; padding: 8px">'.$transcript.'</div>
   
   ';
 
 
-  $o .= '<script></script>';
+  $o .= '<script>
+  ShareThis({
+      sharers: [ ShareThisViaTwitter ],
+      selector: "article"
+  }).init();
+
+  </script>
+';
 
   return $o;
 }
@@ -56,10 +152,13 @@ function hyperaudio_init()
     //load_plugin_textdomain('mbMiniAudioPlayer', false, basename(dirname(__FILE__)) . '/languages/');
     //if (!is_admin()) {
         //wp_enqueue_script('jquery');
-        wp_enqueue_script('jplayer', plugins_url('/js/hyperaudio-lite.js', __FILE__), false, '1.0.0', false);
-        wp_enqueue_script('jplayer', plugins_url('/js/hyperaudio-lite-wrapper.js', __FILE__), false, '1.0.0', false);
-        wp_enqueue_script('jplayer', plugins_url('/js/share-this.js', __FILE__), false, '1.0.0', false);
-        wp_enqueue_script('jplayer', plugins_url('/js/share-this-twitter.js', __FILE__), false, '1.0.0', false);
+        wp_enqueue_script('velocity', plugins_url('/js/velocity.js', __FILE__), false, '1.0.0', false);
+        wp_enqueue_script('hyperaudio-lite', plugins_url('/js/hyperaudio-lite.js', __FILE__), false, '1.0.0', false);
+        wp_enqueue_script('hyperaudio-lite-wrapper', plugins_url('/js/hyperaudio-lite-wrapper.js', __FILE__), false, '1.0.0', false);
+        wp_enqueue_script('share-this', plugins_url('/js/share-this.js', __FILE__), false, '1.0.0', false);
+        wp_enqueue_script('share-this-twitter', plugins_url('/js/share-this-twitter.js', __FILE__), false, '1.0.0', false);
+        wp_enqueue_script('twitter-widget', plugins_url('https://platform.twitter.com/widgets.js', __FILE__), false, '1.0.0', false);
+        
     //}
 }
 
