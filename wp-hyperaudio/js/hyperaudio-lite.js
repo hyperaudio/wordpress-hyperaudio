@@ -85,12 +85,22 @@ var hyperaudiolite = (function () {
       var firstScriptTag = document.getElementsByTagName('script')[0];
       firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
+      console.log(mediaElementId);
+
       window.onYouTubeIframeAPIReady = function() {
+        console.log("onYouTubeIframeAPIReady");
+
+
+        console.log(document.getElementById(mediaElementId));
+
+        
         player = new YT.Player(mediaElementId, {
           events: {
             'onStateChange': onPlayerStateChange
           }
         });
+
+        console.log(player);
       }
 
       function onPlayerStateChange(event) {
