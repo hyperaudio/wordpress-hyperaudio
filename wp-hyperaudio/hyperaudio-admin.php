@@ -120,6 +120,12 @@ function hyperaudio_options_page()
   <div class="holder">
     <div class="instructions">
 
+      <p>When defining the source of your media using the src attribute in the hyperaudio shortcode you need to use embed versions for YouTube and SoundCloud.</p>
+      <p>For example:<p>
+      <p>https://www.youtube.com/embed/xLcsdc823dg</p>
+      <p>https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/730479133&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true *</p>
+      <p>* You can get the snippet of code by visiting the page of the SoundCloud file you're interested in, clicking on Share and then Embed.</p>
+
       <h2>Convert formats into a hypertranscript.</h2>
       <p>Paste your <a href="http://en.wikipedia.org/wiki/.srt#SubRip_text_file_format">SRT (subtitle) file</a>, <a href="http://speechmatics.com">Speechmatics</a> JSON or <a href="https://lowerquality.com/gentle/">Gentle</a> JSON into the pane below and press the transform button.</p>
       <form>

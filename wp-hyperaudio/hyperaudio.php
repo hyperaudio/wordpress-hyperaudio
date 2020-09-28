@@ -134,7 +134,7 @@ function hyperaudio_shortcode_handler($atts, $transcript, $tag)
     $o .= '<iframe id="hyperplayer" data-player-type="youtube" width="400" height="300" frameborder="no" allow="autoplay" src="'.$src.'?enablejsapi=1"></iframe>';
   } elseif (strpos(strtolower($src), 'soundcloud.com') !== false) {
     //$o .= '<iframe id="hyperplayer" data-player-type="soundcloud" width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay" src="'.$src.'&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"></iframe>';
-    $o .= '<iframe id="hyperplayer" data-player-type="soundcloud" width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/730479133&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"></iframe><script src="https://w.soundcloud.com/player/api.js"></script>';
+    $o .= '<iframe id="hyperplayer" data-player-type="soundcloud" width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay" src="'.$src.'"></iframe><script src="https://w.soundcloud.com/player/api.js"></script>';
   } elseif (strpos(strtolower($src), '.mp3') !== false) {
     $o .= '<audio id="hyperplayer" style="position:relative; width:100%" src="'.$src.'" controls></audio>';
   } else {
