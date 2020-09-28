@@ -86,13 +86,13 @@ window.onload = function() {
   hyperaudiolite.init("hypertranscript", "hyperplayer", minimizedMode);
 
   // playbackRate listener
-	var p = document.getElementById('pbr');
+	/*var p = document.getElementById('pbr');
 	var cp = document.getElementById('currentPbr');
 
 	p.addEventListener('input', function(){
 		cp.innerHTML = p.value;
 		hyperplayer.playbackRate = p.value;
-	},false);
+	},false);*/
 }
 
 
