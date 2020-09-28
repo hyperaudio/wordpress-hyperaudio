@@ -59,6 +59,7 @@ var hyperaudiolite = (function () {
     paras = transcript.getElementsByTagName('p');
 
     player = document.getElementById(mediaElementId);
+    console.log("player tagname ....");
     console.log(player.tagName);
     if (player.tagName == "VIDEO" || player.tagName == "AUDIO") { //native HTML media elements
       playerType = "native";
@@ -66,10 +67,14 @@ var hyperaudiolite = (function () {
       playerType = player.getAttribute("data-player-type");
     }
 
+    console.log("player type ....");
+    console.log(playerType);
+
     if (playerType == "native") {
       player.addEventListener('pause', clearTimer, false);
       player.addEventListener('play', checkPlayHead, false);
     } else if (playerType == "soundcloud"){  // SoundCloud
+      console.log("soundcloud");
       player = SC.Widget(mediaElementId);
       player.bind(SC.Widget.Events.PAUSE, clearTimer);
       player.bind(SC.Widget.Events.PLAY, checkPlayHead);
@@ -80,12 +85,22 @@ var hyperaudiolite = (function () {
       var firstScriptTag = document.getElementsByTagName('script')[0];
       firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
+      console.log(mediaElementId);
+
       window.onYouTubeIframeAPIReady = function() {
+        console.log("onYouTubeIframeAPIReady");
+
+
+        console.log(document.getElementById(mediaElementId));
+
+        
         player = new YT.Player(mediaElementId, {
           events: {
             'onStateChange': onPlayerStateChange
           }
         });
+
+        console.log(player);
       }
 
       function onPlayerStateChange(event) {
