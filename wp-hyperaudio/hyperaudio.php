@@ -17,15 +17,11 @@ add_shortcode('hyperaudio', 'hyperaudio_shortcode_handler');
 function hyperaudio_shortcode_handler($atts, $transcript, $tag)
 {
   $o = '';
-
-  // defaults
   $src = '';
 
   if (isset($atts['src'])) $src = esc_html__($atts['src']);
-  //$transcript = esc_html__($transcript);
 
   $transcript = preg_replace( "/\r|\n/", "", $transcript);
-  //$transcript = preg_replace( "<br />", "", $transcript);
 
   $transcript = str_replace("<br />", "", $transcript);
 
@@ -35,69 +31,47 @@ function hyperaudio_shortcode_handler($atts, $transcript, $tag)
 
   $o .='<style>
 
-  #hypertranscript .strikethrough {
+  .hyperaudio-transcript .strikethrough {
     text-decoration: line-through;
   }
   
-  #hypertranscript .annotation, #hypertranscript .parannotation{
+  .hyperaudio-transcript .annotation, .hyperaudio-transcript .parannotation{
     opacity: 0.7;
   }
   
-  #hypertranscript .highlight {
+  .hyperaudio-transcript .highlight {
     background-color: yellow !important;
   }
   
-  #hypertranscript .highlight.active {
+  .hyperaudio-transcript .highlight.active {
     background-color: lightGreen !important;
   }
   
-  #hypertranscript  header {
+  .hyperaudio-transcript  header {
     font-size: 200%;
   }
   
-  /*#hypertranscript a {
-    cursor: pointer;
-    color: #000;
-  }*/
-  /*
-  #hypertranscript .active ~ span {
-    color: #999;
-  }
-  
-  #hypertranscript p.active ~ p span {
-    color: #999;
-  }
-  */
-  
-  #hypertranscript a, a.link {
+  .hyperaudio-transcript a, a.link {
     border: 0px;
   }
   
-  #hypertranscript .read {
+  .hyperaudio-transcript .read {
     color: #000 !important;
   }
   
-  #hypertranscript .unread {
+  .hyperaudio-transcript .unread {
     color: #999 !important;
   }
   
-  #hypertranscript .search-match {
-    background-color: pink !important;
-  }
-  
-  #hypertranscript .share-match {
-    background-color: #66ffad !important;
-  }
-  
-  #hypertranscript sub:before {
+  .hyperaudio-transcript sub:before {
     content: "\231C";
   }
-  
-  #hypertranscript sub.highlight-duration:before {
+
+  .hyperaudio-transcript sub.highlight-duration:before {
     content: "\231D";
   }
   
-  #hypertranscript h5 {
+  .hyperaudio-transcript h5 {
     font-size: 130%;
   }
   
@@ -114,9 +88,9 @@ function hyperaudio_shortcode_handler($atts, $transcript, $tag)
   .speaker {
     font-weight: bold;
   }
-
-  a {
-    text-decoration:none !important;
+  
+  .hyperaudio-transcript a {
+    text-decoration:none;
   }
 
   </style>';
@@ -131,20 +105,20 @@ function hyperaudio_shortcode_handler($atts, $transcript, $tag)
   </p>-->';
   
   if (strpos(strtolower($src), 'youtube.com') !== false || strpos(strtolower($src), 'youtu.be') !== false) {
-    $o .= '<iframe id="hyperplayer" data-player-type="youtube" width="400" height="300" frameborder="no" allow="autoplay" src="'.$src.'?enablejsapi=1"></iframe>';
+    $o .= '<iframe id="hyperplayer'.$id.'" class="hyperaudio-player" data-player-type="youtube" width="400" height="300" frameborder="no" allow="autoplay" src="'.$src.'?enablejsapi=1"></iframe>';
   } elseif (strpos(strtolower($src), 'soundcloud.com') !== false) {
     //$o .= '<iframe id="hyperplayer" data-player-type="soundcloud" width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay" src="'.$src.'&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"></iframe>';
-    $o .= '<iframe id="hyperplayer" data-player-type="soundcloud" width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay" src="'.$src.'"></iframe><script src="https://w.soundcloud.com/player/api.js"></script>';
+    $o .= '<iframe id="hyperplayer'.$id.'" class="hyperaudio-player" data-player-type="soundcloud" width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay" src="'.$src.'"></iframe><script src="https://w.soundcloud.com/player/api.js"></script>';
   } elseif (strpos(strtolower($src), '.mp3') !== false) {
-    $o .= '<audio id="hyperplayer" style="position:relative; width:100%" src="'.$src.'" controls></audio>';
+    $o .= '<audio id="hyperplayer'.$id.'" class="hyperaudio-player" style="position:relative; width:100%" src="'.$src.'" controls></audio>';
   } else {
-    $o .= '<video id="hyperplayer" style="position:relative; width:100%" src="'.$src.'" controls></video>';
+    $o .= '<video id="hyperplayer'.$id.'" class="hyperaudio-player" style="position:relative; width:100%" src="'.$src.'" controls></video>';
   }
 
 
   //<iframe allowfullscreen="1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" title="YouTube video player" src="https://www.youtube.com/embed/EAmmUIEsN9A?html5=1&amp;rel=0&amp;modestbranding=1&amp;iv_load_policy=3&amp;disablekb=1&amp;showinfo=0&amp;origin=https%3A%2F%2Fhyperaud.io&amp;controls=0&amp;wmode=opaque&amp;enablejsapi=1&amp;widgetid=1" id="widget2" width="100%" height="100%" frameborder="0"></iframe>
 
- $o .='<div id="hypertranscript" style="overflow-y:scroll; height:600px; position:relative; border-style:dashed; border-width: 1px; border-color:#999; padding: 8px">'.$transcript.'</div>';
+ $o .='<div id="hypertranscript'.$id.'" class="hyperaudio-transcript" style="overflow-y:scroll; height:600px; position:relative; border-style:dashed; border-width: 1px; border-color:#999; padding: 8px">'.$transcript.'</div>';
 
 
   $o .= '<script>
@@ -152,6 +126,9 @@ function hyperaudio_shortcode_handler($atts, $transcript, $tag)
       sharers: [ ShareThisViaTwitter ],
       selector: "article"
   }).init();
+
+  var ht1 = hyperaudiolite();
+  ht1.init("hypertranscript'.$id.'", "hyperplayer'.$id.'", false);
 
   </script>
 ';
@@ -167,7 +144,7 @@ function hyperaudio_init()
         //wp_enqueue_script('jquery');
         wp_enqueue_script('velocity', plugins_url('/js/velocity.js', __FILE__), false, '1.0.0', false);
         wp_enqueue_script('hyperaudio-lite', plugins_url('/js/hyperaudio-lite.js', __FILE__), false, '1.0.0', false);
-        wp_enqueue_script('hyperaudio-lite-wrapper', plugins_url('/js/hyperaudio-lite-wrapper.js', __FILE__), false, '1.0.0', false);
+        //wp_enqueue_script('hyperaudio-lite-wrapper', plugins_url('/js/hyperaudio-lite-wrapper.js', __FILE__), false, '1.0.0', false);
         wp_enqueue_script('share-this', plugins_url('/js/share-this.js', __FILE__), false, '1.0.0', false);
         wp_enqueue_script('share-this-twitter', plugins_url('/js/share-this-twitter.js', __FILE__), false, '1.0.0', false);
         wp_enqueue_script('twitter-widget', plugins_url('https://platform.twitter.com/widgets.js', __FILE__), false, '1.0.0', false);
