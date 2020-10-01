@@ -18,8 +18,12 @@ function hyperaudio_shortcode_handler($atts, $transcript, $tag)
 {
   $o = '';
   $src = '';
+  $width = '100%';
+  $height = '600px';
 
   if (isset($atts['src'])) $src = esc_html__($atts['src']);
+  if (isset($atts['width'])) $width = esc_html__($atts['width']);
+  if (isset($atts['height'])) $height = esc_html__($atts['height']);
 
   $transcript = preg_replace( "/\r|\n/", "", $transcript);
 
@@ -105,20 +109,20 @@ function hyperaudio_shortcode_handler($atts, $transcript, $tag)
   </p>-->';
   
   if (strpos(strtolower($src), 'youtube.com') !== false || strpos(strtolower($src), 'youtu.be') !== false) {
-    $o .= '<iframe id="hyperplayer'.$id.'" class="hyperaudio-player" data-player-type="youtube" width="400" height="300" frameborder="no" allow="autoplay" src="'.$src.'?enablejsapi=1"></iframe>';
+    $o .= '<iframe id="hyperplayer'.$id.'" class="hyperaudio-player" data-player-type="youtube" width="'.$width.'" frameborder="no" allow="autoplay" src="'.$src.'?enablejsapi=1"></iframe>';
   } elseif (strpos(strtolower($src), 'soundcloud.com') !== false) {
     //$o .= '<iframe id="hyperplayer" data-player-type="soundcloud" width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay" src="'.$src.'&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"></iframe>';
-    $o .= '<iframe id="hyperplayer'.$id.'" class="hyperaudio-player" data-player-type="soundcloud" width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay" src="'.$src.'"></iframe><script src="https://w.soundcloud.com/player/api.js"></script>';
+    $o .= '<iframe id="hyperplayer'.$id.'" class="hyperaudio-player" data-player-type="soundcloud" width="'.$width.'" height="166" scrolling="no" frameborder="no" allow="autoplay" src="'.$src.'"></iframe><script src="https://w.soundcloud.com/player/api.js"></script>';
   } elseif (strpos(strtolower($src), '.mp3') !== false) {
-    $o .= '<audio id="hyperplayer'.$id.'" class="hyperaudio-player" style="position:relative; width:100%" src="'.$src.'" controls></audio>';
+    $o .= '<audio id="hyperplayer'.$id.'" class="hyperaudio-player" style="position:relative; width:'.$width.'" src="'.$src.'" controls></audio>';
   } else {
-    $o .= '<video id="hyperplayer'.$id.'" class="hyperaudio-player" style="position:relative; width:100%" src="'.$src.'" controls></video>';
+    $o .= '<video id="hyperplayer'.$id.'" class="hyperaudio-player" style="position:relative; width:'.$width.'" src="'.$src.'" controls></video>';
   }
 
 
   //<iframe allowfullscreen="1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" title="YouTube video player" src="https://www.youtube.com/embed/EAmmUIEsN9A?html5=1&amp;rel=0&amp;modestbranding=1&amp;iv_load_policy=3&amp;disablekb=1&amp;showinfo=0&amp;origin=https%3A%2F%2Fhyperaud.io&amp;controls=0&amp;wmode=opaque&amp;enablejsapi=1&amp;widgetid=1" id="widget2" width="100%" height="100%" frameborder="0"></iframe>
 
- $o .='<div id="hypertranscript'.$id.'" class="hyperaudio-transcript" style="overflow-y:scroll; height:600px; position:relative; border-style:dashed; border-width: 1px; border-color:#999; padding: 8px">'.$transcript.'</div>';
+ $o .='<div id="hypertranscript'.$id.'" class="hyperaudio-transcript" style="overflow-y:scroll; width:'.$width.'; height:'.$height.'; position:relative; border-style:dashed; border-width: 1px; border-color:#999; padding: 8px">'.$transcript.'</div>';
 
 
   $o .= '<script>
