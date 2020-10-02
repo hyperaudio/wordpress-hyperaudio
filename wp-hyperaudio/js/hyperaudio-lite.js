@@ -29,6 +29,7 @@ var hyperaudiolite = (function () {
     windowHash = window.location.hash;
     
     hashVar = windowHash.substring(1,windowHash.indexOf("="));
+    
 
     if (hashVar === transcript.id) {
       hashArray = windowHash.substr(transcript.id.length+2).split(',');
