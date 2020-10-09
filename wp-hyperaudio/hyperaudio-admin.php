@@ -272,7 +272,7 @@ function hyperaudio_options_page()
 
     <div class="box target-content">
       <textarea id="htranscript" class="entry-content" rows="40" cols="54"></textarea>
-      <div style="display:none" id="rtranscript"></div>
+      <div style="display:none" id="rtranscript" contentEditable></div>
     </div>
 
   </div>
@@ -280,6 +280,57 @@ function hyperaudio_options_page()
   <div class="footer">
   </div>
 </div>
+<script>
+
+
+  /*document.getElementById("rtranscript").addEventListener("click", function(e) {
+    console.log("click event fired");
+    console.log(e);
+  }, false);
+
+  document.getElementById("rtranscript").addEventListener("keyup", function(e) {
+    console.log("keyup event fired");
+    console.log(e);
+  }, false);
+
+  document.getElementById("rtranscript").addEventListener("input", function(e) {
+    console.log("input event fired");
+    console.log(e);
+  }, false);
+
+
+// Select the node that will be observed for mutations
+const targetNode = document.getElementById("rtranscript");
+
+// Options for the observer (which mutations to observe)
+const config = { attributes: true, childList: true, subtree: true, characterData: true };
+
+// Callback function to execute when mutations are observed
+const callback = function(mutationsList, observer) {
+    // Use traditional 'for loops' for IE 11
+    for(const mutation of mutationsList) {
+        if (mutation.type === 'childList') {
+            console.log('A child node has been added or removed.');
+            console.log(mutation);
+        }
+        else if (mutation.type === 'attributes') {
+            console.log('The ' + mutation.attributeName + ' attribute was modified.');
+            console.log(mutation);
+        }
+        
+    }
+    console.log(mutationsList);
+};
+
+// Create an observer instance linked to the callback function
+const observer = new MutationObserver(callback);
+
+// Start observing the target node for configured mutations
+observer.observe(targetNode, config);
+
+// Later, you can stop observing
+//observer.disconnect();*/
+</script>
 <?php } ?>
 
 

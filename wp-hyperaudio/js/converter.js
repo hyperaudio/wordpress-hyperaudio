@@ -16,12 +16,27 @@ $(document).ready(function() {
     $('#rendered-view').addClass('inactive');
     $(this).removeClass('inactive');
     $('#rtranscript').hide();
+    //console.log($('#rtranscript').html());
+
+    var regex = /\a>(.*?)\<a/g;
+
+    var strToMatch = $('#rtranscript').html();
+
+    while ((matches = regex.exec(strToMatch)) != null) {
+      if (matches[1].length > 0) {
+        console.log(matches[1]);
+        strToMatch = strToMatch.replace("</a>"+matches[1], matches[1]+"</a>");
+      } 
+    }
+
+
+    //$('#htranscript').val($('#rtranscript').html());
+    $('#htranscript').val(strToMatch);
+
+    //document.getElementById('htranscript').innerHTML = "scoob";//document.getElementById('rtranscript').innerHTML;
     $('#htranscript').show();
 
-    var event = new CustomEvent('ga', {
-      detail: { origin: 'HA-Converter', type: 'View-Switch', action: 'Markup View' }
-    });
-    document.dispatchEvent(event);
+    //document.dispatchEvent(event);
     return false;
   });
 
@@ -32,10 +47,7 @@ $(document).ready(function() {
     $('#htranscript').hide();
     $('#rtranscript').show();
 
-    var event = new CustomEvent('ga', {
-      detail: { origin: 'HA-Converter', type: 'View-Switch', action: 'Rendered View' }
-    });
-    document.dispatchEvent(event);
+    //document.dispatchEvent(event);
     return false;
   });
 
