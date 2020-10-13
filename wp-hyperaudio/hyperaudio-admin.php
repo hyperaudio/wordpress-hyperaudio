@@ -176,13 +176,13 @@ function hyperaudio_options_page()
       background-color: #fff;
     }
 
-    a.inactive {
+    span.inactive {
       border: none;
       text-decoration:underline;
       background-color: #f1f1f1;
     }
 
-    a {
+    span {
       color: #2c3e50;
     }
 
@@ -239,7 +239,7 @@ function hyperaudio_options_page()
           <option value="speechmatics">Speechmatics JSON</option>
           <option value="gentle">Gentle JSON</option>
           <option value="google">Google Speech-to-Text</option>
-          <option value="other">Trint</option>
+          <option value="other">Trint Interactive Transcript</option>
         </select>
         </p>
         <p><input id="word-length" type="checkbox" name="wordlength" value="on"> Take word-length into account when calculating word timings from SRT?</p>
