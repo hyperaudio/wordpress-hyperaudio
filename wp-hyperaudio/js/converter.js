@@ -16,27 +16,19 @@ $(document).ready(function() {
     $('#rendered-view').addClass('inactive');
     $(this).removeClass('inactive');
     $('#rtranscript').hide();
-    //console.log($('#rtranscript').html());
 
-    var regex = /\a>(.*?)\<a/g;
+    var regex = /\span>(.*?)\<span/g;
 
     var strToMatch = $('#rtranscript').html();
 
     while ((matches = regex.exec(strToMatch)) != null) {
       if (matches[1].length > 0) {
-        console.log(matches[1]);
-        strToMatch = strToMatch.replace("</a>"+matches[1], matches[1]+"</a>");
+        strToMatch = strToMatch.replace("</span>"+matches[1], matches[1]+"</span>");
       } 
     }
 
-
-    //$('#htranscript').val($('#rtranscript').html());
     $('#htranscript').val(strToMatch);
-
-    //document.getElementById('htranscript').innerHTML = "scoob";//document.getElementById('rtranscript').innerHTML;
     $('#htranscript').show();
-
-    //document.dispatchEvent(event);
     return false;
   });
 
@@ -97,7 +89,7 @@ $(document).ready(function() {
       }
     };
 
-    var outputString = '<article><header></header><section><header></header><p>';
+    var outputString = '<article><section><p>';
     var lineBreaks = $('#line-breaks').prop('checked');
     var paraPunct = $('#para-punctuation').prop('checked');
     var ltime = 0;
@@ -202,16 +194,6 @@ $(document).ready(function() {
 
         wordStart = wordStart + wordTime;
         var stext = swords[si];
-        //var ssafeText = stext.replace('"', '\\"');
-        //outputString += '<span m="'+stime+'" oval="'+ssafeText+'">'+stext+'</span> '+'\n';
-
-        /*console.log("stime");
-        console.log(stime);
-        console.log("ltime");
-        console.log(ltime);
-        console.log("diff");
-        console.log(stime - ltime);
-        console.log(ltext);*/
 
         if (stime - ltime > paraSplitTime * 1000 && paraSplitTime > 0) {
           //console.log("fullstop? "+stext+" - "+stext.indexOf("."));
@@ -222,7 +204,7 @@ $(document).ready(function() {
           }
         }
 
-        outputString += '<a data-m="' + stime + '">' + stext + ' </a>';
+        outputString += '<span data-m="' + stime + '">' + stext + ' </span>';
 
         ltime = stime;
         ltext = stext;
@@ -230,22 +212,17 @@ $(document).ready(function() {
         if (lineBreaks) outputString = outputString + '\n';
       }
     }
-    return outputString + '</p><footer></footer></section></footer></footer></article>';
-    var event = new CustomEvent('ga', {
+    return outputString + '</p></section></article>';
+    /*var event = new CustomEvent('ga', {
       detail: { origin: 'HA-Converter', type: 'Function', action: 'parseSRT finished' }
     });
-    document.dispatchEvent(event);
+    document.dispatchEvent(event);*/
   }
 
   $('#transform').click(function() {
     $('.transform-spinner').show();
 
     var input = $('#subtitles').val();
-    /*var regex = /<br\s*[\/]?>/gi;
-    srt = srt.replace(regex,'\n');
-    regex = /&gt;/gi;
-    srt = srt.replace(regex,'>');
-    //console.log(srt);*/
 
     var ht;
 
@@ -256,39 +233,36 @@ $(document).ready(function() {
         
       case 'google':
         var data = JSON.parse(input);
-        var items = ['<article><header></header><section><header></header><p>'];
+        var items = ['<article><section><p>'];
         $.each(data.response.results, function(key, val) {
           $.each(val.alternatives, function(k, v) {
             for (var i = 0; i < v.words.length; i++) {
               items.push(
-                '<a data-d="' +
+                '<span data-d="' +
                   Math.round(parseFloat(v.words[i].endTime) * 1000 - parseFloat(v.words[i].startTime) * 1000) +
                   '" data-m="' +
                   Math.round(parseFloat(v.words[i].startTime) * 1000) +
                   '">' +
                   v.words[i].word +
-                  ' </a>'
+                  ' </span>'
               );
             }
           });
         });
 
-        items.push('</p><footer></footer></section></footer></footer></article>');
+        items.push('</p></section></article>');
 
-        /*$( "<article/>", {
-          html: items.join( "" )
-        }).appendTo( "body" );*/
         ht = items.join('');
         break;
         
       case 'speechmatics':
         var data = JSON.parse(input);
-        var items = ['<article><header></header><section><header></header><p>'];
+        var items = ['<article><section><p>'];
         $.each(data, function(key, val) {
           if (key == 'words') {
             for (var i = 0; i < val.length; i++) {
               items.push(
-                '<a data-d="' +
+                '<span data-d="' +
                   Math.round(val[i].duration * 1000) +
                   '" data-c="' +
                   val[i].confidence +
@@ -296,17 +270,14 @@ $(document).ready(function() {
                   Math.round(val[i].time * 1000) +
                   '">' +
                   val[i].name +
-                  ' </a>'
+                  ' </span>'
               );
             }
           }
         });
 
-        items.push('</p><footer></footer></section></footer></footer></article>');
+        items.push('</p></section></article>');
 
-        /*$( "<article/>", {
-          html: items.join( "" )
-        }).appendTo( "body" );*/
         ht = items.join('');
         break;
 
@@ -318,7 +289,6 @@ $(document).ready(function() {
 
         $trans = document.createElement('p');
 
-        //$trans = document.getElementById("htranscript");
         $trans.innerHTML = '';
 
         var currentOffset = 0;
@@ -330,27 +300,26 @@ $(document).ready(function() {
           var newlineDetected = false;
 
           if (wd.startOffset > currentOffset) {
-            var txt = transcript.slice(currentOffset, wd.startOffset);
+            var txt = transcript.slice(currentOffset, wd.startOffset)
             newlineDetected = /\r|\n/.exec(txt);
 
-            var $plaintext = document.createTextNode(txt);
-            //console.log("lastChild");
-            //console.dir($trans.lastChild);
+            var $plaintext = document.createTextNode(txt +" ");
+
             if ($trans.lastChild) {
               //$trans.lastChild.appendChild($plaintext);
-              $trans.lastChild.text += txt;
+              $trans.lastChild.text += txt + " ";
             } else {
               // this happens only at the beginning
-              var anchor = document.createElement('a');
+              var span = document.createElement('span');
               var initialDatam = document.createAttribute('data-m');
               var initialDatad = document.createAttribute('data-d');
 
-              anchor.appendChild($plaintext);
+              span.appendChild($plaintext + " ");
               initialDatam.value = 0;
               initialDatad.value = 0;
-              anchor.setAttributeNode(initialDatam);
-              anchor.setAttributeNode(initialDatad);
-              $trans.appendChild(anchor);
+              span.setAttributeNode(initialDatam);
+              span.setAttributeNode(initialDatad);
+              $trans.appendChild(span);
             }
             //$trans.appendChild($plaintext);
             if (newlineDetected) {
@@ -363,9 +332,9 @@ $(document).ready(function() {
           var datam = document.createAttribute('data-m');
           var datad = document.createAttribute('data-d');
 
-          var $wd = document.createElement('a');
+          var $wd = document.createElement('span');
           var txt = transcript.slice(wd.startOffset, wd.endOffset);
-          var $wdText = document.createTextNode(txt);
+          var $wdText = document.createTextNode(txt + " ");
           $wd.appendChild($wdText);
 
           wd.$div = $wd;
@@ -399,8 +368,7 @@ $(document).ready(function() {
 
         $article = document.createElement('article');
         $section = document.createElement('section');
-        $header = document.createElement('header');
-
+      
         $section.appendChild($trans);
         $article.appendChild($section);
 
@@ -409,12 +377,11 @@ $(document).ready(function() {
         //newlines can cause issues within HTML tags
         ht = ht.replace(/(?:\r\n|\r|\n)/g, '');
 
-        ht = ht.replace(new RegExp('</a><br>', 'g'), '</a></p><p>');
+        ht = ht.replace(new RegExp('</span><br>', 'g'), '</span></p><p>');
 
         // replace all unneeded empty paras
         ht = ht.replace(new RegExp('<p></p>', 'g'), '');
 
-        console.dir(ht);
         break;
 
       case 'srt':
@@ -445,14 +412,8 @@ $(document).ready(function() {
         //console.log(transcript);
 
         var transcriptText = transcript.outerHTML;
-        transcriptText = transcriptText.replaceAll('<span', '<a');
-        transcriptText = transcriptText.replaceAll('</span>', '</a>');
 
         ht = '<article>' + transcriptText + '</article>';
-
-      //console.log(ht);
-
-      //str = str.replace(/<title>[\s\S]*?<\/title>/, '<title>' + newTitle + '<\/title>');
     }
 
     /*ht = ht.replace(/\r\n|\r|\n/gi, '<br/>');   */
