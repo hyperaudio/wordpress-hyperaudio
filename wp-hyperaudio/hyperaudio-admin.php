@@ -179,7 +179,7 @@ function hyperaudio_options_page()
     a.inactive {
       border: none;
       text-decoration:underline;
-      background-color: #f1f1f1;
+      background-color: #e0e0e0;
     }
 
     a {
@@ -187,6 +187,7 @@ function hyperaudio_options_page()
     }
 
     #transform {
+      transition: box-shadow .3s;
       margin-top: 20px;
       font-size: 24px;
       font-weight: bold;
@@ -195,6 +196,11 @@ function hyperaudio_options_page()
       border: solid;
       border-width:2px;
       padding: 8px;
+      cursor: pointer;
+    }
+
+    #transform:hover {
+      box-shadow: 0 0 11px rgba(33,33,33,.2); 
     }
 
     textarea {
@@ -239,7 +245,7 @@ function hyperaudio_options_page()
           <option value="speechmatics">Speechmatics JSON</option>
           <option value="gentle">Gentle JSON</option>
           <option value="google">Google Speech-to-Text</option>
-          <option value="other">Trint</option>
+          <option value="other">Trint Interactive Transcript</option>
         </select>
         </p>
         <p><input id="word-length" type="checkbox" name="wordlength" value="on"> Take word-length into account when calculating word timings from SRT?</p>
@@ -255,11 +261,12 @@ function hyperaudio_options_page()
     </div>
 
     <div class="box target-title">
-      <h3 id="script-title" class="entry-title">hypertranscript appears here ⤵</h3>
+      <h3 id="script-title" class="entry-title">hypertranscript appears here ⤵</h3>      
       <a id="markup-view" class="tab" href="#">Markup View</a> <a id="rendered-view" class="tab inactive" href="#">Rendered View</a>
     </div>
 
     <div class="box instructions-format">
+    
       <h2>And format.</h2>
       <form class="controls">
           <p>Paragraph split on delay:</p>
@@ -267,7 +274,7 @@ function hyperaudio_options_page()
           <span style="margin-left:200px" id="current-para-split">0</span> seconds</p>
           <p><input id="para-punctuation" type="checkbox" name="wordlength" value="on"> Only split paras on text finishing with punctuation. (. ! ?)</p>
       </form>
-      <p><button id="transform">Convert!</button> <img class="transform-spinner" style="display:none" src="/pad/images/ajax-loader-ffffff-on-808080.gif"></p>
+      <p><button id="transform">Convert! </button> </p>
     </div>
 
     <div class="box target-content">
