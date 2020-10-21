@@ -25,89 +25,6 @@ function hyperaudio_options_page()
 
   <link href='https://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
   <style type="text/css">
-    /*.wrapper {
-      width: 980px;
-      background: #ffffff;
-      margin: 0 auto;
-    }
-
-    .header {
-      background: black;
-      color: white;
-    }
-
-    .holder {
-      margin-top: 50px;
-      width: 50%;
-      float: left;
-      background: #ffffff;
-    }
-
-    .instructions {
-      padding: 10px;
-      height: 310px;
-      font-size: 16px;
-      line-height: 24px;
-    }
-
-    .footer {
-      height: 10px;
-      background: #ffffff;
-      clear: both;
-    }
-
-    textarea, #rtranscript {
-      margin-left:10px;
-      padding: 10px;
-      outline: 2px dashed #2c3e50;
-      border: none;
-    }
-
-    textarea:hover {
-      outline: 2px dashed #2c3e50;
-      border: none;
-    }
-
-    .tab {
-      border: solid;
-      border-width:1px;
-      border-bottom:thick dotted #ffffff;
-      text-decoration: none;
-      padding: 4px;
-    }
-
-    a.inactive {
-      border: none;
-      text-decoration:underline;
-      padding: 4px;
-    }
-
-    a {
-      color: #2c3e50;
-    }
-
-    #transform {
-      font-size: 24px;
-      font-weight: bold;
-      margin-left: 310px;
-      border: solid;
-      border-width:2px;
-      padding: 8px;
-      text-decoration: none;
-    }
-
-    .controls {
-      padding-bottom: 30px;
-    }
-
-    #rtranscript {
-      padding: 8px;
-      font-size: 16px;
-      line-height: 20px;
-      overflow:scroll;
-      overflow-x:hidden;
-      height: 500px;
-    }*/
 
     .box {
 		  color: #000;
@@ -235,7 +152,7 @@ function hyperaudio_options_page()
     
     <div class="box instructions-convert">
       <h2>Convert various formats into a Hypertranscript...</h2>
-      <p>Paste your <a href="http://en.wikipedia.org/wiki/.srt#SubRip_text_file_format">SRT (subtitle) file</a>, <a href="http://speechmatics.com">Speechmatics</a> JSON, <a href="https://lowerquality.com/gentle/">Gentle</a> JSON, <a href="https://cloud.google.com/speech-to-text">Google STT</a> JSON or <a href="https://trint.com">Trint</a> JSON into the pane below and press the <strong>Convert!</strong> button.</p>
+      <p>Paste your <a href="http://en.wikipedia.org/wiki/.srt#SubRip_text_file_format">SRT (subtitle) file</a>, <a href="http://speechmatics.com">Speechmatics</a> JSON, <a href="https://lowerquality.com/gentle/">Gentle</a> JSON, <a href="https://cloud.google.com/speech-to-text">Google STT</a> JSON into the pane below and press the <strong>Convert!</strong> button.</p>
       <form>
         <!--<p><input id="line-breaks" type="checkbox" name="linebreaks" value="on"> Line breaks in output?</p>-->
         <p>
@@ -245,7 +162,7 @@ function hyperaudio_options_page()
           <option value="speechmatics">Speechmatics JSON</option>
           <option value="gentle">Gentle JSON</option>
           <option value="google">Google Speech-to-Text</option>
-          <option value="other">Trint Interactive Transcript</option>
+          <option value="other">Other</option>
         </select>
         </p>
         <p><input id="word-length" type="checkbox" name="wordlength" value="on"> Take word-length into account when calculating word timings from SRT?</p>
@@ -287,57 +204,6 @@ function hyperaudio_options_page()
   <div class="footer">
   </div>
 </div>
-<script>
-
-
-  /*document.getElementById("rtranscript").addEventListener("click", function(e) {
-    console.log("click event fired");
-    console.log(e);
-  }, false);
-
-  document.getElementById("rtranscript").addEventListener("keyup", function(e) {
-    console.log("keyup event fired");
-    console.log(e);
-  }, false);
-
-  document.getElementById("rtranscript").addEventListener("input", function(e) {
-    console.log("input event fired");
-    console.log(e);
-  }, false);
-
-
-// Select the node that will be observed for mutations
-const targetNode = document.getElementById("rtranscript");
-
-// Options for the observer (which mutations to observe)
-const config = { attributes: true, childList: true, subtree: true, characterData: true };
-
-// Callback function to execute when mutations are observed
-const callback = function(mutationsList, observer) {
-    // Use traditional 'for loops' for IE 11
-    for(const mutation of mutationsList) {
-        if (mutation.type === 'childList') {
-            console.log('A child node has been added or removed.');
-            console.log(mutation);
-        }
-        else if (mutation.type === 'attributes') {
-            console.log('The ' + mutation.attributeName + ' attribute was modified.');
-            console.log(mutation);
-        }
-        
-    }
-    console.log(mutationsList);
-};
-
-// Create an observer instance linked to the callback function
-const observer = new MutationObserver(callback);
-
-// Start observing the target node for configured mutations
-observer.observe(targetNode, config);
-
-// Later, you can stop observing
-//observer.disconnect();*/
-</script>
 <?php } ?>
 
 
