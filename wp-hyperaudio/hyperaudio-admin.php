@@ -176,13 +176,13 @@ function hyperaudio_options_page()
       background-color: #fff;
     }
 
-    a.inactive {
+    span.inactive {
       border: none;
       text-decoration:underline;
       background-color: #e0e0e0;
     }
 
-    a {
+    span {
       color: #2c3e50;
     }
 
