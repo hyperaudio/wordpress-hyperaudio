@@ -39,10 +39,8 @@ $(document).ready(function() {
     $('#rtranscript').html("<span>rendering...</span>");
     $('#rtranscript').show();
     
-    
     setTimeout(renderTranscript, 100);
 
-    //document.dispatchEvent(event);
     return false;
   });
 
@@ -220,10 +218,6 @@ $(document).ready(function() {
       }
     }
     return outputString + '</p></section></article>';
-    /*var event = new CustomEvent('ga', {
-      detail: { origin: 'HA-Converter', type: 'Function', action: 'parseSRT finished' }
-    });
-    document.dispatchEvent(event);*/
   }
 
   $('#transform').click(function() {
@@ -239,7 +233,6 @@ $(document).ready(function() {
     var ht;
 
     var format = $('#format-select').val();
-    console.log('format=' + format);
 
     switch (format) {
         
@@ -421,24 +414,16 @@ $(document).ready(function() {
           transcript.getElementsByClassName('speaker')[i].setAttributeNode(datam);
           transcript.getElementsByClassName('speaker')[i].setAttributeNode(datad);
         }
-        //console.log(transcript);
 
         var transcriptText = transcript.outerHTML;
 
         ht = '<article>' + transcriptText + '</article>';
     }
 
-    /*ht = ht.replace(/\r\n|\r|\n/gi, '<br/>');   */
-
     $('#htranscript').val(ht);
     $('#rtranscript').html(ht);
-    //console.log($('#subtitles').text());
 
     $('#transform-spinner').hide();
-    var event = new CustomEvent('ga', {
-      detail: { origin: 'HA-Converter', type: 'Button', 'Transform SRT': 'parseSRT finished' }
-    });
-    document.dispatchEvent(event);
     return false;
   }
 });
