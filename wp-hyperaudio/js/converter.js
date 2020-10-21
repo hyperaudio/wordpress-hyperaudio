@@ -33,15 +33,22 @@ $(document).ready(function() {
   });
 
   $('#rendered-view').click(function() {
-    $('#rtranscript').html($('#htranscript').val());
     $('#markup-view').addClass('inactive');
     $(this).removeClass('inactive');
     $('#htranscript').hide();
+    $('#rtranscript').html("<span>rendering...</span>");
     $('#rtranscript').show();
+    
+    
+    setTimeout(renderTranscript, 100);
 
     //document.dispatchEvent(event);
     return false;
   });
+
+  function renderTranscript() {
+    $('#rtranscript').html($('#htranscript').val());
+  }
 
   String.prototype.replaceAll = function(search, replacement) {
     var target = this;
@@ -220,7 +227,12 @@ $(document).ready(function() {
   }
 
   $('#transform').click(function() {
-    $('.transform-spinner').show();
+    $('#transform-spinner').show();
+    $('#htranscript').val("converting...");
+    setTimeout(generateTranscript, 100);
+  });
+
+  function generateTranscript() {
 
     var input = $('#subtitles').val();
 
@@ -422,11 +434,11 @@ $(document).ready(function() {
     $('#rtranscript').html(ht);
     //console.log($('#subtitles').text());
 
-    $('.transform-spinner').hide();
+    $('#transform-spinner').hide();
     var event = new CustomEvent('ga', {
       detail: { origin: 'HA-Converter', type: 'Button', 'Transform SRT': 'parseSRT finished' }
     });
     document.dispatchEvent(event);
     return false;
-  });
+  }
 });
