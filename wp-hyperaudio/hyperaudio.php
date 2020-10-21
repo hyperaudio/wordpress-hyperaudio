@@ -144,36 +144,31 @@ function hyperaudio_shortcode_handler($atts, $transcript, $tag)
 
 function hyperaudio_init()
 {
-    //global $miniAudioPlayer_version;
-    //load_plugin_textdomain('mbMiniAudioPlayer', false, basename(dirname(__FILE__)) . '/languages/');
-    //if (!is_admin()) {
-        //wp_enqueue_script('jquery');
-        wp_enqueue_script('velocity', plugins_url('/js/velocity.js', __FILE__), false, '1.0.0', false);
-        wp_enqueue_script('hyperaudio-lite', plugins_url('/js/hyperaudio-lite.js', __FILE__), false, '1.0.0', false);
-        //wp_enqueue_script('hyperaudio-lite-wrapper', plugins_url('/js/hyperaudio-lite-wrapper.js', __FILE__), false, '1.0.0', false);
-        wp_enqueue_script('share-this', plugins_url('/js/share-this.js', __FILE__), false, '1.0.0', false);
-        wp_enqueue_script('share-this-twitter', plugins_url('/js/share-this-twitter.js', __FILE__), false, '1.0.0', false);
-        wp_enqueue_script('twitter-widget', plugins_url('https://platform.twitter.com/widgets.js', __FILE__), false, '1.0.0', false);
-        
-    //}
+  if (!is_admin()) {
+    wp_enqueue_script('velocity', plugins_url('/js/velocity.js', __FILE__), false, '1.0.0', false);
+    wp_enqueue_script('hyperaudio-lite', plugins_url('/js/hyperaudio-lite.js', __FILE__), false, '1.0.0', false);
+    wp_enqueue_script('share-this', plugins_url('/js/share-this.js', __FILE__), false, '1.0.0', false);
+    wp_enqueue_script('share-this-twitter', plugins_url('/js/share-this-twitter.js', __FILE__), false, '1.0.0', false);
+    wp_enqueue_script('twitter-widget', plugins_url('https://platform.twitter.com/widgets.js', __FILE__), false, '1.0.0', false);
+  }
 }
 
 add_filter('plugin_action_links', 'hyperaudio_action_links', 10, 2);
 function hyperaudio_action_links($links, $file)
 {
-    static $this_plugin;
-    if (!$this_plugin) {
-        $this_plugin = plugin_basename(__FILE__);
-    }
+  static $this_plugin;
+  if (!$this_plugin) {
+    $this_plugin = plugin_basename(__FILE__);
+  }
 
-    // check to make sure we are on the correct plugin
-    if ($file == $this_plugin) {
-        // the anchor tag and href to the URL we want. For a "Settings" link, this needs to be the url of your settings page
-        $settings_link = '<a href="' . get_bloginfo('wpurl') . '/wp-admin/options-general.php?page=wp-hyperaudio/hyperaudio-admin.php">Settings</a>';
-        // add the link to the list
-        array_unshift($links, $settings_link);
-    }
-    return $links;
+  // check to make sure we are on the correct plugin
+  if ($file == $this_plugin) {
+    // the anchor tag and href to the URL we want. For a "Settings" link, this needs to be the url of your settings page
+    $settings_link = '<a href="' . get_bloginfo('wpurl') . '/wp-admin/options-general.php?page=wp-hyperaudio/hyperaudio-admin.php">Settings</a>';
+    // add the link to the list
+    array_unshift($links, $settings_link);
+  }
+  return $links;
 }
 
 if (is_admin()) {
