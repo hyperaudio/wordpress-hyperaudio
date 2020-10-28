@@ -106,7 +106,7 @@ function hyperaudio_shortcode_handler($atts, $transcript, $tag)
   }
   
   .hyperaudio-transcript a {
-    text-decoration:none;
+    text-decoration:none !important;
   }';
 
   if (!is_null($fontfamily)) {
