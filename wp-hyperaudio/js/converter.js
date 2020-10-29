@@ -1,3 +1,5 @@
+var $ = jQuery; // needed for wordpress
+
 $(document).ready(function() {
   var p = document.getElementById('para-split');
   var cp = document.getElementById('current-para-split');
