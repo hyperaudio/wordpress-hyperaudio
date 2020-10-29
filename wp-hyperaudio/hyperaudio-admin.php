@@ -8,15 +8,19 @@ function hyperaudio_add_option_page()
 	add_options_page('Official Hyperaudio Plugin', 'hyperaudio', 'manage_options',  __FILE__, 'hyperaudio_options_page');
 }
 
-add_action('admin_enqueue_scripts', 'hyperaudio_load_admin_script');
+
 function hyperaudio_load_admin_script($hook)
 {
 	if ($hook != 'settings_page_wp-hyperaudio/hyperaudio-admin') {
 		return;
 	}
-	wp_enqueue_script('converter', plugins_url('/js/converter.js', __FILE__), false, '1.0.0', false);
+  //wp_enqueue_script('converter', plugins_url('/js/converter.js', __FILE__), false, '1.0.0', false);
+  
+  wp_enqueue_script( 'converter', plugin_dir_url( __FILE__ ) . '/js/converter.js', array( 'jquery' ), '1.0.0', true );
 
 }
+
+add_action('admin_enqueue_scripts', 'hyperaudio_load_admin_script');
 
 function hyperaudio_options_page() 
 {// Output the options page
