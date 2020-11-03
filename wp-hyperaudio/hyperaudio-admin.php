@@ -191,9 +191,9 @@ function hyperaudio_options_page()
       <h2>And format.</h2>
       <form class="controls">
           <p>Paragraph split on delay:</p>
-          <p>0 <input id="para-split" style="width:430px" type="range" value="0" min="0.0" max="10" step="0.1"> 10<br/>
-          <span style="margin-left:200px" id="current-para-split">0</span> seconds</p>
-          <p><input id="para-punctuation" type="checkbox" name="wordlength" value="on"> Only split paras on text finishing with punctuation. (. ! ?)</p>
+          <p>0 <input id="para-split" style="width:430px" type="range" value="2.0" min="0.0" max="10" step="0.1"> 10<br/>
+          <span style="margin-left:200px" id="current-para-split">2.0</span> seconds</p>
+          <p><input id="para-punctuation" type="checkbox" name="wordlength" value="on" checked> Only split paras on text finishing with punctuation. (. ! ?)</p>
       </form>
       <p><button id="transform">Convert! </button> </p>
     </div>
