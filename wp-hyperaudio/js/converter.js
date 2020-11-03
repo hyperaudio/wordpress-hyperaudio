@@ -3,7 +3,8 @@ var $ = jQuery; // needed for wordpress
 $(document).ready(function() {
   var p = document.getElementById('para-split');
   var cp = document.getElementById('current-para-split');
-  var paraSplitTime;
+  var paraSplitTime = p.value;
+  var paraPunct = $('#para-punctuation').prop('checked');
 
   p.addEventListener(
     'input',
@@ -98,7 +99,6 @@ $(document).ready(function() {
 
     var outputString = '<article><section><p>';
     var lineBreaks = $('#line-breaks').prop('checked');
-    var paraPunct = $('#para-punctuation').prop('checked');
     var ltime = 0;
     var ltext;
 
@@ -240,7 +240,23 @@ $(document).ready(function() {
         
       case 'google':
         var data = JSON.parse(input);
+        
         var items = ['<article><section><p>'];
+
+        /*var results;
+
+        if (typeof results !== 'undefined') {
+          results = data.response.results;
+        } else {
+          results = data.results;
+        }
+
+        console.log(results);
+
+        if (typeof results === 'undefined') {
+          results = data.results;
+        }*/
+        
         $.each(data.response.results, function(key, val) {
           $.each(val.alternatives, function(k, v) {
             for (var i = 0; i < v.words.length; i++) {
@@ -253,6 +269,11 @@ $(document).ready(function() {
                   v.words[i].word +
                   ' </span>'
               );
+
+
+              if (i > 0 && Math.round(parseFloat(v.words[i].startTime)) - Math.round(parseFloat(v.words[i-1].startTime)) > paraSplitTime && paraSplitTime > 0) {
+                items.push('</p><p>');
+              }
             }
           });
         });
@@ -268,17 +289,28 @@ $(document).ready(function() {
         $.each(data, function(key, val) {
           if (key == 'words') {
             for (var i = 0; i < val.length; i++) {
-              items.push(
-                '<span data-d="' +
-                  Math.round(val[i].duration * 1000) +
-                  '" data-c="' +
-                  val[i].confidence +
-                  '" data-m="' +
-                  Math.round(val[i].time * 1000) +
-                  '">' +
-                  val[i].name +
-                  ' </span>'
-              );
+              var punct = "";
+              if ((i+1) < val.length && val[i+1].name === ".") {
+                punct = ".";
+              } 
+
+              if (val[i].name !== ".") {
+                items.push(
+                  '<span data-d="' +
+                    Math.round(val[i].duration * 1000) +
+                    '" data-c="' +
+                    val[i].confidence +
+                    '" data-m="' +
+                    Math.round(val[i].time * 1000) +
+                    '">' +
+                    val[i].name + punct +
+                    ' </span>'
+                );
+              }
+              
+              if ((paraPunct && punct === ".") && i > 0 && Math.round(parseFloat(val[i].time)) - Math.round(parseFloat(val[i-1].time)) > paraSplitTime && paraSplitTime > 0) {
+                items.push('</p><p>');
+              }
             }
           }
         });
