@@ -5,6 +5,7 @@ $(document).ready(function() {
   var cp = document.getElementById('current-para-split');
   var paraSplitTime = p.value;
   var paraPunct = $('#para-punctuation').prop('checked');
+  console.log($('#para-punctuation').prop('checked'));
 
   p.addEventListener(
     'input',
@@ -14,6 +15,12 @@ $(document).ready(function() {
     },
     false
   );
+
+  $('#para-punctuation').change(function() {
+    if (this.checked) {
+      paraPunct = $('#para-punctuation').prop('checked');
+    }
+  });
 
   $('#markup-view').click(function() {
     $('#rendered-view').addClass('inactive');
@@ -308,8 +315,10 @@ $(document).ready(function() {
                 );
               }
               
-              if ((paraPunct && punct === ".") && i > 0 && Math.round(parseFloat(val[i].time)) - Math.round(parseFloat(val[i-1].time)) > paraSplitTime && paraSplitTime > 0) {
-                items.push('</p><p>');
+              if (i > 0 && Math.round(parseFloat(val[i].time)) - Math.round(parseFloat(val[i-1].time)) > paraSplitTime && paraSplitTime > 0) {
+                if ((paraPunct && punct === ".") || (paraPunct === false)) {
+                  items.push('</p><p>');
+                }
               }
             }
           }
@@ -372,8 +381,14 @@ $(document).ready(function() {
           var datad = document.createAttribute('data-d');
 
           var $wd = document.createElement('span');
-          var txt = transcript.slice(wd.startOffset, wd.endOffset);
-          var $wdText = document.createTextNode(txt + " ");
+          var txt = transcript.slice(wd.startOffset, wd.endOffset+1);
+          
+          if (!txt.endsWith(" ")){
+            txt = txt + " ";
+          }
+
+          var $wdText = document.createTextNode(txt);
+
           $wd.appendChild($wdText);
 
           wd.$div = $wd;

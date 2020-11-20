@@ -124,6 +124,8 @@ function hyperaudio_shortcode_handler($atts, $transcript, $tag)
       <input id="search" type="text" ><input type="submit" value="search">
     </form>
   </p>-->';
+
+  $o .='<div id="video-holder">';
   
   if (strpos(strtolower($src), 'youtube.com') !== false || strpos(strtolower($src), 'youtu.be') !== false) {
     if (isset($atts['media-height'])) {
@@ -137,8 +139,10 @@ function hyperaudio_shortcode_handler($atts, $transcript, $tag)
   } elseif (strpos(strtolower($src), '.mp3') !== false) {
     $o .= '<audio id="hyperplayer'.$id.'" class="hyperaudio-player" style="position:relative; width:'.$width.'" src="'.$src.'" controls></audio>';
   } else {
-    $o .= '<video id="hyperplayer'.$id.'" class="hyperaudio-player" style="position:relative; width:'.$width.'" src="'.$src.'" controls></video>';
+    $o .= '<video id="hyperplayer'.$id.'" class="hyperaudio-player" style="position:relative; width:'.$width.'" src="'.$src.'" controls><track id="vtt" label="French" kind="subtitles" srclang="fr" src="data:text/vtt;charset=utf-8,WEBVTT\n\n00:01.000 --> 00:04.000\nNever drink liquid nitrogen." default></video>';
   }
+
+  $o .='</div>';
 
 
   //<iframe allowfullscreen="1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" title="YouTube video player" src="https://www.youtube.com/embed/EAmmUIEsN9A?html5=1&amp;rel=0&amp;modestbranding=1&amp;iv_load_policy=3&amp;disablekb=1&amp;showinfo=0&amp;origin=https%3A%2F%2Fhyperaud.io&amp;controls=0&amp;wmode=opaque&amp;enablejsapi=1&amp;widgetid=1" id="widget2" width="100%" height="100%" frameborder="0"></iframe>
@@ -155,6 +159,9 @@ function hyperaudio_shortcode_handler($atts, $transcript, $tag)
   var ht1 = hyperaudiolite();
   ht1.init("'.$transcriptid.'", "hyperplayer'.$id.'", false);
 
+  var cap1 = caption();
+  cap1.init("'.$transcriptid.'");
+
   </script>
 ';
 
@@ -166,6 +173,7 @@ function hyperaudio_init()
   if (!is_admin()) {
     wp_enqueue_script('velocity', plugins_url('/js/velocity.js', __FILE__), false, '1.0.0', false);
     wp_enqueue_script('hyperaudio-lite', plugins_url('/js/hyperaudio-lite.js', __FILE__), false, '1.0.0', false);
+    wp_enqueue_script('caption', plugins_url('/js/caption.js', __FILE__), false, '1.0.0', false);
     wp_enqueue_script('share-this', plugins_url('/js/share-this.js', __FILE__), false, '1.0.0', false);
     wp_enqueue_script('share-this-twitter', plugins_url('/js/share-this-twitter.js', __FILE__), false, '1.0.0', false);
     wp_enqueue_script('twitter-widget', plugins_url('https://platform.twitter.com/widgets.js', __FILE__), false, '1.0.0', false);
