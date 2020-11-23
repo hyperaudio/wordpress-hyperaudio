@@ -306,11 +306,12 @@ var caption = (function () {
     }
 
     var thisDetail;
+    //var shouldSplit = false;
 
     for (var i = 0; i < words.length; ++i) {
       //console.log(words[i]);
       if (words[i].classList.contains("speaker")){
-        console.log("speaker");
+        console.log("speaker or should split");
 
         if (segmentIndex > 0) {
           var duration = 0;
@@ -321,29 +322,28 @@ var caption = (function () {
           data.segments.push(thisDetail);
         }
 
-        //console.log("thisDetail instantiated");
         thisDetail = new Detail(parseInt(words[i].getAttribute("data-m"))/1000,"","");
-        
-        //thisDetail.in = words[i].getAttribute("data-m");
-
-
-        
-        //data.segments[segmentIndex]['in'] = words[i].getAttribute("data-m");
         
         console.log("segmentIndex = "+segmentIndex);
         console.log(data);
         segmentIndex++;
-        //data.segments.push(thisDetail);
 
       } else {
         if (words[i].getAttribute("data-d") !== null) {
+          if (i > 0 && thisDetail.text.length > 10 && parseInt(words[i].getAttribute("data-m")) - parseInt(words[i-1].getAttribute("data-m")) > 750) {
+            var duration = 0;
+            if (words[i-1].getAttribute("data-d") !== null) {
+              duration = parseInt(words[i-1].getAttribute("data-d"))/1000;
+            }
+            thisDetail.out = parseInt(words[i-1].getAttribute("data-m"))/1000 + duration;
+            data.segments.push(thisDetail);
+            thisDetail = new Detail(parseInt(words[i].getAttribute("data-m"))/1000,"","");
+            segmentIndex++;
+          }
+
           thisDetail.text += words[i].innerText;
         }
       }
-
-      
-      //if (words[i].getAttribute("data-d") !== null && words[i].getAttribute("data-d") !== "0")
-
     }
 
     thisDetail.out = parseInt(words[words.length-1].getAttribute("data-m"))/1000 + parseInt(words[words.length-1].getAttribute("data-d"))/1000;
