@@ -63,7 +63,7 @@ var caption = (function () {
     var endSentenceDelimiter = /[\.。?؟!]/g;
     var midSentenceDelimiter = /[,、，،و:，…‥]/g;
 
-    // splt into sentences
+    // split into sentences
 
     words.forEach(function(word, i) {
 
@@ -118,23 +118,38 @@ var caption = (function () {
 
     console.log(data);
 
+    function captionMeta(start, stop, text) {
+      this.start = start;
+      this.stop = stop;
+      this.text = text;
+    }
+
+    var captions = [];
+
+    var thisCaption = null;
 
     data.segments.map(function(segment) {
+
       if (segment.chars < maxLineLength) {
-        captionsVtt += "\n" + formatSeconds(segment.start) + "-->" + formatSeconds(segment.start + segment.duration) + "\n";
+        thisCaption = new captionMeta(formatSeconds(segment.start), formatSeconds(segment.start + segment.duration), "");
+        
         segment.words.forEach(function(wordMeta) {
-          captionsVtt += wordMeta.text;
+          thisCaption.text += wordMeta.text;
         });
-        captionsVtt += "\n";
+
+        thisCaption.text += "\n";
+
+        captions.push(thisCaption);
+
       } else {
+
         var charCount = 0;
         var lineText = "";
         var firstLine = true;
         var lastOutTime;
         var lastInTime = null;
         
-  
-        segment.words.forEach(function(wordMeta) {
+        segment.words.forEach(function(wordMeta, index) {
 
           var lastChar = wordMeta.text.replace(/\s/g, '').slice(-1);
 
@@ -145,60 +160,97 @@ var caption = (function () {
           if (charCount + wordMeta.text.length > minLineLength && lastChar.match(midSentenceDelimiter)) {
 
             if (firstLine === true) {
-              captionsVtt += "\n" + formatSeconds(lastInTime) + " --> " + formatSeconds(wordMeta.start + wordMeta.duration) + "\n";
+
+              thisCaption = new captionMeta(formatSeconds(lastInTime), formatSeconds(wordMeta.start + wordMeta.duration), "");
+              thisCaption.text += lineText + wordMeta.text + "\n";
+              
+              //check for last word in segment
+
+              if (index + 1 >= segment.words.length) {
+                captions.push(thisCaption);
+              } else {
+                firstLine = false;
+              }
+
+            } else {
+
+              thisCaption.stop = formatSeconds(wordMeta.start + wordMeta.duration);
+              thisCaption.text += lineText + wordMeta.text + "\n";
+              captions.push(thisCaption);
+              thisCaption = null;
+              firstLine = true;
             }
-
-            lineText += wordMeta.text;
-
-            captionsVtt += lineText + "\n";
 
             charCount = 0;
             lineText = "";
-            firstLine = !firstLine;
             lastInTime = null;
-
-            console.log(lineText);
 
           } else {
 
             if (charCount + wordMeta.text.length > maxLineLength) {
+
               if (firstLine === true) {
                 console.log(lastInTime);
                 console.log(lastOutTime);
-                captionsVtt += "\n" + formatSeconds(lastInTime) + " --> " + formatSeconds(lastOutTime) + "\n";
-              }
+                thisCaption = new captionMeta(formatSeconds(lastInTime), formatSeconds(lastOutTime), "");
+                thisCaption.text += lineText + "\n";
 
-              captionsVtt += lineText + "\n";
+                if (index >= segment.words.length) {
+                  captions.push(thisCaption);
+                  thisCaption = null;
+                } else {
+                  firstLine = false;
+                }
+
+              } else {
+
+                thisCaption.stop = formatSeconds(lastOutTime);
+                thisCaption.text += lineText + "\n";
+                captions.push(thisCaption);
+                thisCaption = null;
+                firstLine = true;
+              }
 
               charCount = wordMeta.text.length;
               lineText = wordMeta.text;
-              firstLine = !firstLine;
               lastInTime = wordMeta.start;
+
             } else {
+
               charCount += wordMeta.text.length;
               lineText += wordMeta.text;
             }
-
-            console.log(lineText);
+            
           }
-        
-          console.log("setting lastOutTime");
+
+          //console.log(lineText);
+
           lastOutTime = wordMeta.start + wordMeta.duration;
-          console.log(lastOutTime);
         });
 
-        if (firstLine === true) {
-          captionsVtt += "\n" + formatSeconds(lastInTime) + " --> " + formatSeconds(lastOutTime) + "\n";
-        }
-        captionsVtt += lineText + "\n";
+        console.log(lineText);
         
+        if (thisCaption != null) {
+          thisCaption.stop = formatSeconds(lastOutTime);
+          thisCaption.text += lineText + "\n";
+          captions.push(thisCaption);
+        } else {
+          thisCaption = new captionMeta(formatSeconds(lastInTime), formatSeconds(lastOutTime), lineText);
+          captions.push(thisCaption);
+        }
+
       }
+    });
+
+    console.log(captions);
+
+    captions.forEach(function(caption) {
+      captionsVtt += "\n" + caption.start + "-->" + caption.stop + "\n" + caption.text + "\n";
     });
 
     document.getElementById('vtt').setAttribute("src", 'data:text/vtt,'+encodeURIComponent(captionsVtt));
 
-    console.log(captionsVtt);
-
+    
   }
 
   return cap;
