@@ -61,7 +61,7 @@ var caption = (function () {
     var pauseText = "...";
 
     var endSentenceDelimiter = /[\.。?؟!]/g;
-    var midSentenceDelimiter = /[,、，،و:，…‥]/g;
+    var midSentenceDelimiter = /[,、–，،و:，…‥]/g;
 
     // split into sentences
 
@@ -85,7 +85,6 @@ var caption = (function () {
           var thisText = word.innerText;
 
           thisWordMeta = new wordMeta(thisStart, thisDuration, thisText);
-
 
           if (data.segments[segmentIndex].start === null) {
             console.log("setting segment data");
@@ -148,6 +147,12 @@ var caption = (function () {
         var firstLine = true;
         var lastOutTime;
         var lastInTime = null;
+        
+        
+
+        console.log("segment.chars");
+        console.log(segment.chars);
+        console.log(segment);
         
         segment.words.forEach(function(wordMeta, index) {
 
