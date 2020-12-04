@@ -5,7 +5,6 @@ $(document).ready(function() {
   var cp = document.getElementById('current-para-split');
   var paraSplitTime = p.value;
   var paraPunct = $('#para-punctuation').prop('checked');
-  console.log($('#para-punctuation').prop('checked'));
 
   p.addEventListener(
     'input',
@@ -244,6 +243,51 @@ $(document).ready(function() {
     var format = $('#format-select').val();
 
     switch (format) {
+
+      case 'oe':
+        var data = JSON.parse(input);
+        var items = ['<article><section>\n<p>'];
+        $.each(data.content.paragraphs, function(key, val) {
+          //console.log(key);
+          //console.log(val);
+          var paraStart = Math.round(val.start*1000);
+          items.push(
+            '\n<span class="speaker" data-m="' + paraStart + '" ' +
+            'data-d="0">' +
+              val.speaker +
+            ' </span>'
+          );
+          $.each(val.words, function(k, v) {
+            //console.log("v");
+            //console.log(v.start);
+            if (typeof v.start !== 'undefined') {
+              items.push(
+                '\n<span data-m="' + Math.round(v.start) + '" ' +
+                'data-d="' + Math.round(v.end - v.start) + '">' +
+                  v.text +
+                ' </span>'
+              );
+            } else {
+              items.push(
+                '\n<span data-m="' + paraStart + '" ' +
+                'data-d="10">' +
+                  v.text +
+                ' </span>'
+              );
+            }
+          });
+          items.push('</p><p>');
+        });
+
+        items.push('</p></section></article>');
+
+        ht = items.join('');
+
+        // remove empty paras
+
+        ht = ht.split("<p></p>").join("");
+        
+        break;
         
       case 'google':
         var data = JSON.parse(input);
@@ -335,9 +379,9 @@ $(document).ready(function() {
         wds = data['words'] || [];
         transcript = data['transcript'];
 
-        $trans = document.createElement('p');
+        var trans = document.createElement('p');
 
-        $trans.innerHTML = '';
+        trans.innerHTML = '';
 
         var currentOffset = 0;
         var wordCounter = 0;
@@ -348,31 +392,30 @@ $(document).ready(function() {
           var newlineDetected = false;
 
           if (wd.startOffset > currentOffset) {
-            var txt = transcript.slice(currentOffset, wd.startOffset)
+            var txt = transcript.slice(currentOffset, wd.startOffset);
             newlineDetected = /\r|\n/.exec(txt);
 
-            var $plaintext = document.createTextNode(txt +" ");
-
-            if ($trans.lastChild) {
-              //$trans.lastChild.appendChild($plaintext);
-              $trans.lastChild.text += txt + " ";
+            if (trans.lastChild) {
+              trans.lastChild.text += txt + " ";
             } else {
-              // this happens only at the beginning
+              // this happens only at the beginning when offset not zero
               var span = document.createElement('span');
+              var initialWd = document.createTextNode(txt + " ");
               var initialDatam = document.createAttribute('data-m');
               var initialDatad = document.createAttribute('data-d');
 
-              span.appendChild($plaintext + " ");
+              span.appendChild(initialWd);
               initialDatam.value = 0;
               initialDatad.value = 0;
               span.setAttributeNode(initialDatam);
               span.setAttributeNode(initialDatad);
-              $trans.appendChild(span);
+              trans.appendChild(span);
+              trans.appendChild(span);
             }
-            //$trans.appendChild($plaintext);
+
             if (newlineDetected) {
               var lineBreak = document.createElement('br');
-              $trans.appendChild(lineBreak);
+              trans.appendChild(lineBreak);
             }
             currentOffset = wd.startOffset;
           }
@@ -380,18 +423,15 @@ $(document).ready(function() {
           var datam = document.createAttribute('data-m');
           var datad = document.createAttribute('data-d');
 
-          var $wd = document.createElement('span');
+          var word = document.createElement('span');
           var txt = transcript.slice(wd.startOffset, wd.endOffset+1);
-          
-          if (!txt.endsWith(" ")){
-            txt = txt + " ";
-          }
-
-          var $wdText = document.createTextNode(txt);
-
-          $wd.appendChild($wdText);
-
-          wd.$div = $wd;
+	          
+	        if (!txt.endsWith(" ")){
+	          txt = txt + " ";
+	        }
+	
+	        var wordText = document.createTextNode(txt);
+          word.appendChild(wordText);
 
           if (wd.start !== undefined) {
             datam.value = Math.floor(wd.start * 1000);
@@ -407,26 +447,27 @@ $(document).ready(function() {
             datad.value = '100'; // default duration when not known
           }
 
-          $wd.setAttributeNode(datam);
-          $wd.setAttributeNode(datad);
+          word.setAttributeNode(datam);
+          word.setAttributeNode(datad);
 
-          $trans.appendChild($wd);
+          trans.appendChild(word);
+          
           currentOffset = wd.endOffset;
           wordCounter++;
         });
 
         var txt = transcript.slice(currentOffset, transcript.length);
-        var $plaintext = document.createTextNode(txt);
-        $trans.appendChild($plaintext);
+        var word = document.createTextNode(txt);
+        trans.appendChild(word);
         currentOffset = transcript.length;
 
-        $article = document.createElement('article');
-        $section = document.createElement('section');
+        article = document.createElement('article');
+        section = document.createElement('section');
       
-        $section.appendChild($trans);
-        $article.appendChild($section);
+        section.appendChild(trans);
+        article.appendChild(section);
 
-        ht = $article.outerHTML;
+        ht = article.outerHTML;
 
         //newlines can cause issues within HTML tags
         ht = ht.replace(/(?:\r\n|\r|\n)/g, '');
