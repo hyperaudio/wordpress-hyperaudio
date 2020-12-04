@@ -162,6 +162,7 @@ function hyperaudio_options_page()
         <p>
         <strong>Input Format :</strong>
         <select id="format-select">
+          <option value="oe">OpenEditor JSON</option>
           <option value="srt">SRT formatted captions</option>
           <option value="speechmatics">Speechmatics JSON</option>
           <option value="gentle">Gentle JSON</option>
