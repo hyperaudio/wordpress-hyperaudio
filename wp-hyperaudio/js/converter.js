@@ -243,6 +243,51 @@ $(document).ready(function() {
     var format = $('#format-select').val();
 
     switch (format) {
+
+      case 'oe':
+        var data = JSON.parse(input);
+        var items = ['<article><section>\n<p>'];
+        $.each(data.content.paragraphs, function(key, val) {
+          //console.log(key);
+          //console.log(val);
+          var paraStart = Math.round(val.start*1000);
+          items.push(
+            '\n<span class="speaker" data-m="' + paraStart + '" ' +
+            'data-d="0">' +
+              val.speaker +
+            ' </span>'
+          );
+          $.each(val.words, function(k, v) {
+            //console.log("v");
+            //console.log(v.start);
+            if (typeof v.start !== 'undefined') {
+              items.push(
+                '\n<span data-m="' + Math.round(v.start) + '" ' +
+                'data-d="' + Math.round(v.end - v.start) + '">' +
+                  v.text +
+                ' </span>'
+              );
+            } else {
+              items.push(
+                '\n<span data-m="' + paraStart + '" ' +
+                'data-d="10">' +
+                  v.text +
+                ' </span>'
+              );
+            }
+          });
+          items.push('</p><p>');
+        });
+
+        items.push('</p></section></article>');
+
+        ht = items.join('');
+
+        // remove empty paras
+
+        ht = ht.split("<p></p>").join("");
+        
+        break;
         
       case 'google':
         var data = JSON.parse(input);
