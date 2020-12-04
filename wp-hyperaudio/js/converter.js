@@ -248,8 +248,6 @@ $(document).ready(function() {
         var data = JSON.parse(input);
         var items = ['<article><section>\n<p>'];
         $.each(data.content.paragraphs, function(key, val) {
-          //console.log(key);
-          //console.log(val);
           var paraStart = Math.round(val.start*1000);
           items.push(
             '\n<span class="speaker" data-m="' + paraStart + '" ' +
@@ -257,9 +255,10 @@ $(document).ready(function() {
               val.speaker +
             ' </span>'
           );
+
+          var lastStart = 0;
+
           $.each(val.words, function(k, v) {
-            //console.log("v");
-            //console.log(v.start);
             if (typeof v.start !== 'undefined') {
               items.push(
                 '\n<span data-m="' + Math.round(v.start) + '" ' +
@@ -267,10 +266,16 @@ $(document).ready(function() {
                   v.text +
                 ' </span>'
               );
+              lastStart = v.start;
             } else {
+
+              if (k === 0) {
+                lastStart = paraStart;
+              } 
+
               items.push(
-                '\n<span data-m="' + paraStart + '" ' +
-                'data-d="10">' +
+                '\n<span data-m="' + lastStart + '" ' +
+                'data-d="0">' +
                   v.text +
                 ' </span>'
               );
