@@ -3,7 +3,7 @@
 * Plugin Name: Official Hyperaudio Plugin
 * Plugin URI: https://hyper.audio
 * Description: Hyperaudio Interactive Transcript Player
-* Version: 1.0
+* Version: 1.0.1
 * Author: Mark Boas
 * Author URI: http://hyper.audio
 **/
@@ -26,13 +26,26 @@ function hyperaudio_shortcode_handler($atts, $transcript, $tag)
   //$fontfamily = '"Palatino Linotype", "Book Antiqua", Palatino, serif';
   $fontfamily = NULL;
   $transcriptid = NULL;
-
+  $captionMaxLength = 37;
+  $captionMinLength = 21;
+  $captionsOn = true;
+  $language = "en";
+  $trackLabel = "English";
+ 
   if (isset($atts['src'])) $src = esc_html__($atts['src']);
   if (isset($atts['width'])) $width = $atts['width'];
   if (isset($atts['transcript-height'])) $transcriptHeight = $atts['transcript-height'];
   if (isset($atts['media-height'])) $mediaHeight = $atts['media-height'];
   if (isset($atts['font-family'])) $fontfamily = $atts['font-family'];
   if (isset($atts['id'])) $transcriptid = $atts['id'];
+
+
+  if (isset($atts['captions'])) $captionsOn = $atts['captions'];
+  if (isset($atts['caption-max'])) $captionMaxLength = $atts['caption-max'];
+  if (isset($atts['caption-min'])) $captionMinLength = $atts['caption-min'];
+  if (isset($atts['language'])) $language = $atts['language'];
+  if (isset($atts['track-label'])) $trackLabel = $atts['track-label'];
+
 
   $transcript = preg_replace( "/\r|\n/", "", $transcript);
 
@@ -139,11 +152,16 @@ function hyperaudio_shortcode_handler($atts, $transcript, $tag)
   } elseif (strpos(strtolower($src), '.mp3') !== false) {
     $o .= '<audio id="hyperplayer'.$id.'" class="hyperaudio-player" style="position:relative; width:'.$width.'" src="'.$src.'" controls></audio>';
   } else {
-    $o .= '<video id="hyperplayer'.$id.'" class="hyperaudio-player" style="position:relative; width:'.$width.'" src="'.$src.'" controls><track id="vtt" label="French" kind="subtitles" srclang="fr" src="data:text/vtt;charset=utf-8,WEBVTT\n\n00:01.000 --> 00:04.000\nNever drink liquid nitrogen." default></video>';
+    $o .= '<video id="hyperplayer'.$id.'" class="hyperaudio-player" style="position:relative; width:'.$width.'" src="'.$src.'" controls>';
+    
+    if ($captionsOn == true) {
+      $o .= '<track id="hyperplayer'.$id.'-vtt" label="'.$trackLabel.'" kind="subtitles" srclang="'.$language.'" src="" default>';
+    }
+
+    $o .= '</video>';
   }
 
   $o .='</div>';
-
 
   //<iframe allowfullscreen="1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" title="YouTube video player" src="https://www.youtube.com/embed/EAmmUIEsN9A?html5=1&amp;rel=0&amp;modestbranding=1&amp;iv_load_policy=3&amp;disablekb=1&amp;showinfo=0&amp;origin=https%3A%2F%2Fhyperaud.io&amp;controls=0&amp;wmode=opaque&amp;enablejsapi=1&amp;widgetid=1" id="widget2" width="100%" height="100%" frameborder="0"></iframe>
 
@@ -157,12 +175,14 @@ function hyperaudio_shortcode_handler($atts, $transcript, $tag)
   }).init();
 
   var ht1 = hyperaudiolite();
-  ht1.init("'.$transcriptid.'", "hyperplayer'.$id.'", false);
+  ht1.init("'.$transcriptid.'", "hyperplayer'.$id.'", false);';
 
-  var cap1 = caption();
-  cap1.init("'.$transcriptid.'");
-
-  </script>
+if ($captionsOn == true) {
+  $o .= 'var cap1 = caption();
+  cap1.init("'.$transcriptid.'", "hyperplayer'.$id.'", '.$captionMaxLength.' , '.$captionMinLength.');';
+}
+  
+$o .= '  </script>
 ';
 
   return $o;
