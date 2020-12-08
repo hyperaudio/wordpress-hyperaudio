@@ -14,7 +14,7 @@ var caption = (function () {
     return new Date(seconds.toFixed(3) * 1000).toISOString().substr(11, 12);
   }
 
-  cap.init = function(transcriptId) {
+  cap.init = function(transcriptId, playerId, maxLength, minLength) {
     var transcript = document.getElementById(transcriptId);
     var words = transcript.querySelectorAll('[data-m]');
 
@@ -62,6 +62,14 @@ var caption = (function () {
 
     var endSentenceDelimiter = /[\.。?؟!]/g;
     var midSentenceDelimiter = /[,、–，،و:，…‥]/g;
+
+    if (!isNaN(maxLength)) {
+      maxLineLength = maxLength;
+    }
+
+    if (!isNaN(minLength)) {
+      minLineLength = minLength;
+    }
 
     // split into sentences
 
@@ -253,9 +261,8 @@ var caption = (function () {
       captionsVtt += "\n" + caption.start + "-->" + caption.stop + "\n" + caption.text + "\n";
     });
 
-    document.getElementById('vtt').setAttribute("src", 'data:text/vtt,'+encodeURIComponent(captionsVtt));
+    document.getElementById(playerId+'-vtt').setAttribute("src", 'data:text/vtt,'+encodeURIComponent(captionsVtt));
 
-    
   }
 
   return cap;
