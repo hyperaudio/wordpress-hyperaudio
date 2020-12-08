@@ -25,7 +25,7 @@ add_action('admin_enqueue_scripts', 'hyperaudio_load_admin_script');
 function hyperaudio_options_page() 
 {// Output the options page
   ?>
-  <h1>Official Wordpress Plugin - How To Use</h1>
+  <h1 style="line-height:1.3">Official Wordpress Plugin - How To Use (<a href="#converter">Jump straight to the Transcript Maker</a>)</h1>
 
   <link href='https://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
   <style type="text/css">
@@ -138,21 +138,68 @@ function hyperaudio_options_page()
       background-color: #fff;
     }
 
+    table, th, td {
+      border: 1px solid #ccc;
+      border-collapse: collapse;
+      padding: 4px;
+    }
+
   </style>
 </head>
 <body>
 <div id="wrapper">
   
   <div class="plugin-instructions">
-    <p>When defining the source of your media using the src attribute in the hyperaudio shortcode you need to use embed versions for YouTube and SoundCloud.</p>
+    <p>Pass the HTML transcript (created <a href="#converter">here</a>) into the Hyperaudio shortcode and set the <code>src</code> attribute to reference the media you wish to associate it with.</p>
+    <p>For example:</p>
+    <p><code>[hyperaudio src="https://example.com/video/video.mp4"]<br/>
+    &lt;article&gt;<br/>
+    &lt;section&gt;<br/>
+    &lt;p&gt;<br/>
+        &lt;span data-m="4470" data-d="0" class="speaker">Doc: &lt;/span&gt;<br/>
+        &lt;span data-m="4470" data-d="270">We &lt;/span&gt;<br/>
+        &lt;span data-m="4740" data-d="240">have &lt;/span&gt;<br/>
+        &lt;span data-m="5010" data-d="300">two &lt;/span&gt;<br/>
+        &lt;span data-m="5310" data-d="600">selves &lt;/span&gt;<br/>
+        ...</br/>
+    &lt;/p&gt;<br/>
+    &lt;/section&gt;<br/>
+    &lt;/article&gt;<br/>
+    [/hyperaudio]
+    </code>
+    </p>
+
+    <p>When defining the source of your media using the <code>src</code> attribute you will need to use embed versions for YouTube and SoundCloud.</p>
     <p>For example:<p>
     <p><code>https://www.youtube.com/embed/xLcsdc823dg</code></p>
     <p>or</p>
     <p><code>https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/730479133&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true</code> *</p>
     <p>* Grab the snippet of code from the SoundCloud page containing the file you're interested in, clicking on Share and then Embed.</p>
+    <p>You can define various other attributes including:</p>
+    <p>
+      <table>
+      <tr><th>attribute</th><th>example value</th><th>function</th></tr>
+      <tr><td><code>width</code></td><td><code>100%</code></td><td>set the width of the transcript + media holder</td></tr>
+      <tr><td><code>transcript-height</code></td><td><code>700px</code></td><td>set the height of the transcript itself</td></tr>
+      <tr><td><code>media-height</code></td><td><code>640px</code></td><td>set the height of the audio or video</td></tr>
+      <tr><td><code>font-family</code></td><td><code>Arial, Helvetica, sans-serif;</code></td><td>set the font family of the transcript</td></tr>
+      <tr><td><code>id</code></td><td><code>mytranscript</code></td><td>sets the id of the trancript for sharing purposes</td></tr>
+      </table>
+    </p>
+    <p>And for those with the caption generating version ... </p>
+    <p>
+      <table>
+      <tr><th>attribute</th><th>example value</th><th>function</th></tr>
+      <tr><td><code>captions</code></td><td><code>false</code></td><td>generate captions (<code>true</code> by default)</td></tr>
+      <tr><td><code>caption-max</code></td><td><code>32</code></td><td>maximum set of characters in a caption line (<code>37</code> by default)</td></tr>
+      <tr><td><code>caption-min</code></td><td><code>19</code></td><td>minimum set of characters in a caption line (<code>21</code> by default)</td></tr>
+      <tr><td><code>language</code></td><td><code>fr</code></td><td>sets the language of the captions</td></tr>
+      <tr><td><code>track-label</code></td><td><code>French</code></td><td>sets caption track label</td></tr>
+      </table>
+    </p>
   </div>
 
-  <div class="holder">
+  <div id="converter" class="holder">
     
     <div class="box instructions-convert">
       <h2>Convert various formats into a Hypertranscript...</h2>
