@@ -8,8 +8,6 @@ var caption = (function () {
     minSubLength = 25,
     words;
 
- 
-
   function formatSeconds(seconds) {
     return new Date(seconds.toFixed(3) * 1000).toISOString().substr(11, 12);
   }
@@ -146,7 +144,10 @@ var caption = (function () {
 
         thisCaption.text += "\n";
 
+        console.log("pushing caption #1");
         captions.push(thisCaption);
+        console.log(thisCaption);
+        console.log(captions);
 
       } else {
 
@@ -180,7 +181,10 @@ var caption = (function () {
               //check for last word in segment
 
               if (index + 1 >= segment.words.length) {
+                console.log("pushing caption #2");
                 captions.push(thisCaption);
+                console.log(thisCaption);
+                console.log(captions);
               } else {
                 firstLine = false;
               }
@@ -189,7 +193,10 @@ var caption = (function () {
 
               thisCaption.stop = formatSeconds(wordMeta.start + wordMeta.duration);
               thisCaption.text += lineText + wordMeta.text + "\n";
+              console.log("pushing caption #3");
               captions.push(thisCaption);
+              console.log(thisCaption);
+              console.log(captions);
               thisCaption = null;
               firstLine = true;
             }
@@ -209,7 +216,10 @@ var caption = (function () {
                 thisCaption.text += lineText + "\n";
 
                 if (index >= segment.words.length) {
+                  console.log("pushing caption #4");
                   captions.push(thisCaption);
+                  console.log(thisCaption);
+                  console.log(captions);
                   thisCaption = null;
                 } else {
                   firstLine = false;
@@ -219,7 +229,11 @@ var caption = (function () {
 
                 thisCaption.stop = formatSeconds(lastOutTime);
                 thisCaption.text += lineText + "\n";
+ 
+                console.log("pushing caption #5");
                 captions.push(thisCaption);
+                console.log(thisCaption);
+                console.log(captions);
                 thisCaption = null;
                 firstLine = true;
               }
@@ -246,10 +260,20 @@ var caption = (function () {
         if (thisCaption != null) {
           thisCaption.stop = formatSeconds(lastOutTime);
           thisCaption.text += lineText + "\n";
+          console.log("pushing caption #6");
           captions.push(thisCaption);
+          console.log(thisCaption);
+          console.log(captions);
+          thisCaption = null;
+          
         } else {
           thisCaption = new captionMeta(formatSeconds(lastInTime), formatSeconds(lastOutTime), lineText);
+          console.log("pushing caption #7");
           captions.push(thisCaption);
+          thisCaption = null;
+          console.log(thisCaption);
+          console.log(captions);
+          
         }
 
       }
