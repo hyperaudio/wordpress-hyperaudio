@@ -16,9 +16,6 @@ var caption = (function () {
     var transcript = document.getElementById(transcriptId);
     var words = transcript.querySelectorAll('[data-m]');
 
-    console.log("CAPTION WORDS");
-    console.log(words);
-
     var data = {};
     data.segments = [];
     var segmentIndex = 0;
@@ -74,15 +71,16 @@ var caption = (function () {
     words.forEach(function(word, i) {
 
       if (word.classList.contains("speaker")) {
+
         thisSegmentMeta = new segmentMeta(word.innerText, null, 0, 0, 0);
         data.segments.push(thisSegmentMeta);
-        console.log("speaker - pushing new segment");
+
       } else {
+
         if (word.getAttribute("data-d") !== null && word.getAttribute("data-d") !== "0") {
 
           if (thisSegmentMeta === null) {
             thisSegmentMeta = new segmentMeta("", null, 0, 0, 0);
-            console.log("no speaker change - pushing new segment");
             data.segments.push(thisSegmentMeta);
           } 
 
@@ -93,7 +91,6 @@ var caption = (function () {
           thisWordMeta = new wordMeta(thisStart, thisDuration, thisText);
 
           if (data.segments[segmentIndex].start === null) {
-            console.log("setting segment data");
             data.segments[segmentIndex].start = thisStart;
             data.segments[segmentIndex].duration = 0;
             data.segments[segmentIndex].chars = 0;
@@ -108,20 +105,11 @@ var caption = (function () {
           var lastChar = thisText.replace(/\s/g, '').slice(-1);
           if (lastChar.match(endSentenceDelimiter)) {
             segmentIndex++;
-            console.log("NEW SEGMENT");
-            console.log(segmentIndex);
             thisSegmentMeta = null;
           }
         }
-      }
-
-      
-      //console.log(el);
-      //console.log(i);
-      
+      }    
     });
-
-    console.log(data);
 
     function captionMeta(start, stop, text) {
       this.start = start;
@@ -144,10 +132,7 @@ var caption = (function () {
 
         thisCaption.text += "\n";
 
-        console.log("pushing caption #1");
         captions.push(thisCaption);
-        console.log(thisCaption);
-        console.log(captions);
 
       } else {
 
@@ -156,12 +141,6 @@ var caption = (function () {
         var firstLine = true;
         var lastOutTime;
         var lastInTime = null;
-        
-        
-
-        console.log("segment.chars");
-        console.log(segment.chars);
-        console.log(segment);
         
         segment.words.forEach(function(wordMeta, index) {
 
@@ -181,10 +160,7 @@ var caption = (function () {
               //check for last word in segment
 
               if (index + 1 >= segment.words.length) {
-                console.log("pushing caption #2");
                 captions.push(thisCaption);
-                console.log(thisCaption);
-                console.log(captions);
               } else {
                 firstLine = false;
               }
@@ -193,10 +169,7 @@ var caption = (function () {
 
               thisCaption.stop = formatSeconds(wordMeta.start + wordMeta.duration);
               thisCaption.text += lineText + wordMeta.text + "\n";
-              console.log("pushing caption #3");
               captions.push(thisCaption);
-              console.log(thisCaption);
-              console.log(captions);
               thisCaption = null;
               firstLine = true;
             }
@@ -210,16 +183,12 @@ var caption = (function () {
             if (charCount + wordMeta.text.length > maxLineLength) {
 
               if (firstLine === true) {
-                console.log(lastInTime);
-                console.log(lastOutTime);
+
                 thisCaption = new captionMeta(formatSeconds(lastInTime), formatSeconds(lastOutTime), "");
                 thisCaption.text += lineText + "\n";
 
                 if (index >= segment.words.length) {
-                  console.log("pushing caption #4");
                   captions.push(thisCaption);
-                  console.log(thisCaption);
-                  console.log(captions);
                   thisCaption = null;
                 } else {
                   firstLine = false;
@@ -230,10 +199,8 @@ var caption = (function () {
                 thisCaption.stop = formatSeconds(lastOutTime);
                 thisCaption.text += lineText + "\n";
  
-                console.log("pushing caption #5");
                 captions.push(thisCaption);
-                console.log(thisCaption);
-                console.log(captions);
+
                 thisCaption = null;
                 firstLine = true;
               }
@@ -246,40 +213,27 @@ var caption = (function () {
 
               charCount += wordMeta.text.length;
               lineText += wordMeta.text;
-            }
-            
-          }
 
-          //console.log(lineText);
+            }
+          }
 
           lastOutTime = wordMeta.start + wordMeta.duration;
         });
-
-        console.log(lineText);
         
         if (thisCaption != null) {
           thisCaption.stop = formatSeconds(lastOutTime);
           thisCaption.text += lineText + "\n";
-          console.log("pushing caption #6");
           captions.push(thisCaption);
-          console.log(thisCaption);
-          console.log(captions);
           thisCaption = null;
           
         } else {
           thisCaption = new captionMeta(formatSeconds(lastInTime), formatSeconds(lastOutTime), lineText);
-          console.log("pushing caption #7");
           captions.push(thisCaption);
-          thisCaption = null;
-          console.log(thisCaption);
-          console.log(captions);
-          
+          thisCaption = null;      
         }
 
       }
     });
-
-    console.log(captions);
 
     captions.forEach(function(caption) {
       captionsVtt += "\n" + caption.start + "-->" + caption.stop + "\n" + caption.text + "\n";
