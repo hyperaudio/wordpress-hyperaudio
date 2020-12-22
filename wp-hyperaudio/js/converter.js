@@ -65,9 +65,7 @@ $(document).ready(function() {
   // From popcorn.parserSRT.js
 
   function parseSRT(data) {
-    var event = new CustomEvent('ga', {
-      detail: { origin: 'HA-Converter', type: 'Function', action: 'parseSRT init' }
-    });
+
     document.dispatchEvent(event);
 
     var i = 0,
@@ -193,15 +191,11 @@ $(document).ready(function() {
         var stime;
         if (wordLengthSplit) {
           stime = Math.round((sub.start + si * stimeStep) * 1000);
-          var event = new CustomEvent('ga', {
-            detail: { origin: 'HA-Converter', type: 'Setting', action: 'Word length split ON' }
-          });
+
           document.dispatchEvent(event);
         } else {
           stime = Math.round((wordStart + sub.start) * 1000);
-          var event = new CustomEvent('ga', {
-            detail: { origin: 'HA-Converter', type: 'Setting', action: 'Word length split OFF' }
-          });
+
           document.dispatchEvent(event);
         }
 
@@ -209,7 +203,7 @@ $(document).ready(function() {
         var stext = swords[si];
 
         if (stime - ltime > paraSplitTime * 1000 && paraSplitTime > 0) {
-          //console.log("fullstop? "+stext+" - "+stext.indexOf("."));
+
           var punctPresent =
             ltext && (ltext.indexOf('.') > 0 || ltext.indexOf('?') > 0 || ltext.indexOf('!') > 0);
           if (!paraPunct || (paraPunct && punctPresent)) {
@@ -298,20 +292,6 @@ $(document).ready(function() {
         var data = JSON.parse(input);
         
         var items = ['<article><section><p>'];
-
-        /*var results;
-
-        if (typeof results !== 'undefined') {
-          results = data.response.results;
-        } else {
-          results = data.results;
-        }
-
-        console.log(results);
-
-        if (typeof results === 'undefined') {
-          results = data.results;
-        }*/
         
         $.each(data.response.results, function(key, val) {
           $.each(val.alternatives, function(k, v) {
