@@ -2,11 +2,7 @@
 
 var caption = (function () {
 
-  var cap = {},
-    idealSubLength = 40,
-    maxSubLength = 50,
-    minSubLength = 25,
-    words;
+  var cap = {};
 
   function formatSeconds(seconds) {
     return new Date(seconds.toFixed(3) * 1000).toISOString().substr(11, 12);
@@ -37,23 +33,12 @@ var caption = (function () {
     var thisWordMeta;
     var thisSegmentMeta = null;
 
-
-    //var shouldSplit = false;
-
-    var idealLineLength = 30;
+    // defaults
     var maxLineLength = 37;
     var minLineLength = 21;
-    //var midLineLength = 16;
     var minLineLength = 11;
-    var minDisplayTime = 700;
-    var significantPauseTime = 750;
-    var significantPause = false;
-    var captionNumber = 1;
-    var expressSpeakers = true;
+
     var captionsVtt = "WEBVTT\n"
-    var timecode = "";
-    var newCaption = true;
-    var pauseText = "...";
 
     var endSentenceDelimiter = /[\.。?؟!]/g;
     var midSentenceDelimiter = /[,、–，،و:，…‥]/g;
