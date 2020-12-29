@@ -36,7 +36,6 @@ var caption = (function () {
     // defaults
     var maxLineLength = 37;
     var minLineLength = 21;
-    var minLineLength = 11;
 
     var captionsVtt = "WEBVTT\n"
 

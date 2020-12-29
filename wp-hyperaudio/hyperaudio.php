@@ -165,7 +165,7 @@ function hyperaudio_shortcode_handler($atts, $transcript, $tag)
 
   //<iframe allowfullscreen="1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" title="YouTube video player" src="https://www.youtube.com/embed/EAmmUIEsN9A?html5=1&amp;rel=0&amp;modestbranding=1&amp;iv_load_policy=3&amp;disablekb=1&amp;showinfo=0&amp;origin=https%3A%2F%2Fhyperaud.io&amp;controls=0&amp;wmode=opaque&amp;enablejsapi=1&amp;widgetid=1" id="widget2" width="100%" height="100%" frameborder="0"></iframe>
 
- $o .='<div id="'.$transcriptid.'" class="hyperaudio-transcript" style="overflow-y:scroll; width:'.$width.'; height:'.$transcriptHeight.'; position:relative; border-style:dashed; border-width: 1px; border-color:#999; padding: 8px">'.$transcript.'</div>';
+ $o .='<div id="'.$transcriptid.'" class="hyperaudio-transcript" style="overflow-y:scroll; width:'.$width.'; height:'.$transcriptHeight.'; position:relative; border-style:dashed; border-width: 1px; border-color:#999; padding: 8px">'.$transcript.'</div><div style="text-align:right; font-size:65%; margin-top: -16px; line-height: 1.0; font-weight: 600; font-family: Work Sans, Helvetica, Arial, sans-serif;"><a href="https://hyper.audio">A Hyperaudio Production</a></div>';
 
 
   $o .= '<script>
