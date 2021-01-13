@@ -168,6 +168,10 @@ var caption = (function () {
 
               if (firstLine === true) {
 
+                if (lastOutTime === undefined) {
+                  lastOutTime = wordMeta.start + wordMeta.duration;
+                }
+
                 thisCaption = new captionMeta(formatSeconds(lastInTime), formatSeconds(lastOutTime), "");
                 thisCaption.text += lineText + "\n";
 
