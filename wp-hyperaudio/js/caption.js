@@ -5,7 +5,12 @@ var caption = (function () {
   var cap = {};
 
   function formatSeconds(seconds) {
-    return new Date(seconds.toFixed(3) * 1000).toISOString().substr(11, 12);
+    if(typeof seconds == 'number'){ 
+      return new Date(seconds.toFixed(3) * 1000).toISOString().substr(11, 12);
+    } else {
+      console.log("warning - attempting to format the non number: "+seconds);
+      return null;
+    }
   }
 
   cap.init = function(transcriptId, playerId, maxLength, minLength) {
