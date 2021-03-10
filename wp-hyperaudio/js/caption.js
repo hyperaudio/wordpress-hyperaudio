@@ -79,6 +79,15 @@ var caption = (function () {
 
         var thisStart = parseInt(word.getAttribute("data-m"))/1000;
         var thisDuration = parseInt(word.getAttribute("data-d"))/1000;
+
+        if (isNaN(thisStart)) {
+          thisStart = 0;
+        }
+        
+        if (isNaN(thisDuration)) {
+          thisDuration = 0;
+        }
+
         var thisText = word.innerText;
 
         thisWordMeta = new wordMeta(thisStart, thisDuration, thisText);
@@ -259,7 +268,7 @@ var caption = (function () {
     });
 
     document.getElementById(playerId+'-vtt').setAttribute("src", 'data:text/vtt,'+encodeURIComponent(captionsVtt));
-    //console.log(captionsVtt);
+    console.log(captionsVtt);
 
   }
 
