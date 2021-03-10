@@ -5,7 +5,12 @@ var caption = (function () {
   var cap = {};
 
   function formatSeconds(seconds) {
-    return new Date(seconds.toFixed(3) * 1000).toISOString().substr(11, 12);
+    if(typeof seconds == 'number'){ 
+      return new Date(seconds.toFixed(3) * 1000).toISOString().substr(11, 12);
+    } else {
+      console.log("warning - attempting to format the non number: "+seconds);
+      return null;
+    }
   }
 
   cap.init = function(transcriptId, playerId, maxLength, minLength) {
@@ -74,6 +79,15 @@ var caption = (function () {
 
         var thisStart = parseInt(word.getAttribute("data-m"))/1000;
         var thisDuration = parseInt(word.getAttribute("data-d"))/1000;
+
+        if (isNaN(thisStart)) {
+          thisStart = 0;
+        }
+        
+        if (isNaN(thisDuration)) {
+          thisDuration = 0;
+        }
+
         var thisText = word.innerText;
 
         thisWordMeta = new wordMeta(thisStart, thisDuration, thisText);
@@ -254,7 +268,7 @@ var caption = (function () {
     });
 
     document.getElementById(playerId+'-vtt').setAttribute("src", 'data:text/vtt,'+encodeURIComponent(captionsVtt));
-    //console.log(captionsVtt);
+    console.log(captionsVtt);
 
   }
 
