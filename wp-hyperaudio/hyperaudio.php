@@ -31,6 +31,7 @@ function hyperaudio_shortcode_handler($atts, $transcript, $tag)
   $captionsOn = true;
   $language = "en";
   $trackLabel = "English";
+  $webmonetization = false;
  
   if (isset($atts['src'])) $src = esc_html__($atts['src']);
   if (isset($atts['width'])) $width = $atts['width'];
@@ -45,6 +46,8 @@ function hyperaudio_shortcode_handler($atts, $transcript, $tag)
   if (isset($atts['caption-min'])) $captionMinLength = $atts['caption-min'];
   if (isset($atts['language'])) $language = $atts['language'];
   if (isset($atts['track-label'])) $trackLabel = $atts['track-label'];
+
+  if (isset($atts['webmonetization'])) $webmonetization = $atts['webmonetization'];
 
 
   $transcript = preg_replace( "/\r|\n/", "", $transcript);
@@ -174,8 +177,11 @@ function hyperaudio_shortcode_handler($atts, $transcript, $tag)
       selector: "article"
   }).init();
 
-  var ht1 = hyperaudiolite();
-  ht1.init("'.$transcriptid.'", "hyperplayer'.$id.'", false);';
+  var minimizedMode = false;
+  var autoScroll = true;
+  var doubleClick = false;
+
+  new HyperaudioLite("'.$transcriptid.'", "hyperplayer'.$id.'", minimizedMode, autoScroll, doubleClick, '.$webmonetization.');';
 
 if ($captionsOn == true) {
   $o .= 'var cap1 = caption();
