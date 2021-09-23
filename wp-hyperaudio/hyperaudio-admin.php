@@ -183,7 +183,25 @@ function hyperaudio_options_page()
       <tr><td><code>media-height</code></td><td><code>640px</code></td><td>set the height of the audio or video</td></tr>
       <tr><td><code>font-family</code></td><td><code>Arial, Helvetica, sans-serif;</code></td><td>set the font family of the transcript</td></tr>
       <tr><td><code>id</code></td><td><code>mytranscript</code></td><td>sets the id of the trancript for sharing purposes</td></tr>
+      <tr><td><code>webmonetization</code></td><td><code>true</code></td><td>enables <a href="https://webmonetization.org/">Web Monetization</a> (<code>false</code> by default)</td></tr>
       </table>
+    </p>
+    <p>For example:</p>
+    <p><code>[hyperaudio src="https://example.com/video/video.mp4" width="90%" transcript-height="600px" webmonetization=true]<br/>
+    &lt;article&gt;<br/>
+    &lt;section&gt;<br/>
+    &lt;p&gt;<br/>
+        &lt;span data-m="4470" data-d="0" class="speaker">Doc: &lt;/span&gt;<br/>
+        &lt;span data-m="4470" data-d="270">We &lt;/span&gt;<br/>
+        &lt;span data-m="4740" data-d="240">have &lt;/span&gt;<br/>
+        &lt;span data-m="5010" data-d="300">two &lt;/span&gt;<br/>
+        &lt;span data-m="5310" data-d="600">selves &lt;/span&gt;<br/>
+        ...</br/>
+    &lt;/p&gt;<br/>
+    &lt;/section&gt;<br/>
+    &lt;/article&gt;<br/>
+    [/hyperaudio]
+    </code>
     </p>
     <p>And for those with the caption generating version ... </p>
     <p>
