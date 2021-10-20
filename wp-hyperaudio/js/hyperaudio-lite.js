@@ -1,5 +1,5 @@
 /*! (C) The Hyperaudio Project. MIT @license: en.wikipedia.org/wiki/MIT_License. */
-/*! Version 2.0.4 */
+/*! Version 2.0.7 */
 
 'use strict';
 
@@ -78,7 +78,7 @@ class HyperaudioLite {
       const firstScriptTag = document.getElementsByTagName('script')[0];
       firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
 
-      window.onYouTubeIframeAPIReady = function () {
+      window.onYouTubeIframeAPIReady = () => {
         this.player = new YT.Player(mediaElementId, {
           events: {
             onStateChange: onPlayerStateChange,
@@ -86,7 +86,7 @@ class HyperaudioLite {
         });
       };
 
-      onPlayerStateChange = event => {
+      let onPlayerStateChange = event => {
         if (event.data === 1) {
           // playing
           this.checkPlayHead();
@@ -115,7 +115,9 @@ class HyperaudioLite {
 
     if (!isNaN(parseFloat(start))) {
       if (this.playerType === 'native') {
-        this.player.currentTime = start;
+        this.player.addEventListener('loadeddata', function(){
+          this.currentTime = start;
+        })    
         //autoplay
         const promise = this.player.play();
         if (promise !== undefined) {
@@ -133,7 +135,7 @@ class HyperaudioLite {
       } else {
         // Assume YouTube
 
-        window.onYouTubeIframeAPIReady = function () {
+        window.onYouTubeIframeAPIReady = () => {
           this.player = new YT.Player(mediaElementId, {
             playerVars: { autoplay: 1 },
             events: {
@@ -264,7 +266,7 @@ class HyperaudioLite {
       e.classList.remove('active');
     });
 
-    target.setAttribute('class', 'active');
+    target.classList.add('active');
 
     const timeSecs = parseInt(target.getAttribute('data-m')) / 1000;
 
