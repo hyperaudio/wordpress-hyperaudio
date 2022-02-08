@@ -1,4 +1,4 @@
-# wordpress-hyperaudio
+# Hyperaudio for Wordpress
 a wordpress plugin to display interactive transcripts
 
 ## Explainer videos
