@@ -1,9 +1,7 @@
 # Hyperaudio for Wordpress
 A wordpress plugin to display [Interactive Transcripts](https://en.wikipedia.org/wiki/Interactive_transcripts)
 
-Some examples can be found here:
-
-[https://lab.hyperaud.io/mozfest2021/interviews/](https://lab.hyperaud.io/mozfest2021/interviews/)
+Some examples can be found here: [https://lab.hyperaud.io/mozfest2021/interviews/](https://lab.hyperaud.io/mozfest2021/interviews/)
 
 ## Explainer videos
 1. [How to use the Hyperaudio Wordpress Plugin – Part 1](https://youtu.be/3Qpq8kj4PxM)
