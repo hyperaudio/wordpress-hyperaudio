@@ -6,6 +6,7 @@ Interactive Transcripts help make audio and video more accessible, easier to nav
 ## Getting started
 
 1. [Download the zip file](https://github.com/hyperaudio/wordpress-hyperaudio/archive/refs/heads/main.zip).
+2. Unzip and from within the unzipped `wordpress-hyperaudio-main` folder copy the `wp-hyperaudio` folder to your wordpress `wp-content/plugins/` folder.
 
 ## Explainer videos
 1. [How to use the Hyperaudio Wordpress Plugin – Part 1](https://youtu.be/3Qpq8kj4PxM)
