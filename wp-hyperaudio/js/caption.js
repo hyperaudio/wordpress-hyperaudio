@@ -1,290 +1,532 @@
-/*! (C) The Hyperaudio Project. MIT @license: en.wikipedia.org/wiki/MIT_License. */
-'use strict';
+var $ = jQuery; // needed for wordpress
 
-var caption = function () {
-  var cap = {};
+$(document).ready(function() {
+  var p = document.getElementById('para-split');
+  var cp = document.getElementById('current-para-split');
+  var paraSplitTime = p.value;
+  var paraPunct = $('#para-punctuation').prop('checked');
 
-  function formatSeconds(seconds) {
-    if (typeof seconds == 'number') {
-      return new Date(seconds.toFixed(3) * 1000).toISOString().substring(11,23);
-    } else {
-      console.log('warning - attempting to format the non number: ' + seconds);
-      return null;
+  p.addEventListener(
+    'input',
+    function() {
+      cp.innerHTML = p.value;
+      paraSplitTime = p.value;
+    },
+    false
+  );
+
+  $('#para-punctuation').change(function() {
+    if (this.checked) {
+      paraPunct = $('#para-punctuation').prop('checked');
     }
+  });
+
+  $('#markup-view').click(function() {
+    $('#rendered-view').addClass('inactive');
+    $(this).removeClass('inactive');
+    $('#rtranscript').hide();
+
+    var regex = /\span>(.*?)\<span/g;
+
+    var strToMatch = $('#rtranscript').html();
+
+    while ((matches = regex.exec(strToMatch)) != null) {
+      if (matches[1].length > 0) {
+        strToMatch = strToMatch.replace("</span>"+matches[1], matches[1]+"</span>");
+      } 
+    }
+
+    $('#htranscript').val(strToMatch);
+    $('#htranscript').show();
+    return false;
+  });
+
+  $('#rendered-view').click(function() {
+    $('#markup-view').addClass('inactive');
+    $(this).removeClass('inactive');
+    $('#htranscript').hide();
+    $('#rtranscript').html("<span>rendering...</span>");
+    $('#rtranscript').show();
+    
+    setTimeout(renderTranscript, 100);
+
+    return false;
+  });
+
+  function renderTranscript() {
+    $('#rtranscript').html($('#htranscript').val());
+
+    //document.getElementById("gen-subs").addEventListener("click", genSubs);
+    $('#gen-subs').click(genSubs);
+    //document.getElementById("generate-captions").style.display = 'inline';
+    $('#generate-captions').show();
+  
+    function genSubs(){
+      var cap1 = caption();
+      var subs = cap1.init("rtranscript", null, null, null);
+      //console.log(subs.vtt);
+      //console.log(subs.srt);
+      //var downloadLinkVtt = document.getElementById("download-vtt");
+      //downloadLinkVtt.setAttribute("href", 'data:text/vtt,'+encodeURIComponent(subs.vtt));
+      //downloadLinkVtt.style.display = 'inline';
+      $('#download-vtt').attr("href", 'data:text/vtt,'+encodeURIComponent(subs.vtt)).show();
+
+      //var downloadLinkSrt = document.getElementById("download-srt");
+      //downloadLinkSrt.setAttribute("href", 'data:text/vtt,'+encodeURIComponent(subs.srt));
+      //downloadLinkSrt.style.display = 'inline';
+      $('#download-srt').attr("href", 'data:text/vtt,'+encodeURIComponent(subs.srt)).show();
+    };
   }
 
-  function convertTimecodeToSrt(timecode) {
-    //the same as VTT format but milliseconds separated by a comma
-    return timecode.substring(0,8) + "," + timecode.substring(9,12);
-  }
-
-  cap.init = function (transcriptId, playerId, maxLength, minLength) {
-    var transcript = document.getElementById(transcriptId);
-    var words = transcript.querySelectorAll('[data-m]');
-    var data = {};
-    data.segments = [];
-    var segmentIndex = 0;
-
-    function segmentMeta(speaker, start, duration, chars) {
-      this.speaker = speaker;
-      this.start = start;
-      this.duration = duration;
-      this.chars = chars;
-      this.words = [];
-    }
-
-    function wordMeta(start, duration, text) {
-      this.start = start;
-      this.duration = duration;
-      this.text = text;
-    }
-
-    var thisWordMeta;
-    var thisSegmentMeta = null;
-
-    // defaults
-    var maxLineLength = 37;
-    var minLineLength = 21;
-
-    var captionsVtt = 'WEBVTT\n';
-    var captionsSrt = '';
-
-    var endSentenceDelimiter = /[\.。?؟!]/g;
-    var midSentenceDelimiter = /[,、–，،و:，…‥]/g;
-
-    if (!isNaN(maxLength) && maxLength != null) {
-      maxLineLength = maxLength;
-    }
-
-    if (!isNaN(minLength) && minLength != null) {
-      minLineLength = minLength;
-    }
-
-    var lastSpeaker = '';
-
-    words.forEach(function (word, i) {
-      if (thisSegmentMeta === null) {
-        // create segment meta object
-        thisSegmentMeta = new segmentMeta('', null, 0, 0, 0);
-      }
-
-      if (word.classList.contains('speaker')) {
-        // checking that this is not a new segment AND a new empty segment wasn't already created
-        if (thisSegmentMeta !== null && thisSegmentMeta.start !== null) {
-          //console.log("pushing...");
-          //console.log(thisSegmentMeta);
-          data.segments.push(thisSegmentMeta); // push the previous segment because it's a new speaker
-          thisSegmentMeta = new segmentMeta('', null, 0, 0, 0);
-        }
-
-        thisSegmentMeta.speaker = word.innerText;
-      } else {
-        var thisStart = parseInt(word.getAttribute('data-m')) / 1000;
-        var thisDuration = parseInt(word.getAttribute('data-d')) / 1000;
-
-        if (isNaN(thisStart)) {
-          thisStart = 0;
-        }
-
-        if (isNaN(thisDuration)) {
-          thisDuration = 0;
-        }
-
-        var thisText = word.innerText;
-
-        thisWordMeta = new wordMeta(thisStart, thisDuration, thisText);
-
-        if (thisSegmentMeta.start === null) {
-          thisSegmentMeta.start = thisStart;
-          thisSegmentMeta.duration = 0;
-          thisSegmentMeta.chars = 0;
-        }
-
-        thisSegmentMeta.duration += thisDuration;
-        thisSegmentMeta.chars += thisText.length;
-
-        thisSegmentMeta.words.push(thisWordMeta);
-
-        // remove spaces first just in case
-        var lastChar = thisText.replace(/\s/g, '').slice(-1);
-        if (lastChar.match(endSentenceDelimiter)) {
-          data.segments.push(thisSegmentMeta);
-          thisSegmentMeta = null;
-        }
-      }
-    });
-
-    //console.log(data.segments);
-
-    function captionMeta(start, stop, text) {
-      this.start = start;
-      this.stop = stop;
-      this.text = text;
-    }
-
-    var captions = [];
-    var thisCaption = null;
-
-    data.segments.map(function (segment) {
-      // If the entire segment fits on a line, add it to the captions.
-      if (segment.chars < maxLineLength) {
-        thisCaption = new captionMeta(
-          formatSeconds(segment.start),
-          formatSeconds(segment.start + segment.duration),
-          '',
-        );
-
-        segment.words.forEach(function (wordMeta) {
-          thisCaption.text += wordMeta.text;
-        });
-
-        thisCaption.text += '\n';
-        //console.log("0. pushing because the whole segment fits on a line!");
-        //console.log(thisCaption);
-        captions.push(thisCaption);
-        thisCaption = null;
-      } else {
-        // The number of chars in this segment is longer than our single line maximum
-
-        var charCount = 0;
-        var lineText = '';
-        var firstLine = true;
-        var lastOutTime;
-        var lastInTime = null;
-
-        segment.words.forEach(function (wordMeta, index) {
-          var lastChar = wordMeta.text.replace(/\s/g, '').slice(-1);
-
-          if (lastInTime === null) {
-            // if it doesn't exist yet set the caption start time to the word's start time.
-            lastInTime = wordMeta.start;
-          }
-
-          // Are we over the minimum length of a line and hitting a good place to split mid-sentence?
-          if (charCount + wordMeta.text.length > minLineLength && lastChar.match(midSentenceDelimiter)) {
-            if (firstLine === true) {
-              thisCaption = new captionMeta(
-                formatSeconds(lastInTime),
-                formatSeconds(wordMeta.start + wordMeta.duration),
-                '',
-              );
-              thisCaption.text += lineText + wordMeta.text + '\n';
-
-              //check for last word in segment, if it is we can push a one line caption, if not – move on to second line
-
-              if (index + 1 >= segment.words.length) {
-                //console.log("1. pushing because we're at a good place to split, we're on the first line but it's the last word of the segment.");
-                //console.log(thisCaption);
-                captions.push(thisCaption);
-                thisCaption = null;
-              } else {
-                firstLine = false;
-              }
-            } else {
-              // We're on the second line ... we're over the minimum chars and in a good place to split – let's push the caption
-
-              thisCaption.stop = formatSeconds(wordMeta.start + wordMeta.duration);
-              thisCaption.text += lineText + wordMeta.text;
-              //console.log("2. pushing because we're on the second line and have a good place to split");
-              //console.log(thisCaption);
-              captions.push(thisCaption);
-              thisCaption = null;
-              firstLine = true;
-            }
-
-            // whether first line or not we should reset ready for a new caption
-            charCount = 0;
-            lineText = '';
-            lastInTime = null;
-          } else {
-            // we're not over the minimum length with a suitable splitting point
-
-            // If we add this word are we over the maximum?
-            if (charCount + wordMeta.text.length > maxLineLength) {
-              if (firstLine === true) {
-                if (lastOutTime === undefined) {
-                  lastOutTime = wordMeta.start + wordMeta.duration;
-                }
-
-                thisCaption = new captionMeta(formatSeconds(lastInTime), formatSeconds(lastOutTime), '');
-                thisCaption.text += lineText + '\n';
-
-                // It's just the first line so we should only push a new caption if it's the very last word!
-
-                if (index >= segment.words.length) {
-                  captions.push(thisCaption);
-                  thisCaption = null;
-                } else {
-                  firstLine = false;
-                }
-              } else {
-                // We're on the second line and since we're over the maximum with the next word we should push this caption!
-
-                thisCaption.stop = formatSeconds(lastOutTime);
-                thisCaption.text += lineText;
-
-                captions.push(thisCaption);
-
-                thisCaption = null;
-                firstLine = true;
-              }
-
-              // do the stuff we need to do to start a new line
-              charCount = wordMeta.text.length;
-              lineText = wordMeta.text;
-              lastInTime = wordMeta.start; // Why do we do this??????
-            } else {
-              // We're not over the maximum with this word, update the line length and add the word to the text
-
-              charCount += wordMeta.text.length;
-              lineText += wordMeta.text;
-            }
-          }
-
-          // for every word update the lastOutTime
-          lastOutTime = wordMeta.start + wordMeta.duration;
-        });
-
-        // we're out of words for this segment - decision time!
-        if (thisCaption !== null) {
-          // The caption had been started, time to add whatever text we have and add a stop point
-          thisCaption.stop = formatSeconds(lastOutTime);
-          thisCaption.text += lineText;
-          //console.log("3. pushing at end of segment when new caption HAS BEEN created");
-          //console.log(thisCaption);
-          captions.push(thisCaption);
-          thisCaption = null;
-        } else {
-          // caption hadn't been started yet - create one!
-          if (lastInTime !== null) {
-            thisCaption = new captionMeta(formatSeconds(lastInTime), formatSeconds(lastOutTime), lineText);
-            //console.log("4. pushing at end of segment when new caption has yet to be created");
-            //console.log(thisCaption);
-            captions.push(thisCaption);
-            thisCaption = null;
-          }
-        }
-      }
-    });
-
-    captions.forEach(function (caption, i) {
-      captionsVtt += '\n' + caption.start + ' --> ' + caption.stop + '\n' + caption.text + '\n';
-      captionsSrt += '\n' + (i + 1) + '\n' + convertTimecodeToSrt(caption.start) + ' --> ' + convertTimecodeToSrt(caption.stop) + '\n' + caption.text + '\n';
-    });
-
-    var trackElement = document.getElementById(playerId+'-vtt');
-
-    if (trackElement !== null) {
-      trackElement.setAttribute("src", 'data:text/vtt,'+encodeURIComponent(captionsVtt));
-    }
-
-    function captionsObj(vtt, srt) {
-      this.vtt = vtt;
-      this.srt = srt;
-    }
-
-    return new captionsObj(captionsVtt, captionsSrt);
+  String.prototype.replaceAll = function(search, replacement) {
+    var target = this;
+    return target.replace(new RegExp(search, 'g'), replacement);
   };
 
-  return cap;
-};
+  // From popcorn.parserSRT.js
+
+  function parseSRT(data) {
+
+    document.dispatchEvent(event);
+
+    var i = 0,
+      len = 0,
+      idx = 0,
+      lines,
+      time,
+      text,
+      sub;
+
+    // Simple function to convert HH:MM:SS,MMM or HH:MM:SS.MMM to SS.MMM
+    // Assume valid, returns 0 on error
+
+    var toSeconds = function(t_in) {
+      var t = t_in.split(':');
+
+      try {
+        var s = t[2].split(',');
+
+        // Just in case a . is decimal seperator
+        if (s.length === 1) {
+          s = t[2].split('.');
+        }
+
+        return (
+          parseFloat(t[0], 10) * 3600 +
+          parseFloat(t[1], 10) * 60 +
+          parseFloat(s[0], 10) +
+          parseFloat(s[1], 10) / 1000
+        );
+      } catch (e) {
+        return 0;
+      }
+    };
+
+    var outputString = '<article><section><p>';
+    var lineBreaks = $('#line-breaks').prop('checked');
+    var ltime = 0;
+    var ltext;
+
+    // Here is where the magic happens
+    // Split on line breaks
+    lines = data.split(/(?:\r\n|\r|\n)/gm);
+    len = lines.length;
+
+    for (i = 0; i < len; i++) {
+      sub = {};
+      text = [];
+
+      sub.id = parseInt(lines[i++], 10);
+
+      // Split on '-->' delimiter, trimming spaces as well
+
+      try {
+        time = lines[i++].split(/[\t ]*-->[\t ]*/);
+      } catch (e) {
+        alert('Warning. Possible issue on line ' + i + ": '" + lines[i] + "'.");
+        break;
+      }
+
+      sub.start = toSeconds(time[0]);
+
+      // So as to trim positioning information from end
+      if (!time[1]) {
+        alert('Warning. Issue on line ' + i + ": '" + lines[i] + "'.");
+        return;
+      }
+
+      idx = time[1].indexOf(' ');
+      if (idx !== -1) {
+        time[1] = time[1].substr(0, idx);
+      }
+      sub.end = toSeconds(time[1]);
+
+      // Build single line of text from multi-line subtitle in file
+      while (i < len && lines[i]) {
+        text.push(lines[i++]);
+      }
+
+      // Join into 1 line, SSA-style linebreaks
+      // Strip out other SSA-style tags
+      sub.text = text.join('\\N').replace(/\{(\\[\w]+\(?([\w\d]+,?)+\)?)+\}/gi, '');
+
+      // Escape HTML entities
+      sub.text = sub.text.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+
+      // Unescape great than and less than when it makes a valid html tag of a supported style (font, b, u, s, i)
+      // Modified version of regex from Phil Haack's blog: http://haacked.com/archive/2004/10/25/usingregularexpressionstomatchhtml.aspx
+      // Later modified by kev: http://kevin.deldycke.com/2007/03/ultimate-regular-expression-for-html-tag-parsing-with-php/
+      sub.text = sub.text.replace(
+        /&lt;(\/?(font|b|u|i|s))((\s+(\w|\w[\w\-]*\w)(\s*=\s*(?:\".*?\"|'.*?'|[^'\">\s]+))?)+\s*|\s*)(\/?)&gt;/gi,
+        '<$1$3$7>'
+      );
+      //sub.text = sub.text.replace( /\\N/gi, "<br />" );
+      sub.text = sub.text.replace(/\\N/gi, ' ');
+
+      var splitMode = 0;
+
+      var wordLengthSplit = $('#word-length').prop('checked');
+
+      // enhancements to take account of word length
+
+      var swords = sub.text.split(' ');
+      var sduration = sub.end - sub.start;
+      var stimeStep = sduration / swords.length;
+
+      // determine length of words
+
+      var swordLengths = [];
+      var swordTimes = [];
+
+      var totalLetters = 0;
+      for (var si = 0, sl = swords.length; si < sl; ++si) {
+        totalLetters = totalLetters + swords[si].length;
+        swordLengths[si] = swords[si].length;
+      }
+
+      var letterTime = sduration / totalLetters;
+      var wordStart = 0;
+
+      for (var si = 0, sl = swords.length; si < sl; ++si) {
+        var wordTime = swordLengths[si] * letterTime;
+        var stime;
+        if (wordLengthSplit) {
+          stime = Math.round((sub.start + si * stimeStep) * 1000);
+
+          document.dispatchEvent(event);
+        } else {
+          stime = Math.round((wordStart + sub.start) * 1000);
+
+          document.dispatchEvent(event);
+        }
+
+        wordStart = wordStart + wordTime;
+        var stext = swords[si];
+
+        if (stime - ltime > paraSplitTime * 1000 && paraSplitTime > 0) {
+
+          var punctPresent =
+            ltext && (ltext.indexOf('.') > 0 || ltext.indexOf('?') > 0 || ltext.indexOf('!') > 0);
+          if (!paraPunct || (paraPunct && punctPresent)) {
+            outputString += '</p><p>';
+          }
+        }
+
+        outputString += '<span data-m="' + stime + '">' + stext + ' </span>';
+
+        ltime = stime;
+        ltext = stext;
+
+        if (lineBreaks) outputString = outputString + '\n';
+      }
+    }
+    return outputString + '</p></section></article>';
+  }
+
+  $('#transform').click(function() {
+    $('#transform-spinner').show();
+    $('#htranscript').val("converting...");
+    setTimeout(generateTranscript, 100);
+  });
+
+  function generateTranscript() {
+
+    var input = $('#subtitles').val();
+
+    var ht;
+
+    var format = $('#format-select').val();
+
+    switch (format) {
+
+      case 'oe':
+        var data = JSON.parse(input);
+        var items = ['<article><section>\n<p>'];
+        $.each(data.content.paragraphs, function(key, val) {
+          var paraStart = Math.round(val.start*1000);
+          items.push(
+            '\n<span class="speaker" data-m="' + paraStart + '" ' +
+            'data-d="0">' +
+              val.speaker +
+            ' </span>'
+          );
+
+          var lastStart = 0;
+
+          $.each(val.words, function(k, v) {
+            if (typeof v.start !== 'undefined') {
+              items.push(
+                '\n<span data-m="' + Math.round(v.start) + '" ' +
+                'data-d="' + Math.round(v.end - v.start) + '">' +
+                  v.text +
+                ' </span>'
+              );
+              lastStart = v.start;
+            } else {
+
+              if (k === 0) {
+                lastStart = paraStart;
+              } 
+
+              items.push(
+                '\n<span data-m="' + lastStart + '" ' +
+                'data-d="0">' +
+                  v.text +
+                ' </span>'
+              );
+            }
+          });
+          items.push('</p><p>');
+        });
+
+        items.push('</p></section></article>');
+
+        ht = items.join('');
+
+        // remove empty paras
+
+        ht = ht.split("<p></p>").join("");
+        
+        break;
+        
+      case 'google':
+        var data = JSON.parse(input);
+        
+        var items = ['<article><section><p>'];
+        
+        $.each(data.response.results, function(key, val) {
+          $.each(val.alternatives, function(k, v) {
+            for (var i = 0; i < v.words.length; i++) {
+              items.push(
+                '<span data-d="' +
+                  Math.round(parseFloat(v.words[i].endTime) * 1000 - parseFloat(v.words[i].startTime) * 1000) +
+                  '" data-m="' +
+                  Math.round(parseFloat(v.words[i].startTime) * 1000) +
+                  '">' +
+                  v.words[i].word +
+                  ' </span>'
+              );
+
+
+              if (i > 0 && Math.round(parseFloat(v.words[i].startTime)) - Math.round(parseFloat(v.words[i-1].startTime)) > paraSplitTime && paraSplitTime > 0) {
+                items.push('</p><p>');
+              }
+            }
+          });
+        });
+
+        items.push('</p></section></article>');
+
+        ht = items.join('');
+        break;
+        
+      case 'speechmatics':
+        var data = JSON.parse(input);
+        var items = ['<article><section><p>'];
+        $.each(data, function(key, val) {
+          if (key == 'words') {
+            for (var i = 0; i < val.length; i++) {
+              var punct = "";
+              if ((i+1) < val.length && val[i+1].name === ".") {
+                punct = ".";
+              } 
+
+              if (val[i].name !== ".") {
+                items.push(
+                  '<span data-d="' +
+                    Math.round(val[i].duration * 1000) +
+                    '" data-c="' +
+                    val[i].confidence +
+                    '" data-m="' +
+                    Math.round(val[i].time * 1000) +
+                    '">' +
+                    val[i].name + punct +
+                    ' </span>'
+                );
+              }
+              
+              if (i > 0 && Math.round(parseFloat(val[i].time)) - Math.round(parseFloat(val[i-1].time)) > paraSplitTime && paraSplitTime > 0) {
+                if ((paraPunct && punct === ".") || (paraPunct === false)) {
+                  items.push('</p><p>');
+                }
+              }
+            }
+          }
+        });
+
+        items.push('</p></section></article>');
+
+        ht = items.join('');
+        break;
+
+      case 'gentle':
+        var data = JSON.parse(input);
+
+        wds = data['words'] || [];
+        transcript = data['transcript'];
+
+        var trans = document.createElement('p');
+
+        trans.innerHTML = '';
+
+        var currentOffset = 0;
+        var wordCounter = 0;
+        var lastOutTime = 0;
+
+        wds.forEach(function(wd) {
+          // Add non-linked text
+
+          var newlineDetected = false;
+
+          if (wd.startOffset > currentOffset) {
+            var txt = transcript.slice(currentOffset, wd.startOffset);
+            newlineDetected = /\r|\n/.exec(txt);
+
+            if (trans.lastChild) {
+              trans.lastChild.text += txt + " ";
+            } else {
+              // this happens only at the beginning when offset not zero
+              var span = document.createElement('span');
+              var initialWd = document.createTextNode(txt + " ");
+              var initialDatam = document.createAttribute('data-m');
+              var initialDatad = document.createAttribute('data-d');
+
+              span.appendChild(initialWd);
+              initialDatam.value = 0;
+              initialDatad.value = 0;
+              span.setAttributeNode(initialDatam);
+              span.setAttributeNode(initialDatad);
+              trans.appendChild(span);
+              trans.appendChild(span);
+            }
+
+            if (newlineDetected) {
+              var lineBreak = document.createElement('br');
+              trans.appendChild(lineBreak);
+            }
+            currentOffset = wd.startOffset;
+          }
+
+          var datam = document.createAttribute('data-m');
+          var datad = document.createAttribute('data-d');
+
+          var word = document.createElement('span');
+          var txt = transcript.slice(wd.startOffset, wd.endOffset+1);
+	          
+	        if (!txt.endsWith(" ")){
+	          txt = txt + " ";
+	        }
+	
+	        var wordText = document.createTextNode(txt);
+          word.appendChild(wordText);
+
+          if (wd.start !== undefined) {
+            datam.value = Math.floor(wd.start * 1000);
+            datad.value = Math.floor((wd.end - wd.start) * 1000);
+          } else {
+            // look ahead to the next timed word
+            for (var i = wordCounter; i < wds.length - 1; i++) {
+              if (wds[i + 1].start !== undefined) {
+                datam.value = Math.floor(wds[i + 1].start * 1000);
+                break;
+              }
+            }
+            datad.value = '100'; // default duration when not known
+          }
+
+          if (datam.value < lastOutTime) {
+            datam.value = lastOutTime + 1;
+          }
+
+          word.setAttributeNode(datam);
+          word.setAttributeNode(datad);
+
+          lastOutTime = parseInt(datam.value) + parseInt(datad.value);
+
+          trans.appendChild(word);
+          
+          currentOffset = wd.endOffset;
+          wordCounter++;
+        });
+
+        var txt = transcript.slice(currentOffset, transcript.length);
+        var word = document.createTextNode(txt);
+        trans.appendChild(word);
+        currentOffset = transcript.length;
+
+        article = document.createElement('article');
+        section = document.createElement('section');
+      
+        section.appendChild(trans);
+        article.appendChild(section);
+
+        ht = article.outerHTML;
+
+        //newlines can cause issues within HTML tags
+        ht = ht.replace(/(?:\r\n|\r|\n)/g, '');
+
+        ht = ht.replace(new RegExp('</span><br>', 'g'), '</span></p><p>');
+
+        // replace all unneeded empty paras
+        ht = ht.replace(new RegExp('<p></p>', 'g'), '');
+
+        break;
+
+      case 'srt':
+        ht = parseSRT(input);
+        break;
+
+      case 'other':
+        var xmlString = input,
+          parser = new DOMParser(),
+          doc = parser.parseFromString(xmlString, 'text/xml');
+
+        var transcript = doc.getElementsByTagName('section')[0];
+
+        for (var i = 0; i < doc.getElementsByClassName('speaker').length; i++) {
+          transcript.getElementsByClassName('speaker')[i].innerHTML =
+            '[' +
+            transcript.getElementsByClassName('speaker')[i].innerHTML.replace(': ', '') +
+            '] ';
+          var datam = document.createAttribute('data-m');
+          var datad = document.createAttribute('data-d');
+          datam.value = transcript
+            .getElementsByClassName('speaker')
+            [i].nextElementSibling.getAttribute('data-m');
+          datad.value = '1';
+          transcript.getElementsByClassName('speaker')[i].setAttributeNode(datam);
+          transcript.getElementsByClassName('speaker')[i].setAttributeNode(datad);
+        }
+
+        var transcriptText = transcript.outerHTML;
+
+        ht = '<article>' + transcriptText + '</article>';
+    }
+
+    $('#htranscript').val(ht);
+    $('#rtranscript').html(ht);
+
+    $('#transform-spinner').hide();
+    return false;
+  }
+});
