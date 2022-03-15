@@ -15,6 +15,7 @@ function hyperaudio_load_admin_script($hook)
 		return;
 	}
   
+  wp_enqueue_script('caption', plugins_url('/js/caption.js', __FILE__), false, '1.0.0', false);
   wp_enqueue_script( 'converter', plugin_dir_url( __FILE__ ) . '/js/converter.js', array( 'jquery' ), '1.0.0', true );
 
 }
@@ -143,6 +144,21 @@ function hyperaudio_options_page()
       padding: 4px;
     }
 
+    .sub-holder {
+      font-size: 80%;
+      padding-top: 16px;
+      display: none;
+    }
+
+    .sub-btn {
+      margin-right: 16px;
+    }
+
+    .sub-download {
+      padding-right: 16px;
+      display: none;
+    }
+
   </style>
 </head>
 <body>
@@ -266,13 +282,18 @@ function hyperaudio_options_page()
     <div class="box target-content">
       <textarea id="htranscript" class="entry-content" rows="40" cols="54"></textarea>
       <div style="display:none" id="rtranscript" contentEditable></div>
+
+      <div id="generate-captions" class="sub-holder">
+        <button class="sub-btn" id="gen-subs">Generate Captions</button>
+        <a class="sub-download" id="download-vtt" href="" download="hyperaudio.vtt">Download WebVTT ⬇</a>
+        <a class="sub-download" id="download-srt" href="" download="hyperaudio.srt">Download SRT ⬇</a>
+      </div>
+
     </div>
-
+    
   </div>
-
+  
   <div class="footer">
   </div>
 </div>
 <?php } ?>
-
-

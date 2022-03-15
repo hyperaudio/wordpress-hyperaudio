@@ -55,6 +55,27 @@ $(document).ready(function() {
 
   function renderTranscript() {
     $('#rtranscript').html($('#htranscript').val());
+
+    //document.getElementById("gen-subs").addEventListener("click", genSubs);
+    $('#gen-subs').click(genSubs);
+    //document.getElementById("generate-captions").style.display = 'inline';
+    $('#generate-captions').show();
+  
+    function genSubs(){
+      var cap1 = caption();
+      var subs = cap1.init("rtranscript", null, null, null);
+      //console.log(subs.vtt);
+      //console.log(subs.srt);
+      //var downloadLinkVtt = document.getElementById("download-vtt");
+      //downloadLinkVtt.setAttribute("href", 'data:text/vtt,'+encodeURIComponent(subs.vtt));
+      //downloadLinkVtt.style.display = 'inline';
+      $('#download-vtt').attr("href", 'data:text/vtt,'+encodeURIComponent(subs.vtt)).show();
+
+      //var downloadLinkSrt = document.getElementById("download-srt");
+      //downloadLinkSrt.setAttribute("href", 'data:text/vtt,'+encodeURIComponent(subs.srt));
+      //downloadLinkSrt.style.display = 'inline';
+      $('#download-srt').attr("href", 'data:text/vtt,'+encodeURIComponent(subs.srt)).show();
+    };
   }
 
   String.prototype.replaceAll = function(search, replacement) {
