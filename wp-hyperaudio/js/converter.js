@@ -87,8 +87,6 @@ $(document).ready(function() {
 
   function parseSRT(data) {
 
-    document.dispatchEvent(event);
-
     var i = 0,
       len = 0,
       idx = 0,
@@ -212,12 +210,8 @@ $(document).ready(function() {
         var stime;
         if (wordLengthSplit) {
           stime = Math.round((sub.start + si * stimeStep) * 1000);
-
-          document.dispatchEvent(event);
         } else {
           stime = Math.round((wordStart + sub.start) * 1000);
-
-          document.dispatchEvent(event);
         }
 
         wordStart = wordStart + wordTime;
