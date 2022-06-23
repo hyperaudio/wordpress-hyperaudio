@@ -199,6 +199,7 @@ function hyperaudio_options_page()
       <tr><td><code>media-height</code></td><td><code>640px</code></td><td>set the height of the audio or video</td></tr>
       <tr><td><code>font-family</code></td><td><code>Arial, Helvetica, sans-serif;</code></td><td>set the font family of the transcript</td></tr>
       <tr><td><code>id</code></td><td><code>mytranscript</code></td><td>sets the id of the trancript for sharing purposes</td></tr>
+      <tr><td><code>show-active</code></td><td><code>true</code></td><td>highlights the word being played in a different colour. (<code>false</code> by default)</td></tr>
       <tr><td><code>webmonetization</code></td><td><code>true</code></td><td>enables <a href="https://webmonetization.org/">Web Monetization</a> (<code>false</code> by default)</td></tr>
       </table>
     </p>
