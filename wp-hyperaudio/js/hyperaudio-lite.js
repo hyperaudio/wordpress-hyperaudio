@@ -1,5 +1,5 @@
 /*! (C) The Hyperaudio Project. MIT @license: en.wikipedia.org/wiki/MIT_License. */
-/*! Version 2.0.13 */
+/*! Version 2.0.14 */
 
 'use strict';
 
@@ -459,7 +459,11 @@ class HyperaudioLite {
     if (paymentPointer !== null) {
       return paymentPointer;
     } else {
-      let parent = element.parentElement;
+      let parent = null;
+
+      if (typeof element !== 'undefined') {
+        parent = element.parentElement;
+      }
 
       if (parent === null) {
         return null;

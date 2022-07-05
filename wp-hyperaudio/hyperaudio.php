@@ -183,7 +183,7 @@ function hyperaudio_shortcode_handler($atts, $transcript, $tag)
 
   $o .= '<script>
   ShareThis({
-      sharers: [ ShareThisViaTwitter ],
+      sharers: [ ShareThisViaTwitter, ShareThisViaClipboard ],
       selector: "article"
   }).init();
 
@@ -212,6 +212,7 @@ function hyperaudio_init()
     wp_enqueue_script('caption', plugins_url('/js/caption.js', __FILE__), false, '1.0.0', false);
     wp_enqueue_script('share-this', plugins_url('/js/share-this.js', __FILE__), false, '1.0.0', false);
     wp_enqueue_script('share-this-twitter', plugins_url('/js/share-this-twitter.js', __FILE__), false, '1.0.0', false);
+    wp_enqueue_script('share-this-clipboard', plugins_url('/js/share-this-clipboard.js', __FILE__), false, '1.0.0', false);
     wp_enqueue_script('twitter-widget', plugins_url('https://platform.twitter.com/widgets.js', __FILE__), false, '1.0.0', false);
   }
 }
