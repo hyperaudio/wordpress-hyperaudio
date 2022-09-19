@@ -3,7 +3,7 @@
 * Plugin Name: Official Hyperaudio Plugin
 * Plugin URI: https://hyper.audio
 * Description: Hyperaudio Interactive Transcript Player
-* Version: 1.0.1
+* Version: 1.0.11
 * Author: Mark Boas
 * Author URI: http://hyper.audio
 **/
@@ -21,6 +21,7 @@ function hyperaudio_shortcode_handler($atts, $transcript, $tag)
 
   // defaults
   $width = '100%';
+  $height = '100%';
   $transcriptHeight = '600px';
   $mediaHeight = '';
   //$fontfamily = '"Palatino Linotype", "Book Antiqua", Palatino, serif';
@@ -36,11 +37,11 @@ function hyperaudio_shortcode_handler($atts, $transcript, $tag)
  
   if (isset($atts['src'])) $src = esc_html__($atts['src']);
   if (isset($atts['width'])) $width = $atts['width'];
+  if (isset($atts['height'])) $height = $atts['height'];
   if (isset($atts['transcript-height'])) $transcriptHeight = $atts['transcript-height'];
   if (isset($atts['media-height'])) $mediaHeight = $atts['media-height'];
   if (isset($atts['font-family'])) $fontfamily = $atts['font-family'];
   if (isset($atts['id'])) $transcriptid = $atts['id'];
-
 
   if (isset($atts['captions'])) $captionsOn = $atts['captions'];
   if (isset($atts['caption-max'])) $captionMaxLength = $atts['caption-max'];
@@ -50,7 +51,6 @@ function hyperaudio_shortcode_handler($atts, $transcript, $tag)
 
   if (isset($atts['webmonetization'])) $webmonetization = $atts['webmonetization'];
   if (isset($atts['show-active'])) $showActive = $atts['show-active'];
-
 
 
   $transcript = preg_replace( "/\r|\n/", "", $transcript);
@@ -159,8 +159,9 @@ function hyperaudio_shortcode_handler($atts, $transcript, $tag)
     } else {
       $o .= '<div class="iframe-container"><iframe id="hyperplayer'.$id.'" class="hyperaudio-player iframe-video" width="'.$width.'" data-player-type="youtube" frameborder="no" allow="autoplay" src="'.$src.'?enablejsapi=1"></iframe></div>';
     }
+  } elseif (strpos(strtolower($src), 'vimeo.com') !== false) {
+    $o .= '<iframe id="hyperplayer'.$id.'" class="hyperaudio-player" data-player-type="vimeo" src="'.$src.'" width="'.$width.'" height="'.$height.'" frameborder="no" allowfullscreen allow="autoplay; encrypted-media"></iframe><script src="https://player.vimeo.com/api/player.js"></script>';
   } elseif (strpos(strtolower($src), 'soundcloud.com') !== false) {
-    //$o .= '<iframe id="hyperplayer" data-player-type="soundcloud" width="100%" height="166" scrolling="no" frameborder="no" allow="autoplay" src="'.$src.'&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true"></iframe>';
     $o .= '<iframe id="hyperplayer'.$id.'" class="hyperaudio-player" data-player-type="soundcloud" scrolling="no" frameborder="no" allow="autoplay" src="'.$src.'"></iframe><script src="https://w.soundcloud.com/player/api.js"></script>';
   } elseif (strpos(strtolower($src), '.mp3') !== false) {
     $o .= '<audio id="hyperplayer'.$id.'" class="hyperaudio-player" style="position:relative; width:'.$width.'" src="'.$src.'" controls></audio>';
@@ -175,8 +176,6 @@ function hyperaudio_shortcode_handler($atts, $transcript, $tag)
   }
 
   $o .='</div>';
-
-  //<iframe allowfullscreen="1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" title="YouTube video player" src="https://www.youtube.com/embed/EAmmUIEsN9A?html5=1&amp;rel=0&amp;modestbranding=1&amp;iv_load_policy=3&amp;disablekb=1&amp;showinfo=0&amp;origin=https%3A%2F%2Fhyperaud.io&amp;controls=0&amp;wmode=opaque&amp;enablejsapi=1&amp;widgetid=1" id="widget2" width="100%" height="100%" frameborder="0"></iframe>
 
  $o .='<div id="'.$transcriptid.'" class="hyperaudio-transcript" style="overflow-y:scroll; width:'.$width.'; height:'.$transcriptHeight.'; position:relative; border-style:dashed; border-width: 1px; border-color:#999; padding: 8px">'.$transcript.'</div><div style="text-align:right; font-size:65%; margin-top: -16px; line-height: 1.0; font-weight: 600; font-family: Work Sans, Helvetica, Arial, sans-serif;"><a href="https://hyper.audio">A Hyperaudio Production</a></div>';
 

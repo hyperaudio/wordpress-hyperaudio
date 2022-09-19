@@ -1,5 +1,5 @@
 /*! (C) The Hyperaudio Project. MIT @license: en.wikipedia.org/wiki/MIT_License. */
-/*! Version 2.0.17 */
+/*! Version 2.0.18 */
 
 'use strict';
 
@@ -53,6 +53,35 @@ function soundcloudPlayer(instance) {
   }
 }
 
+function vimeoPlayer(instance) {
+  const tag = document.createElement('script');
+
+
+  const iframe = document.querySelector('iframe');
+    this.player = new Vimeo.Player(iframe);
+    this.player.setCurrentTime(0)
+    this.player.ready().then(instance.checkPlayHead);
+
+  this.getTime = () => {
+    return new Promise((resolve) => {
+      resolve(this.player.getCurrentTime());
+    });
+  }
+
+  this.setTime = (seconds) => {
+    this.player.setCurrentTime(seconds);
+  }
+
+  this.play = () => {
+    this.player.play();
+  }
+
+  this.pause = () => {
+    this.player.pause();
+  }
+}
+
+
 function youtubePlayer(instance) {
   const tag = document.createElement('script');
   tag.id = 'iframe-demo';
@@ -105,7 +134,8 @@ function youtubePlayer(instance) {
 const hyperaudioPlayerOptions = {
   "native": nativePlayer,
   "soundcloud": soundcloudPlayer,
-  "youtube": youtubePlayer
+  "youtube": youtubePlayer,
+  "vimeo": vimeoPlayer
 }
 
 function hyperaudioPlayer(playerType, instance) {

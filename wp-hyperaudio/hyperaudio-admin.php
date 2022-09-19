@@ -184,9 +184,11 @@ function hyperaudio_options_page()
     </code>
     </p>
 
-    <p>When defining the source of your media using the <code>src</code> attribute you will need to use embed versions for YouTube and SoundCloud.</p>
+    <p>When defining the source of your media using the <code>src</code> attribute you will need to use embed versions of the URL for YouTube, Vimeo and SoundCloud.</p>
     <p>For example:<p>
     <p><code>https://www.youtube.com/embed/xLcsdc823dg</code></p>
+    <p>or</p>
+    <p><code>https://player.vimeo.com/video/749606407</code></p>
     <p>or</p>
     <p><code>https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/730479133&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true</code> *</p>
     <p>* Grab the snippet of code from the SoundCloud page containing the file you're interested in, clicking on Share and then Embed.</p>
@@ -195,6 +197,7 @@ function hyperaudio_options_page()
       <table>
       <tr><th>attribute</th><th>example value</th><th>function</th></tr>
       <tr><td><code>width</code></td><td><code>100%</code></td><td>set the width of the transcript + media holder</td></tr>
+      <tr><td><code>height</code></td><td><code>100%</code></td><td>set the height of the media holder</td></tr>
       <tr><td><code>transcript-height</code></td><td><code>700px</code></td><td>set the height of the transcript itself</td></tr>
       <tr><td><code>media-height</code></td><td><code>640px</code></td><td>set the height of the audio or video</td></tr>
       <tr><td><code>font-family</code></td><td><code>Arial, Helvetica, sans-serif;</code></td><td>set the font family of the transcript</td></tr>
