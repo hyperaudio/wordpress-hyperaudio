@@ -387,7 +387,7 @@ $(document).ready(function() {
         var wordCounter = 0;
         var lastOutTime = 0;
 
-        wds.forEach(function(wd) {
+        wds.forEach(function(wd, index) {
           // Add non-linked text
 
           var newlineDetected = false;
@@ -425,13 +425,19 @@ $(document).ready(function() {
           var datad = document.createAttribute('data-d');
 
           var word = document.createElement('span');
-          var txt = transcript.slice(wd.startOffset, wd.endOffset+1);
-	          
-	        if (!txt.endsWith(" ")){
-	          txt = txt + " ";
-	        }
-	
-	        var wordText = document.createTextNode(txt);
+          var txt = "";
+
+          if (index + 1 < wds.length){
+            txt = transcript.slice(wd.startOffset, wds[index+1].startOffset);
+          } else {
+            txt = transcript.slice(wd.startOffset, wd.endOffset+1);
+          }
+            
+          if (!txt.endsWith(" ")){
+            txt = txt + " ";
+          }
+  
+          var wordText = document.createTextNode(txt);
           word.appendChild(wordText);
 
           if (wd.start !== undefined) {
@@ -465,7 +471,7 @@ $(document).ready(function() {
 
         var txt = transcript.slice(currentOffset, transcript.length);
         var word = document.createTextNode(txt);
-        trans.appendChild(word);
+        trans.lastChild.appendChild(word);
         currentOffset = transcript.length;
 
         article = document.createElement('article');
