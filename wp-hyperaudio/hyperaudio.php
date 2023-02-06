@@ -177,7 +177,7 @@ function hyperaudio_shortcode_handler($atts, $transcript, $tag)
 
   $o .='</div>';
 
- $o .='<div id="'. esc_attr( $transcriptid ) .'" class="hyperaudio-transcript" style="overflow-y:scroll; width:'. esc_attr( $width ) .'; height:'. esc_attr( $transcriptHeight ) .'; position:relative; border-style:dashed; border-width: 1px; border-color:#999; padding: 8px">'. esc_attr( $transcript ) .'</div><div style="text-align:right; font-size:65%; margin-top: -16px; line-height: 1.0; font-weight: 600; font-family: Work Sans, Helvetica, Arial, sans-serif;"><a href="https://hyper.audio">A Hyperaudio Production</a></div>';
+ $o .='<div id="'. esc_attr( $transcriptid ) .'" class="hyperaudio-transcript" style="overflow-y:scroll; width:'. esc_attr( $width ) .'; height:'. esc_attr( $transcriptHeight ) .'; position:relative; border-style:dashed; border-width: 1px; border-color:#999; padding: 8px">'. wp_kses_post( $transcript ) .'</div><div style="text-align:right; font-size:65%; margin-top: -16px; line-height: 1.0; font-weight: 600; font-family: Work Sans, Helvetica, Arial, sans-serif;"><a href="https://hyper.audio">A Hyperaudio Production</a></div>';
 
 
   $o .= '<script>
