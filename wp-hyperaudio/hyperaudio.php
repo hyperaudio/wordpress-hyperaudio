@@ -34,8 +34,8 @@ function hyperaudio_shortcode_handler($atts, $transcript, $tag)
   $trackLabel = "English";
   $webmonetization = false;
   $showActive = false;
- 
-  if (isset($atts['src'])) $src = esc_html__($atts['src']);
+
+  if (isset($atts['src'])) $src = $atts['src'];
   if (isset($atts['width'])) $width = $atts['width'];
   if (isset($atts['height'])) $height = $atts['height'];
   if (isset($atts['transcript-height'])) $transcriptHeight = $atts['transcript-height'];
@@ -152,24 +152,24 @@ function hyperaudio_shortcode_handler($atts, $transcript, $tag)
   </p>-->';
 
   $o .='<div id="video-holder">';
-  
+
   if (strpos(strtolower($src), 'youtube.com') !== false || strpos(strtolower($src), 'youtu.be') !== false) {
     if (isset($atts['media-height'])) {
-      $o .= '<div><iframe id="hyperplayer'.$id.'" class="hyperaudio-player" width="'.$width.'" height="'.$mediaHeight.'" data-player-type="youtube" frameborder="no" allow="autoplay" src="'.$src.'?enablejsapi=1"></iframe></div>';
+      $o .= '<div><iframe id="hyperplayer'. esc_attr( $id ) .'" class="hyperaudio-player" width="'. esc_attr( $width ) .'" height="'. esc_attr( $mediaHeight ).'" data-player-type="youtube" frameborder="no" allow="autoplay" src="'. esc_url( $src ) .'?enablejsapi=1"></iframe></div>';
     } else {
-      $o .= '<div class="iframe-container"><iframe id="hyperplayer'.$id.'" class="hyperaudio-player iframe-video" width="'.$width.'" data-player-type="youtube" frameborder="no" allow="autoplay" src="'.$src.'?enablejsapi=1"></iframe></div>';
+      $o .= '<div class="iframe-container"><iframe id="hyperplayer'. esc_attr( $id ).'" class="hyperaudio-player iframe-video" width="'. esc_attr( $width ) .'" data-player-type="youtube" frameborder="no" allow="autoplay" src="'. esc_url( $src ) .'?enablejsapi=1"></iframe></div>';
     }
   } elseif (strpos(strtolower($src), 'vimeo.com') !== false) {
-    $o .= '<iframe id="hyperplayer'.$id.'" class="hyperaudio-player" data-player-type="vimeo" src="'.$src.'" width="'.$width.'" height="'.$height.'" frameborder="no" allowfullscreen allow="autoplay; encrypted-media"></iframe><script src="https://player.vimeo.com/api/player.js"></script>';
+    $o .= '<iframe id="hyperplayer'. esc_attr( $id ) .'" class="hyperaudio-player" data-player-type="vimeo" src="'. esc_url( $src ) .'" width="'. esc_attr( $width ) .'" height="'. esc_attr( $height ).'" frameborder="no" allowfullscreen allow="autoplay; encrypted-media"></iframe><script src="https://player.vimeo.com/api/player.js"></script>';
   } elseif (strpos(strtolower($src), 'soundcloud.com') !== false) {
-    $o .= '<iframe id="hyperplayer'.$id.'" class="hyperaudio-player" data-player-type="soundcloud" scrolling="no" frameborder="no" allow="autoplay" src="'.$src.'"></iframe><script src="https://w.soundcloud.com/player/api.js"></script>';
+    $o .= '<iframe id="hyperplayer'. esc_attr( $id ) .'" class="hyperaudio-player" data-player-type="soundcloud" scrolling="no" frameborder="no" allow="autoplay" src="'. esc_url( $src ) .'"></iframe><script src="https://w.soundcloud.com/player/api.js"></script>';
   } elseif (strpos(strtolower($src), '.mp3') !== false) {
-    $o .= '<audio id="hyperplayer'.$id.'" class="hyperaudio-player" style="position:relative; width:'.$width.'" src="'.$src.'" controls></audio>';
+    $o .= '<audio id="hyperplayer'. esc_attr( $id ) .'" class="hyperaudio-player" style="position:relative; width:'. esc_attr( $width ).'" src="'. esc_url( $src ) .'" controls></audio>';
   } else {
-    $o .= '<video id="hyperplayer'.$id.'" class="hyperaudio-player" style="position:relative; width:'.$width.'" src="'.$src.'" controls>';
-    
+    $o .= '<video id="hyperplayer'. esc_attr( $id ) .'" class="hyperaudio-player" style="position:relative; width:'. esc_attr( $width ) .'" src="'. esc_url( $src ) .'" controls>';
+
     if ($captionsOn == true) {
-      $o .= '<track id="hyperplayer'.$id.'-vtt" label="'.$trackLabel.'" kind="subtitles" srclang="'.$language.'" src="" default>';
+      $o .= '<track id="hyperplayer'. esc_attr( $id ) .'-vtt" label="'. esc_attr( $trackLabel ) .'" kind="subtitles" srclang="'. esc_attr( $language ) .'" src="" default>';
     }
 
     $o .= '</video>';
@@ -177,7 +177,7 @@ function hyperaudio_shortcode_handler($atts, $transcript, $tag)
 
   $o .='</div>';
 
- $o .='<div id="'.$transcriptid.'" class="hyperaudio-transcript" style="overflow-y:scroll; width:'.$width.'; height:'.$transcriptHeight.'; position:relative; border-style:dashed; border-width: 1px; border-color:#999; padding: 8px">'.$transcript.'</div><div style="text-align:right; font-size:65%; margin-top: -16px; line-height: 1.0; font-weight: 600; font-family: Work Sans, Helvetica, Arial, sans-serif;"><a href="https://hyper.audio">A Hyperaudio Production</a></div>';
+ $o .='<div id="'. esc_attr( $transcriptid ) .'" class="hyperaudio-transcript" style="overflow-y:scroll; width:'. esc_attr( $width ) .'; height:'. esc_attr( $transcriptHeight ) .'; position:relative; border-style:dashed; border-width: 1px; border-color:#999; padding: 8px">'. esc_attr( $transcript ) .'</div><div style="text-align:right; font-size:65%; margin-top: -16px; line-height: 1.0; font-weight: 600; font-family: Work Sans, Helvetica, Arial, sans-serif;"><a href="https://hyper.audio">A Hyperaudio Production</a></div>';
 
 
   $o .= '<script>
@@ -190,11 +190,11 @@ function hyperaudio_shortcode_handler($atts, $transcript, $tag)
   var autoScroll = true;
   var doubleClick = false;
 
-  new HyperaudioLite("'.$transcriptid.'", "hyperplayer'.$id.'", minimizedMode, autoScroll, doubleClick, '.$webmonetization.');';
+  new HyperaudioLite("'. esc_js( $transcriptid ).'", "hyperplayer'. esc_js( $id ) .'", minimizedMode, autoScroll, doubleClick, '. esc_js( $webmonetization ) .');';
 
 if ($captionsOn == true) {
   $o .= 'var cap1 = caption();
-  cap1.init("'.$transcriptid.'", "hyperplayer'.$id.'", '.$captionMaxLength.' , '.$captionMinLength.');';
+  cap1.init("'. esc_js( $transcriptid ) .'", "hyperplayer'. esc_js( $id ) .'", '. esc_js( $captionMaxLength ) .' , '. esc_js( $captionMinLength ) .');';
 }
   
 $o .= '  </script>
@@ -227,7 +227,7 @@ function hyperaudio_action_links($links, $file)
   // check to make sure we are on the correct plugin
   if ($file == $this_plugin) {
     // the anchor tag and href to the URL we want. For a "Settings" link, this needs to be the url of your settings page
-    $settings_link = '<a href="' . get_bloginfo('wpurl') . '/wp-admin/options-general.php?page=wp-hyperaudio/hyperaudio-admin.php">Settings</a>';
+    $settings_link = '<a href="' . esc_url( get_bloginfo('wpurl') ) . '/wp-admin/options-general.php?page=wp-hyperaudio/hyperaudio-admin.php">Settings</a>';
     // add the link to the list
     array_unshift($links, $settings_link);
   }
