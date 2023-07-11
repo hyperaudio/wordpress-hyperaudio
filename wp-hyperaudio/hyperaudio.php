@@ -93,7 +93,11 @@ function hyperaudio_shortcode_handler($atts, $transcript, $tag)
   }
   
   .hyperaudio-transcript .unread {
-    color: #999;
+    color: #777;
+  }
+
+  .hyperaudio-transcript .search-match {
+    background-color: pink;
   }
 
   .hyperaudio-transcript .share-match {
@@ -122,11 +126,13 @@ function hyperaudio_shortcode_handler($atts, $transcript, $tag)
   
   .speaker {
     font-weight: bold;
-  }
-
+  }';
+  /* FIXME:was not in hyperaudio-lite 2.1.3 -- should this be in the above?
+   *   removed out of output so as not to clutter.
   .hyperaudio-transcript a {
     text-decoration:none !important;
-  }';
+
+  } */
 
   if (!is_null($fontfamily)) {
     $o .=' .hyperaudio-transcript {
@@ -136,7 +142,13 @@ function hyperaudio_shortcode_handler($atts, $transcript, $tag)
 
   if ($showActive == true) {
     $o .=' .hyperaudio-transcript .active {
-      color: #0000cc !important;
+      background-color: #efefef;
+      color: #0000cc;
+    }
+    .hyperaudio-transcript .active > .active {
+      background-color: #ccf;
+      text-decoration: #00f underline;
+      text-decoration-thickness: 3px;
     }';
   }
 
