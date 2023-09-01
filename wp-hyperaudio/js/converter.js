@@ -388,8 +388,6 @@ $(document).ready(function() {
         var lastOutTime = 0;
 
         wds.forEach(function(wd) {
-          // Add non-linked text
-
           var newlineDetected = false;
 
           if (wd.startOffset > currentOffset) {
@@ -425,11 +423,39 @@ $(document).ready(function() {
           var datad = document.createAttribute('data-d');
 
           var word = document.createElement('span');
-          var txt = transcript.slice(wd.startOffset, wd.endOffset+1);
-	          
-	        if (!txt.endsWith(" ")){
-	          txt = txt + " ";
-	        }
+
+          var startOffset = wd.startOffset;
+          var endOffset = wd.endOffset + 1;
+
+          var txt = transcript.slice(startOffset, endOffset);
+
+          // Check to see if previous letter is a character
+          // AND the one before it a space,
+          // if so include it.
+
+          var previousChar = transcript[startOffset-1];
+
+          if (wordCounter > 0 && previousChar !== ' ' && transcript[startOffset-2] === ' ') {
+            txt = previousChar + txt;
+          }
+
+          // Look ahead to see if next word's previous letter is a space ...
+          // if it's a character we don't want to add a space to THIS word,
+          // UNLESS the character before that is a space
+          // because (for example) it might be a start of a hyphenated word.
+
+          if (wordCounter + 1 < wds.length) {
+            var nextWordCharBeforeStartIndex = wds[wordCounter + 1].startOffset - 1;
+            if (transcript[nextWordCharBeforeStartIndex] === ' ' || transcript[nextWordCharBeforeStartIndex-1] === ' ') {
+              if (!txt.endsWith(" ")){
+                txt = txt + " ";
+              }
+            }
+          }
+
+          if(txt.startsWith(' ')){ //trim leading space
+            txt = txt.substring(1);
+          }
 	
 	        var wordText = document.createTextNode(txt);
           word.appendChild(wordText);
@@ -463,9 +489,6 @@ $(document).ready(function() {
           wordCounter++;
         });
 
-        var txt = transcript.slice(currentOffset, transcript.length);
-        var word = document.createTextNode(txt);
-        trans.appendChild(word);
         currentOffset = transcript.length;
 
         article = document.createElement('article');
