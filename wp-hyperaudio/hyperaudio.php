@@ -126,13 +126,11 @@ function hyperaudio_shortcode_handler($atts, $transcript, $tag)
   
   .speaker {
     font-weight: bold;
-  }';
-  /* FIXME:was not in hyperaudio-lite 2.1.3 -- should this be in the above?
-   *   removed out of output so as not to clutter.
+  }
+
   .hyperaudio-transcript a {
     text-decoration:none !important;
-
-  } */
+  }';
 
   if (!is_null($fontfamily)) {
     $o .=' .hyperaudio-transcript {
