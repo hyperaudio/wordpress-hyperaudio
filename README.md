@@ -21,3 +21,7 @@ Interactive Transcripts help make audio and video more accessible, easier to nav
 
 ---
 (c) Copyright The Hyperaudio Project 
+
+Thanks to [WFMT](https://www.wfmt.com)/[WTTW](https://www.wttw.com) and the [Studs Terkel Radio Archive](https://studsterkel.wfmt.com/) for sponsoring this project.
+
+Please consider donating via our [Patreon account](https://patreon.com/hyperaudio)
