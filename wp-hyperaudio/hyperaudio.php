@@ -3,7 +3,7 @@
 * Plugin Name: Official Hyperaudio Plugin
 * Plugin URI: https://hyper.audio
 * Description: Hyperaudio Interactive Transcript Player
-* Version: 1.0.11
+* Version: 1.0.12
 * Author: Mark Boas
 * Author URI: http://hyper.audio
 **/
