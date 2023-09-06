@@ -165,6 +165,10 @@ function hyperaudio_options_page()
 <div id="wrapper">
   
   <div class="plugin-instructions">
+
+    <div style="background-color:#fff; padding: 8px; margin-right: 20px">
+    <p><i><strong>NOTE: </strong>You can also transcribe, edit and create your hypertranscript using the <strong><a href="https://hyperaudio.github.io/hyperaudio-lite-editor/index.html">Hyperaudio Lite Editor</a></strong>. To do this, export as HTML from the <strong><a href="https://hyperaudio.github.io/hyperaudio-lite-editor/index.html">Hyperaudio Lite Editor</a></strong> and paste directly into your post between the Hyperaudio shortcode.</i></p>
+    </div>
     <p>Pass the HTML transcript (created <a href="#converter">here</a>) into the Hyperaudio shortcode and set the <code>src</code> attribute to reference the media you wish to associate it with.</p>
     <p>For example:</p>
     <p><code>[hyperaudio src="https://example.com/video/video.mp4"]<br/>
@@ -242,8 +246,10 @@ function hyperaudio_options_page()
     <div class="box instructions-convert">
       <h2>Convert various formats into a Hypertranscript...</h2>
       <p>Paste your <a href="http://en.wikipedia.org/wiki/.srt#SubRip_text_file_format">SRT (subtitle) file</a>, <a href="http://speechmatics.com">Speechmatics</a> JSON, <a href="https://lowerquality.com/gentle/">Gentle</a> JSON, <a href="https://cloud.google.com/speech-to-text">Google STT</a> JSON into the pane below and press the <strong>Convert!</strong> button.</p>
+
       <form>
         <!--<p><input id="line-breaks" type="checkbox" name="linebreaks" value="on"> Line breaks in output?</p>-->
+        
         <p>
         <strong>Input Format :</strong>
         <select id="format-select">
@@ -267,8 +273,10 @@ function hyperaudio_options_page()
       <textarea id="subtitles" class="entry-content" rows="40" cols="54"></textarea>
     </div>
 
+    
+
     <div class="box target-title">
-      <h3 id="script-title" class="entry-title">hypertranscript appears here ⤵</h3>      
+      <h3 id="script-title" class="entry-title">hypertranscript appears here ⤵</h3>   
       <a id="markup-view" class="tab" href="#">Markup View</a> <a id="rendered-view" class="tab inactive" href="#">Rendered View</a>
     </div>
 
