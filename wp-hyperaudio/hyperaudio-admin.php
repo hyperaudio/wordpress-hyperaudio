@@ -1,5 +1,61 @@
 <?php
 
+function hook_ajax( ){
+  wp_enqueue_script( 'script-checker', plugin_dir_url( __FILE__ ) . 'js/script-checker.js' );
+  wp_localize_script( 'script-checker', 'account_script_checker', array(
+          'ajaxurl' => admin_url( 'admin-ajax.php' ),
+          'fail_message' => __('Connection to server failed.', 'script-checker'),
+          'success_message' => __('Connection successful. ', 'script-checker')
+      )
+  );
+}
+add_action( 'enqueue_scripts', 'hook_ajax' );
+add_action( 'admin_enqueue_scripts', 'hook_ajax' );
+
+function check_ajax( ) {
+  // entry here your function for ajax request
+
+
+  $post_id = -1;
+
+	// Setup the author, slug, and title for the post
+	$author_id = 1;
+	$slug = 'example-post';
+	$title = 'My Example Post 6';
+
+
+	// If the page doesn't already exist, then create it
+	if( null == get_page_by_title( $title ) ) {
+
+		// Set the post ID so that we know the post was created successfully
+		$post_id = wp_insert_post(
+			array(
+				'comment_status'	=>	'closed',
+				'ping_status'		=>	'closed',
+				'post_author'		=>	$author_id,
+				'post_name'		=>	$slug,
+				'post_title'		=>	$title,
+				'post_status'		=>	'publish',
+				'post_type'		=>	'post',
+        'post_content'  => '<!-- wp:shortcode -->[hyperaudio src=""]<article><section><p><span>hello</span></p></section></article>[/hyperaudio]<!-- /wp:shortcode -->',
+			)
+		);
+
+    echo("post created ok");
+
+	// Otherwise, we'll stop
+	} else {
+
+    // Arbitrarily use -2 to indicate that the page with the title already exists
+    $post_id = -2;
+
+	} // end if
+}
+//add_action( 'wp_ajax_nopriv_check_ajax', 'check_ajax' );
+add_action( 'wp_ajax_check_ajax', 'check_ajax' );
+
+
+
 add_action('admin_menu', 'hyperaudio_add_option_page');
 
 function hyperaudio_add_option_page()
@@ -160,8 +216,7 @@ function hyperaudio_options_page()
     }
 
   </style>
-</head>
-<body>
+
 <div id="wrapper">
   
   <div class="plugin-instructions">
@@ -305,6 +360,59 @@ function hyperaudio_options_page()
     </div>
     
   </div>
+
+  <script>
+
+    /*function createPost() {
+
+      const xhr = new XMLHttpRequest();
+      xhr.open("GET", "/wordpress/wp-content/plugins/wp-hyperaudio/createPost.php", true);
+
+      // If specified, responseType must be empty string or "text"
+      xhr.responseType = "text";
+
+      xhr.onload = () => {
+        if (xhr.readyState === xhr.DONE) {
+          if (xhr.status === 200) {
+            //console.log(xhr.response);
+            console.log(xhr.responseText);
+          }
+        }
+      };
+
+      xhr.send(null);
+    }*/
+
+    function createPost() {
+      jQuery.ajax({
+          type: 'POST',
+          url: account_script_checker.ajaxurl,
+          data: {
+              action: 'check_ajax',
+              fail_message: account_script_checker.fail_message,
+              success_message: account_script_checker.success_message
+          },
+          beforeSend: function ( ) {
+              jQuery( 'body' ).html( account_script_checker.loading_message );
+          },
+          success: function ( data, textStatus, XMLHttpRequest ) {
+              if( data === 'failed_to_create_post' ) {
+                  console.log("failed");
+              } else {
+                  console.log("ok");
+              }
+          },
+          error: function ( XMLHttpRequest, textStatus, errorThrown ) {
+              alert( errorThrown );
+          }
+      });
+  }
+
+  </script>
+
+  <button onclick="createPost()">Post Transcript</button>
+
+
   
   <div class="footer">
   </div>
