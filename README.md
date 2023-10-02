@@ -3,6 +3,8 @@ A wordpress plugin to display [Interactive Transcripts](https://en.wikipedia.org
 
 Interactive Transcripts help make audio and video more accessible, easier to navigate, search, index and share. Some examples can be found here: [https://lab.hyperaud.io/mozfest2021/interviews/](https://lab.hyperaud.io/mozfest2021/interviews/)
 
+You can make Interactive Transcripts with the [Hyperaudio Lite Editor](https://github.com/hyperaudio/hyperaudio-lite-editor)
+
 ## Getting started
 
 ### 1. Move the file manually
