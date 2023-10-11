@@ -173,16 +173,16 @@ function hyperaudio_shortcode_handler($atts, $transcript, $tag)
 
   if (strpos(strtolower($src), 'youtube.com') !== false || strpos(strtolower($src), 'youtu.be') !== false || strtolower($player) == 'youtube') {
     if (isset($atts['media-height'])) {
-      $o .= '<div><iframe id="hyperplayer'. esc_attr( $id ) .'" class="hyperaudio-player" width="'. esc_attr( $width ) .'" height="'. esc_attr( $mediaHeight ).'" data-player="youtube" frameborder="no" allow="autoplay" src="'. esc_url( $src ) .'?enablejsapi=1"></iframe></div>';
+      $o .= '<div><iframe id="hyperplayer'. esc_attr( $id ) .'" class="hyperaudio-player" width="'. esc_attr( $width ) .'" height="'. esc_attr( $mediaHeight ).'" data-player-type="youtube" frameborder="no" allow="autoplay" src="'. esc_url( $src ) .'?enablejsapi=1"></iframe></div>';
     } else {
-      $o .= '<div class="iframe-container"><iframe id="hyperplayer'. esc_attr( $id ).'" class="hyperaudio-player iframe-video" width="'. esc_attr( $width ) .'" data-player="youtube" frameborder="no" allow="autoplay" src="'. esc_url( $src ) .'?enablejsapi=1"></iframe></div>';
+      $o .= '<div class="iframe-container"><iframe id="hyperplayer'. esc_attr( $id ).'" class="hyperaudio-player iframe-video" width="'. esc_attr( $width ) .'" data-player-type="youtube" frameborder="no" allow="autoplay" src="'. esc_url( $src ) .'?enablejsapi=1"></iframe></div>';
     }
   } elseif (strpos(strtolower($src), 'vimeo.com') !== false || strtolower($player) == 'vimeo') {
-    $o .= '<iframe id="hyperplayer'. esc_attr( $id ) .'" class="hyperaudio-player" data-player="vimeo" src="'. esc_url( $src ) .'" width="'. esc_attr( $width ) .'" height="'. esc_attr( $height ).'" frameborder="no" allowfullscreen allow="autoplay; encrypted-media"></iframe><script src="https://player.vimeo.com/api/player.js"></script>';
+    $o .= '<iframe id="hyperplayer'. esc_attr( $id ) .'" class="hyperaudio-player" data-player-type="vimeo" src="'. esc_url( $src ) .'" width="'. esc_attr( $width ) .'" height="'. esc_attr( $height ).'" frameborder="no" allowfullscreen allow="autoplay; encrypted-media"></iframe><script src="https://player.vimeo.com/api/player.js"></script>';
   } elseif (strpos(strtolower($src), 'soundcloud.com') !== false || strtolower($player) == 'soundcloud') {
-    $o .= '<iframe id="hyperplayer'. esc_attr( $id ) .'" class="hyperaudio-player" data-player="soundcloud" scrolling="no" frameborder="no" allow="autoplay" src="'. esc_url( $src ) .'" style="width: '. esc_attr( $width ) .'"></iframe><script src="https://w.soundcloud.com/player/api.js"></script>';
+    $o .= '<iframe id="hyperplayer'. esc_attr( $id ) .'" class="hyperaudio-player" data-player-type="soundcloud" scrolling="no" frameborder="no" allow="autoplay" src="'. esc_url( $src ) .'" style="width: '. esc_attr( $width ) .'"></iframe><script src="https://w.soundcloud.com/player/api.js"></script>';
   } elseif (strtolower($player) == 'videojs') {
-    $o .= '<video id="hyperplayer'. esc_attr( $id ) .'" class="hyperaudio-player video-js" data-player="videojs" data-setup="{}" style="position:relative" src="'. esc_url( $src ) .'" width="'. esc_attr( $width ) .'" height="'. esc_attr( $mediaHeight ) .'" controls><script src="https://vjs.zencdn.net/8.5.2/video.min.js"></script>';
+    $o .= '<video id="hyperplayer'. esc_attr( $id ) .'" class="hyperaudio-player video-js" data-player-type="videojs" data-setup="{}" style="position:relative" src="'. esc_url( $src ) .'" width="'. esc_attr( $width ) .'" height="'. esc_attr( $mediaHeight ) .'" controls><script src="https://vjs.zencdn.net/8.5.2/video.min.js"></script>';
   } elseif (strpos(strtolower($src), '.mp3') !== false || strtolower($player) == 'nativeaudio') {
     $o .= '<audio id="hyperplayer'. esc_attr( $id ) .'" class="hyperaudio-player" style="position:relative; width:'. esc_attr( $width ).'" src="'. esc_url( $src ) .'" controls></audio>';
   } else {
