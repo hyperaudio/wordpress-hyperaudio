@@ -92,6 +92,21 @@ You are not limited to creating Interactive Transcripts. You can format the HTML
 
 * [Web Monetization in the Hyperaudio Wordpress Plugin](https://youtu.be/8kRNh8iBkVk)
 
+== Screenshots ==
+
+native_audio.png
+native_video.png
+selecting_shortcode.png
+sharing_excerpt.png
+shortcode_usage.png
+soundcloud_player.png
+transcript_converter.png
+transcript_converter_howto.png
+transcript_converter_howto_customize.png
+transcript_converter_interface.png
+transcript_converter_markup.png
+upload_media.png
+
 
 == Frequently Asked Questions ==
 
