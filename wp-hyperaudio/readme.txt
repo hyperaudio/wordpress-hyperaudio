@@ -1,7 +1,7 @@
 === Hyperaudio ===
-Contributors: Maboas
+Contributors: Maboa
 Donate link: https://patreon.com/hyperaudio
-Tags: Transcripts, Interactive Transcripts, Accessibility, Media, Audio, Video, Subtitles, Captions
+Tags: Podcasts, Captions, Transcripts, Interactive Transcripts, Accessibility, Media, Audio, Video, Subtitles
 Requires at least: 3.1
 Tested up to: 6.3
 Stable tag: 1.0
@@ -13,23 +13,27 @@ Associate interactive transcripts with your audiovisual content and make your me
 
 == Description ==
 
-The Hyperaudio Wordpress Plugin allows you to import and convert data from a number of popular speech-to-text providers and tools. The result is an interactive transcript where words "light up" as they are spoken. Clicking on words in a transcript takes you directly to equivalent part of your media, while selecting a passage of text creates a handy link back to the highlighted part – great for sharing!
+The Hyperaudio Wordpress Plugin allows you to import and convert data from a number of popular speech-to-text providers and tools. 
+
+The result is an interactive transcript where words "light up" as they are spoken. 
+
+Clicking on words in a transcript takes you directly to equivalent part of your media, while selecting a passage of text creates a handy link back to the highlighted part – great for sharing!
 
 Currently the transcript generator (provided in the settings) can convert from the following speech-to-text outputs:
 
-* OpenEditor JSON
-* Speechmatics JSON
-* Google Speech-to-text JSON
-* LowerQuality Gentle
-* SRT formatted captions
+* [OpenEditor](https://github.com/OpenEditor/openeditor/) JSON
+* [Speechmatics](https://speechmatics.com) JSON
+* [Google Speech-to-text](https://cloud.google.com/speech-to-text/) JSON
+* [Gentle](http://lowerquality.com/gentle/) JSON
+* [.srt formatted](https://en.wikipedia.org/wiki/SubRip) captions
 
-Two views of the resultant transcript are provided:
+Two views of the resultant transcript are provided...
 
-== Hypertranscript View ==
+= Hypertranscript View =
 
-A Hypertranscript is an HTML representation of a media file's spoken audio. This format is ready to be pasted between the Hyperaudio shortcode. Note that since Hypertranscripts create timings and HTML is a format that is both human and machine readable, timings and words can be tweaked by editing this HTML.
+A Hypertranscript is an [HTML](https://developer.mozilla.org/en-US/docs/Web/HTML) representation of a media file's spoken audio. This format is ready to be pasted between the Hyperaudio shortcode. Note that since Hypertranscripts create timings and HTML is a format that is both human and machine readable, timings and words can be tweaked by editing this HTML.
 
-== Rendered View ==
+= Rendered View =
 
 The rendered view is how the text itself will look once viewed as an Interactive Transcript. Words can be edited from the rendered view but timings of words may not be maintained if you (say) replace two words with one, or paste content into the text.
 
@@ -43,7 +47,7 @@ Something like this :
 `` <section>
 ``  <p>
 ``   <span data-m="1390" data-d="200">This </span>
-``   <span data-m="2510" data-d="700">wordpress </span>
+``   <span data-m="2510" data-d="700">Wordpress </span>
 ``   <span data-m="3220" data-d="550">plugin </span>
 ``   <span data-m="3820" data-d="200">is </span>
 ``   <span data-m="4340" data-d="320">great! </span>
@@ -62,28 +66,51 @@ You can specify a number of parameters including player type. So far we support 
 
 As well as native mp4 and mp3 files.
 
-== Captions ==
+= Captions =
 
 The plugin also creates captions for your videos. Useful when viewing content in fullscreen.
 
-== Accessibility ==
+= Accessibility =
 
-All in all the Hyperaudio Wordpress plugin makes audiovisual media more accessible. Accessible to those with hearing diffuculties or people consuming content which is not neccessarily in their first language. Accessible to those choosing to view content with the audio off. Accessible to search engines so that content can be indexed and more easily discovered.
+All in all the Hyperaudio Wordpress plugin makes audiovisual media more accessible. 
 
-== Frequently Asked Questions
+Accessible to those with hearing difficulties or people consuming content which is not necessarily in their first language. 
 
-= How do I produce the transcript data? =
+Accessible to those choosing to view content with the audio off. Accessible to search engines so that content can be indexed and more easily discovered.
 
-Probably the easiest way is to use the Hyperaudio Lite Editor.
+= Flexibility =
 
-Alternatively you can use the OpenEditor (transcript editor) which you can find on GitHub.
+You are not limited to creating Interactive Transcripts. You can format the HTML any way you want. Hyperaudio can be used to create "chapter points". Some have even used it to define songs and artists within a musical mix.
+
+= Explainer Videos =
+
+* [How to use the Hyperaudio Wordpress Plugin – Part 1](https://youtu.be/3Qpq8kj4PxM)
+
+* [How to use the Hyperaudio Wordpress Plugin – Part 2](https://youtu.be/vIXHCYYSFM0)
+
+* [How to use the Hyperaudio Wordpress Plugin – Part 3](https://youtu.be/ly08N9S1ZlE)
+
+* [Web Monetization in the Hyperaudio Wordpress Plugin](https://youtu.be/8kRNh8iBkVk)
+
+
+== Frequently Asked Questions ==
+
+= How do I make my own Interactive Transcript? =
+
+Probably the easiest way is to use the [Hyperaudio Lite Editor](https://hyperaudio.github.io/hyperaudio-lite-editor/).
+
+Alternatively you can use the [OpenEditor](https://github.com/OpenEditor/openeditor/) (transcript editor) which you can find on GitHub.
 
 Or you can use Google Speech-to-Text Service, Speechmatics or Gentle's aligner (especially if you already have the transcript and just want to add timings).
 
-You can also convert captions or subtitles in SRT format to timed transcripts, although exact word timing cannot be ensured in that case.
+You can also convert captions or subtitles in `.srt` format to timed transcripts, although exact word timing cannot be ensured in that case.
 
 = Can I change the transcript from within the plugin? =
 
 Yes. The transcript is editable. Changing one word will generally maintain that word's timing, replacing more than one word may result in more than one word with the same timing.
 
 Note – as transcripts are represented as HTML, you can edit the HTML directly should you need to refine text or styling.
+
+= I'd like to contribute. Where is the repository? =
+
+This plugin is open source and we're always looking for help. You can find the code and discussion at [github.com/hyperaudio/wordpress-hyperaudio](https://github.com/hyperaudio/wordpress-hyperaudio/).
