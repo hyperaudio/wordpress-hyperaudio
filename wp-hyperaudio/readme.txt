@@ -1,5 +1,5 @@
 === Hyperaudio ===
-Contributors: Maboa
+Contributors: Maboas
 Donate link: https://patreon.com/hyperaudio
 Tags: Podcasts, Captions, Transcripts, Interactive Transcripts, Accessibility, Media, Audio, Video, Subtitles
 Requires at least: 3.1
@@ -13,7 +13,7 @@ Associate interactive transcripts with your audiovisual content and make your me
 
 == Description ==
 
-The Hyperaudio Wordpress Plugin allows you to import and convert data from a number of popular speech-to-text providers and tools. 
+Allows you to import and convert data from a number of popular speech-to-text providers and tools. 
 
 The result is an interactive transcript where words "light up" as they are spoken. 
 
@@ -47,8 +47,8 @@ Something like this :
 `` <section>
 ``  <p>
 ``   <span data-m="1390" data-d="200">This </span>
-``   <span data-m="2510" data-d="700">Wordpress </span>
-``   <span data-m="3220" data-d="550">plugin </span>
+``   <span data-m="2510" data-d="700">interactive </span>
+``   <span data-m="3220" data-d="550">transcript </span>
 ``   <span data-m="3820" data-d="200">is </span>
 ``   <span data-m="4340" data-d="320">great! </span>
 `` </p> 
@@ -68,11 +68,11 @@ As well as native mp4 and mp3 files.
 
 = Captions =
 
-The plugin also creates captions for your videos. Useful when viewing content in fullscreen.
+The module also creates captions for your videos. Useful when viewing content in fullscreen.
 
 = Accessibility =
 
-All in all the Hyperaudio Wordpress plugin makes audiovisual media more accessible. 
+All in all we make audiovisual media more accessible. 
 
 Accessible to those with hearing difficulties or people consuming content which is not necessarily in their first language. 
 
@@ -84,13 +84,13 @@ You are not limited to creating Interactive Transcripts. You can format the HTML
 
 = Explainer Videos =
 
-* [How to use the Hyperaudio Wordpress Plugin – Part 1](https://youtu.be/3Qpq8kj4PxM)
+* [How to use the Hyperaudio Wordpress Interactive Transcript – Part 1](https://youtu.be/3Qpq8kj4PxM)
 
-* [How to use the Hyperaudio Wordpress Plugin – Part 2](https://youtu.be/vIXHCYYSFM0)
+* [How to use the Hyperaudio Wordpress Interactive Transcript – Part 2](https://youtu.be/vIXHCYYSFM0)
 
-* [How to use the Hyperaudio Wordpress Plugin – Part 3](https://youtu.be/ly08N9S1ZlE)
+* [How to use the Hyperaudio Wordpress Interactive Transcript – Part 3](https://youtu.be/ly08N9S1ZlE)
 
-* [Web Monetization in the Hyperaudio Wordpress Plugin](https://youtu.be/8kRNh8iBkVk)
+* [Web Monetization in the Hyperaudio Wordpress Interactive Transcript](https://youtu.be/8kRNh8iBkVk)
 
 == Screenshots ==
 
@@ -120,7 +120,7 @@ Or you can use Google Speech-to-Text Service, Speechmatics or Gentle's aligner (
 
 You can also convert captions or subtitles in `.srt` format to timed transcripts, although exact word timing cannot be ensured in that case.
 
-= Can I change the transcript from within the plugin? =
+= Can I change the transcript's content? =
 
 Yes. The transcript is editable. Changing one word will generally maintain that word's timing, replacing more than one word may result in more than one word with the same timing.
 
@@ -128,4 +128,4 @@ Note – as transcripts are represented as HTML, you can edit the HTML directly 
 
 = I'd like to contribute. Where is the repository? =
 
-This plugin is open source and we're always looking for help. You can find the code and discussion at [github.com/hyperaudio/wordpress-hyperaudio](https://github.com/hyperaudio/wordpress-hyperaudio/).
+Our code is open source and we're always looking for help. You can find the code and discussion at [github.com/hyperaudio/wordpress-hyperaudio](https://github.com/hyperaudio/wordpress-hyperaudio/).
