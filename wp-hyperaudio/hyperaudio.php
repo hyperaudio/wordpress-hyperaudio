@@ -3,7 +3,7 @@
 * Plugin Name: Hyperaudio Interactive Transcript
 * Plugin URI: https://hyper.audio
 * Description: Hyperaudio Interactive Transcript Maker and Player – maximise your audio and video content's accessibility to humans and search engines.
-* Version: 1.0.16
+* Version: 1.0.14
 * Author: Mark Boas
 * Author URI: https://maboa.it 
 **/
@@ -226,12 +226,12 @@ $o .= '  </script>
 function hyperaudio_init()
 {
   if (!is_admin()) {
-    wp_enqueue_script('velocity', plugins_url('/js/velocity.js', __FILE__), array(), '1.0.0', false);
-    wp_enqueue_script('hyperaudio-lite', plugins_url('/js/hyperaudio-lite.js', __FILE__), array(), '1.0.0', false);
-    wp_enqueue_script('caption', plugins_url('/js/caption.js', __FILE__), array(), '1.0.0', false);
-    wp_enqueue_script('share-this', plugins_url('/js/share-this.js', __FILE__), array(), '1.0.0', false);
-    wp_enqueue_script('share-this-twitter', plugins_url('/js/share-this-twitter.js', __FILE__), array(), '1.0.0', false);
-    wp_enqueue_script('share-this-clipboard', plugins_url('/js/share-this-clipboard.js', __FILE__), array(), '1.0.0', false);
+    wp_enqueue_script('velocity', plugins_url('/js/velocity.js', __FILE__), false, '1.0.0', false);
+    wp_enqueue_script('hyperaudio-lite', plugins_url('/js/hyperaudio-lite.js', __FILE__), false, '1.0.0', false);
+    wp_enqueue_script('caption', plugins_url('/js/caption.js', __FILE__), false, '1.0.0', false);
+    wp_enqueue_script('share-this', plugins_url('/js/share-this.js', __FILE__), false, '1.0.0', false);
+    wp_enqueue_script('share-this-twitter', plugins_url('/js/share-this-twitter.js', __FILE__), false, '1.0.0', false);
+    wp_enqueue_script('share-this-clipboard', plugins_url('/js/share-this-clipboard.js', __FILE__), false, '1.0.0', false);
   }
 }
 
