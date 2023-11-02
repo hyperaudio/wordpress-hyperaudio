@@ -1,5 +1,5 @@
 === Hyperaudio ===
-Contributors: Maboa
+Contributors: Maboas
 Donate link: https://patreon.com/hyperaudio
 Tags: Podcasts, Captions, Transcripts, Interactive Transcripts, Accessibility, Media, Audio, Video, Subtitles
 Requires at least: 3.1
