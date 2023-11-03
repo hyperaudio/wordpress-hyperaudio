@@ -1,5 +1,5 @@
 /*! (C) The Hyperaudio Project. MIT @license: en.wikipedia.org/wiki/MIT_License. */
-/*! Version 2.1.3 */
+/*! Version 2.1.4 */
 
 'use strict';
 
@@ -177,7 +177,11 @@ const hyperaudioPlayerOptions = {
 }
 
 function hyperaudioPlayer(playerType, instance) {
-  return new playerType(instance);
+  if (playerType !== null && playerType !== undefined) {
+    return new playerType(instance);
+  } else {
+    alert("data-player-type attribute must be set on player if not native, eg SoundCloud, YouTube, Vimeo, VideoJS")
+  }
 }
 
 class HyperaudioLite {
