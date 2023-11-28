@@ -168,12 +168,12 @@ function youtubePlayer(instance) {
   }
 }
 
-// Note – The Spotify Player is in beta.
+// Note – The Spotify Player is in beta.
 // The API limits us to:
 // 1. A seek accuracy of nearest second
 // 2. An update frequency of one second (although a workaround is provided)
 // 3. Playing a file without previous iteraction will always play from start
-//    ie – a shared selection will highlight but not start at the start of
+//    ie – a shared selection will highlight but not start at the start of
 //    that selection. 
 
 function spotifyPlayer(instance) {
@@ -334,9 +334,6 @@ class HyperaudioLite {
     this.parentTag = words[0].parentElement.tagName;
     this.parentElements = this.transcript.getElementsByTagName(this.parentTag);
     this.player = document.getElementById(mediaElementId);
-
-    console.log(mediaElementId);
-    console.log(this.player);
 
     // Grab the media source and type from the first section if it exists
     // and add it to the media element.
