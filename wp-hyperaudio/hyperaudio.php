@@ -3,7 +3,7 @@
 * Plugin Name: Hyperaudio Interactive Transcript
 * Plugin URI: https://hyper.audio
 * Description: Hyperaudio Interactive Transcript Maker and Player – maximise your audio and video content's accessibility to humans and search engines.
-* Version: 1.0.18
+* Version: 1.0.19
 * Author: Mark Boas
 * Author URI: https://maboa.it 
 **/
@@ -183,6 +183,8 @@ function hyperaudio_shortcode_handler($atts, $transcript, $tag)
     $o .= '<iframe id="hyperplayer'. esc_attr( $id ) .'" class="hyperaudio-player" data-player-type="soundcloud" scrolling="no" frameborder="no" allow="autoplay" src="'. esc_url( $src ) .'" style="width: '. esc_attr( $width ) .'"></iframe><script src="https://w.soundcloud.com/player/api.js"></script>';
   } elseif (strtolower($player) == 'videojs') {
     $o .= '<video id="hyperplayer'. esc_attr( $id ) .'" class="hyperaudio-player video-js" data-player-type="videojs" data-setup="{}" style="position:relative" src="'. esc_url( $src ) .'" width="'. esc_attr( $width ) .'" height="'. esc_attr( $mediaHeight ) .'" controls><script src="https://vjs.zencdn.net/8.5.2/video.min.js"></script>';
+  } elseif (strtolower($player) == 'spotify') {
+    $o .= '<script src="https://open.spotify.com/embed/iframe-api/v1" async></script><div id="hyperplayer'. esc_attr( $id ) .'" data-player-type="spotify" src="'. esc_url( $src ) .'" uri=""></div>';
   } elseif (strpos(strtolower($src), '.mp3') !== false || strtolower($player) == 'nativeaudio') {
     $o .= '<audio id="hyperplayer'. esc_attr( $id ) .'" class="hyperaudio-player" style="position:relative; width:'. esc_attr( $width ).'" src="'. esc_url( $src ) .'" controls></audio>';
   } else {
