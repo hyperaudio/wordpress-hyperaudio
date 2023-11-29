@@ -207,7 +207,7 @@ function hyperaudio_options_page()
     <p><code>https://w.soundcloud.com/player/?url=https%3A//api.soundcloud.com/tracks/730479133&color=%23ff5500&auto_play=false&hide_related=false&show_comments=true&show_user=true&show_reposts=false&show_teaser=true</code> *</p>
     <p>* Grab the snippet of code from the SoundCloud page containing the file you're interested in, clicking on Share and then Embed.</p>
     <p>or</p>
-    <p><code>src=https://open.spotify.com/episode/4XAhcdJTXoffuDZglrEbSj</code></p>
+    <p><code>https://open.spotify.com/episode/4XAhcdJTXoffuDZglrEbSj</code></p>
     <p>You can define various other attributes including:</p>
     <p>
       <table>
