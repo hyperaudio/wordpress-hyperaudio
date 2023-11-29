@@ -7,14 +7,18 @@ You can make Interactive Transcripts with the [Hyperaudio Lite Editor](https://g
 
 ## Getting started
 
-### 1. Move the file manually
+### 1. Use the pre-zipped version (currently version 1.0.19)
+
+1. [https://lab.hyperaud.io/wordpress-plugin/v1.0.19/wp-hyperaudio-1.0.19.zip](https://lab.hyperaud.io/wordpress-plugin/v1.0.19/wp-hyperaudio-1.0.19.zip).
+
+### 2. Move the file manually
 
 1. [Download the zip file](https://github.com/hyperaudio/wordpress-hyperaudio/archive/refs/heads/main.zip).
 2. Unzip. 
 3. From within the unzipped `wordpress-hyperaudio-main` folder copy the `wp-hyperaudio` folder to your wordpress `wp-content/plugins/` folder.
 4. Logged in as admin, from the wordpress dashboard plugins area (`wordpress/wp-admin/plugins.php`) make sure "Official Hyperaudio Plugin" is activated.
 
-### 2. From within Wordpress
+### 3. From within Wordpress
 
 Note that uploading the zip file provided by GitHub won't work.
 
