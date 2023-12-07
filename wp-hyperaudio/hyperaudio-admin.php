@@ -1,14 +1,5 @@
 <?php
 
-/**
-* Plugin Name: Hyperaudio Interactive Transcript
-* Plugin URI: https://hyper.audio
-* Description: Hyperaudio Interactive Transcript Maker and Player – maximise your audio and video content's accessibility to humans and search engines.
-* Version: 1.0.19 (patch)
-* Author: Mark Boas
-* Author URI: https://maboa.it 
-**/
-
 add_action('admin_menu', 'hyperaudio_add_option_page');
 
 function hyperaudio_add_option_page()
