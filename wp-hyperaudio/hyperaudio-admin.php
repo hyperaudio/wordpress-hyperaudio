@@ -1,6 +1,5 @@
 <?php
 
-
 add_action('admin_menu', 'hyperaudio_add_option_page');
 
 function hyperaudio_add_option_page()
