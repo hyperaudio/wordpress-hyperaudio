@@ -3,7 +3,7 @@
 * Plugin Name: Hyperaudio Interactive Transcript
 * Plugin URI: https://hyper.audio
 * Description: Hyperaudio Interactive Transcript Maker and Player – maximise your audio and video content's accessibility to humans and search engines.
-* Version: 1.0.20
+* Version: 1.0.21
 * Author: Mark Boas
 * Author URI: https://maboa.it 
 **/
@@ -35,6 +35,7 @@ function hyperaudio_shortcode_handler($atts, $transcript, $tag)
   $webmonetization = false;
   $showActive = false;
   $player = NULL;
+  $showHyperaudioLink = false;
 
   if (isset($atts['src'])) $src = $atts['src'];
   if (isset($atts['width'])) $width = $atts['width'];
@@ -54,7 +55,7 @@ function hyperaudio_shortcode_handler($atts, $transcript, $tag)
   if (isset($atts['show-active'])) $showActive = $atts['show-active'];
 
   if (isset($atts['player'])) $player = $atts['player'];
-
+  if (isset($atts['show-hyperaudio-link'])) $showHyperaudioLink = $atts['show-hyperaudio-link'];
 
 
   $transcript = preg_replace( "/\r|\n/", "", $transcript);
@@ -158,6 +159,16 @@ function hyperaudio_shortcode_handler($atts, $transcript, $tag)
     }';
   }
 
+  if ($showHyperaudioLink == true) {
+    $o .=' .hyperaudio-link {
+      text-align:right; 
+      font-size:65%; 
+      line-height: 1.0; 
+      font-weight: 600; 
+      font-family: Work Sans, Helvetica, Arial, sans-serif;
+    }';
+  }
+
 
   $o .=' 
   .share-this-popover{max-width:8em;pointer-events:none;-webkit-filter:drop-shadow(0 1px 3px rgba(0,0,0,.35));filter:drop-shadow(0 1px 3px rgba(0,0,0,.35));-webkit-animation:a .3s;animation:a .3s}.share-this-popover:before{content:"";position:absolute;bottom:100%;left:50%;width:0;height:0;margin:.25em -.5em;border-width:.5em .5em 0;border-style:solid;border-color:#333 transparent}.share-this-popover>ul{pointer-events:auto;list-style:none;padding:0;margin:-.75em 0 0;white-space:nowrap;background:#333;color:#fff;border-radius:.25em;position:absolute;left:50%;-webkit-transform:translate(-50%,-100%);-ms-transform:translate(-50%,-100%);transform:translate(-50%,-100%)}.share-this-popover>ul>li{display:inline-block;width:2em;height:2em;line-height:2em;text-align:center}.share-this-popover>ul>li>a{display:inline-block;width:100%;height:100%;color:inherit;box-sizing:border-box;padding:.35em}.share-this-popover>ul>li>a:focus,.share-this-popover>ul>li>a:hover{background:hsla(0,0%,100%,.25)}@media (pointer:coarse){.share-this-popover{font-size:150%}.share-this-popover:before{bottom:auto;top:100%;border-width:0 .5em .5em;margin-top:0}.share-this-popover>ul{top:100%;transform:translateX(-50%);margin:.5em 0 0}}@media (max-width:575px){.share-this-popover{left:0!important;right:0!important;width:auto!important;max-width:none}.share-this-popover:before{bottom:auto;top:100%;border-width:0 .5em .5em;margin-top:0}.share-this-popover>ul{top:100%;transform:translateX(-50%);margin:.5em 0 0;left:0;width:100%;transform:none;border-radius:0;text-align:center}}@-webkit-keyframes a{0%{-webkit-transform:translateY(-3em);opacity:0}80%{-webkit-transform:translateY(.5em);opacity:1}to{-webkit-transform:translateY(0)}}@keyframes a{0%{transform:translateY(-3em);opacity:0}80%{transform:translateY(.5em);opacity:1}to{transform:translateY(0)}}</style>';
@@ -199,7 +210,12 @@ function hyperaudio_shortcode_handler($atts, $transcript, $tag)
 
   $o .='</div>';
 
- $o .='<div id="'. esc_attr( $transcriptid ) .'" class="hyperaudio-transcript" style="overflow-y:scroll; width:'. esc_attr( $width ) .'; height:'. esc_attr( $transcriptHeight ) .'; position:relative; border-style:dashed; border-width: 1px; border-color:#999; padding: 8px">'. wp_kses_post( $transcript ) .'</div><div style="text-align:right; font-size:65%; margin-top: -16px; line-height: 1.0; font-weight: 600; font-family: Work Sans, Helvetica, Arial, sans-serif;"><a href="https://hyper.audio">A Hyperaudio Production</a></div>';
+  $hyperaudioLink = '';
+  if ($showHyperaudioLink === true) {
+    $hyperaudioLink = '<div class="hyperaudio-link" style="text-align:right; font-size:65%; line-height: 1.0; font-weight: 600; font-family: Work Sans, Helvetica, Arial, sans-serif;"><a href="https://hyperaudio.site">A Hyperaudio Production</a></div>';
+  }
+
+ $o .='<div id="'. esc_attr( $transcriptid ) .'" class="hyperaudio-transcript" style="overflow-y:scroll; width:'. esc_attr( $width ) .'; height:'. esc_attr( $transcriptHeight ) .'; position:relative; border-style:dashed; border-width: 1px; border-color:#999; padding: 8px">'. wp_kses_post( $transcript ) . wp_kses_post( $hyperaudioLink );
 
 
   $o .= '<script>
