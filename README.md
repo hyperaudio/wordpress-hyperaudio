@@ -7,7 +7,7 @@ You can make Interactive Transcripts with the [Hyperaudio Lite Editor](https://g
 
 ## Getting started
 
-### 1. Use the pre-zipped version (currently version 1.0.20)
+### 1. Use the pre-zipped version (currently version 1.0.22)
 
 1. [https://lab.hyperaud.io/wordpress-plugin/v1.0.22/wp-hyperaudio-1.0.22.zip](https://lab.hyperaud.io/wordpress-plugin/v1.0.22/wp-hyperaudio-1.0.22.zip).
 
