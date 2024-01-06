@@ -3,7 +3,7 @@
 * Plugin Name: Hyperaudio Interactive Transcript
 * Plugin URI: https://hyper.audio
 * Description: Hyperaudio Interactive Transcript Maker and Player – maximise your audio and video content's accessibility to humans and search engines.
-* Version: 1.0.21
+* Version: 1.0.22
 * Author: Mark Boas
 * Author URI: https://maboa.it 
 **/
@@ -215,8 +215,7 @@ function hyperaudio_shortcode_handler($atts, $transcript, $tag)
     $hyperaudioLink = '<div class="hyperaudio-link" style="text-align:right; font-size:65%; line-height: 1.0; font-weight: 600; font-family: Work Sans, Helvetica, Arial, sans-serif;"><a href="https://hyperaudio.site">A Hyperaudio Production</a></div>';
   }
 
- $o .='<div id="'. esc_attr( $transcriptid ) .'" class="hyperaudio-transcript" style="overflow-y:scroll; width:'. esc_attr( $width ) .'; height:'. esc_attr( $transcriptHeight ) .'; position:relative; border-style:dashed; border-width: 1px; border-color:#999; padding: 8px">'. wp_kses_post( $transcript ) . wp_kses_post( $hyperaudioLink );
-
+  $o .='<div id="'. esc_attr( $transcriptid ) .'" class="hyperaudio-transcript" style="overflow-y:scroll; width:'. esc_attr( $width ) .'; height:'. esc_attr( $transcriptHeight ) .'; position:relative; border-style:dashed; border-width: 1px; border-color:#999; padding: 8px">'. wp_kses_post( $transcript ) . wp_kses_post( $hyperaudioLink ) . '</div>';
 
   $o .= '<script>
   ShareThis({
