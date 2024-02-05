@@ -373,6 +373,47 @@ $(document).ready(function() {
         ht = items.join('');
         break;
 
+      case 'dpe':
+        var data = JSON.parse(input);
+
+        var words = data.words;
+        var paras = data.paragraphs;
+        var items = ['<article><section>'];
+
+        $.each(words, function(i, word) {
+
+          $.each(paras, function(j, para) {
+            if (word.start === para.start) {
+              items.push("<p>");
+
+              if (para.speaker.length > 0){
+                items.push('<span class="speaker" data-m="'+Math.round(para.start * 1000)+'" data-d="0">['+para.speaker+'] </span>');
+              }
+            }
+          });
+
+          items.push(
+            '<span data-m="' +
+              Math.round(word.start * 1000) +
+              '" data-d="' +
+              Math.round((word.end - word.start) * 1000) +
+              '">' +
+              word.text + " " +
+              ' </span>'
+          );
+
+          $.each(paras, function(j, para) {
+            if (word.end === para.end) {
+              items.push("<p>");
+            }
+          });
+        });
+
+        items.push('</section></article>');
+
+        ht = items.join('');
+        break;
+
       case 'gentle':
         var data = JSON.parse(input);
 
