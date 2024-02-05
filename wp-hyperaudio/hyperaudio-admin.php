@@ -259,6 +259,7 @@ function hyperaudio_options_page()
           <option value="oe">OpenEditor JSON</option>
           <option value="srt">SRT formatted captions</option>
           <option value="speechmatics">Speechmatics JSON</option>
+          <option value="dpe">DPE JSON</option>
           <option value="gentle">Gentle JSON</option>
           <option value="google">Google Speech-to-Text</option>
           <option value="other">Other</option>
