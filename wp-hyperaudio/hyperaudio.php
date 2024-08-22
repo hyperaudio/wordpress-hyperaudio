@@ -218,10 +218,6 @@ function hyperaudio_shortcode_handler($atts, $transcript, $tag)
   $o .='<div id="'. esc_attr( $transcriptid ) .'" class="hyperaudio-transcript" style="overflow-y:scroll; width:'. esc_attr( $width ) .'; height:'. esc_attr( $transcriptHeight ) .'; position:relative; border-style:dashed; border-width: 1px; border-color:#999; padding: 8px">'. wp_kses_post( $transcript ) . wp_kses_post( $hyperaudioLink ) . '</div>';
 
   $o .= '<script>
-  ShareThis({
-      sharers: [ ShareThisViaTwitter, ShareThisViaClipboard ],
-      selector: "article"
-  }).init();
 
   var minimizedMode = false;
   var autoScroll = true;
@@ -246,9 +242,6 @@ function hyperaudio_init()
     wp_enqueue_script('velocity', plugins_url('/js/velocity.js', __FILE__), array(), '1.0.0', false);
     wp_enqueue_script('hyperaudio-lite', plugins_url('/js/hyperaudio-lite.js', __FILE__), array(), '1.0.0', false);
     wp_enqueue_script('caption', plugins_url('/js/caption.js', __FILE__), array(), '1.0.0', false);
-    wp_enqueue_script('share-this', plugins_url('/js/share-this.js', __FILE__), array(), '1.0.0', false);
-    wp_enqueue_script('share-this-twitter', plugins_url('/js/share-this-twitter.js', __FILE__), array(), '1.0.0', false);
-    wp_enqueue_script('share-this-clipboard', plugins_url('/js/share-this-clipboard.js', __FILE__), array(), '1.0.0', false);
   }
 }
 
