@@ -308,5 +308,5 @@ function hyperaudio_action_links($links, $file)
 }
 
 if (is_admin()) {
-  require('hyperaudio-admin.php');
+  require('admin/admin.php');
 }
