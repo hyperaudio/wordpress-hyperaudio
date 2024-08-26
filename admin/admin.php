@@ -34,7 +34,7 @@ add_action('admin_enqueue_scripts', 'hyperaudio_load_admin_script');
 function hyperaudio_options_page() 
 {// Output the options page
   ?>
-  <h1 style="line-height:1.3">Official Wordpress Hyperaudio Plugin (v1.0) - How To</h1>
+  <h1 style="line-height:1.3">Hyperaudio Interactive Transcript for Wordpress (v1.0.24) - How To</h1>
   <h2> (<a href="#converter">Jump straight to the Transcript Maker</a>)</h2>
 
   <link href='https://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
