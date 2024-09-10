@@ -283,9 +283,9 @@ $o .= '  </script>
 function hyperaudio_init()
 {
   if (!is_admin()) {
-    wp_enqueue_script('velocity', plugins_url('/js/velocity.js', __FILE__), array(), '1.0.0', false);
-    wp_enqueue_script('hyperaudio-lite', plugins_url('/js/hyperaudio-lite.js', __FILE__), array(), '1.0.0', false);
-    wp_enqueue_script('caption', plugins_url('/js/caption.js', __FILE__), array(), '1.0.0', false);
+    wp_enqueue_script('velocityjs', plugins_url('/js/velocity.js', __FILE__), [], '1.5.0');
+    wp_enqueue_script('hyperaudio_lite', plugins_url('/js/hyperaudio-lite.js', __FILE__), [], '2.3.1');
+    wp_enqueue_script('hyperaudio_caption', plugins_url('/js/caption.js', __FILE__), [], '2.1.4');
   }
 }
 
@@ -300,7 +300,7 @@ function hyperaudio_action_links($links, $file)
   // check to make sure we are on the correct plugin
   if ($file == $this_plugin) {
     // the anchor tag and href to the URL we want. For a "Settings" link, this needs to be the url of your settings page
-    $settings_link = '<a href="' . esc_url( get_bloginfo('wpurl') ) . '/wp-admin/options-general.php?page=wp-hyperaudio/hyperaudio-admin.php">Settings</a>';
+    $settings_link = '<a href="' . esc_url( get_bloginfo('wpurl') ) . '/wp-admin/options-general.php?page=hyperaudio">Settings</a>';
     // add the link to the list
     array_unshift($links, $settings_link);
   }
@@ -308,5 +308,5 @@ function hyperaudio_action_links($links, $file)
 }
 
 if (is_admin()) {
-  require('hyperaudio-admin.php');
+  require('admin/admin.php');
 }

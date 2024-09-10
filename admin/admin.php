@@ -2,22 +2,31 @@
 
 add_action('admin_menu', 'hyperaudio_add_option_page');
 
+/**
+ * Callback for the Hyperaudio options page.
+ *
+ * @return void
+ */
 function hyperaudio_add_option_page()
 {
-	// hook in the options page function
-	add_options_page('Official Hyperaudio Plugin', 'hyperaudio', 'manage_options',  __FILE__, 'hyperaudio_options_page');
+    add_options_page(
+        __('Hyperaudio Official WordPress Plugin', 'hyperaudio'),
+        __('Hyperaudio', 'hyperaudio'),
+        'manage_options',
+        'hyperaudio',
+        'hyperaudio_options_page'
+    );
 }
 
 
 function hyperaudio_load_admin_script($hook)
 {
-	if ($hook != 'settings_page_wp-hyperaudio/hyperaudio-admin') {
-		return;
-	}
-  
-  wp_enqueue_script('caption', plugins_url('/js/caption.js', __FILE__), false, '1.0.0', false);
-  wp_enqueue_script( 'converter', plugin_dir_url( __FILE__ ) . '/js/converter.js', array( 'jquery' ), '1.0.0', true );
+  if ($hook != 'settings_page_hyperaudio') {
+    return;
+  }
 
+  wp_enqueue_script('hyperaudio_caption', plugins_url('/js/caption.js', __DIR__), [], '2.1.4');
+  wp_enqueue_script('hyperaudio_converter', plugins_url('/js/converter.js', __DIR__), ['jquery']);
 }
 
 add_action('admin_enqueue_scripts', 'hyperaudio_load_admin_script');
@@ -25,7 +34,7 @@ add_action('admin_enqueue_scripts', 'hyperaudio_load_admin_script');
 function hyperaudio_options_page() 
 {// Output the options page
   ?>
-  <h1 style="line-height:1.3">Official Wordpress Hyperaudio Plugin (v1.0) - How To</h1>
+  <h1 style="line-height:1.3">Hyperaudio Interactive Transcript for Wordpress (v1.0.24) - How To</h1>
   <h2> (<a href="#converter">Jump straight to the Transcript Maker</a>)</h2>
 
   <link href='https://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
