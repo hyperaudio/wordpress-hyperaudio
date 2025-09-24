@@ -230,7 +230,7 @@ function hyperaudio_shortcode_handler($atts, $transcript, $tag)
     $o .= '<video id="hyperplayer'. esc_attr( $id ) .'" class="hyperaudio-player video-js" data-player-type="videojs" data-setup="{}" style="position:relative" src="'. esc_url( $src ) .'" width="'. esc_attr( $width ) .'" height="'. esc_attr( $mediaHeight ) .'" controls><script src="https://vjs.zencdn.net/8.5.2/video.min.js"></script>';
   } elseif (strtolower($player) == 'spotify') {
     $o .= '<script src="https://open.spotify.com/embed/iframe-api/v1" async></script><div id="hyperplayer'. esc_attr( $id ) .'" data-player-type="spotify" src="'. esc_url( $src ) .'" uri=""></div>';
-  } elseif (strpos(strtolower($src), '.mp3') !== false || strtolower($player) == 'nativeaudio') {
+  } elseif (strpos(strtolower($src), '.mp3') !== false || (strpos(strtolower($src), '.m4a') !== false || strtolower($player) == 'nativeaudio') {
     $o .= '<audio id="hyperplayer'. esc_attr( $id ) .'" class="hyperaudio-player" style="position:relative; width:'. esc_attr( $width ).'" src="'. esc_url( $src ) .'" controls></audio>';
   } else {
     $o .= '<video id="hyperplayer'. esc_attr( $id ) .'" class="hyperaudio-player" style="position:relative; width:'. esc_attr( $width ) .'" src="'. esc_url( $src ) .'" controls>';
